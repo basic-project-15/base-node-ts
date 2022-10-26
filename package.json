@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node build/index.js",
-    "dev": "ts-node-dev --ignore-watch node_modules src/index.ts",
-    "build": "tsc",
+    "dev": "ts-node-dev -r tsconfig-paths/register --ignore-watch node_modules src/index.ts",
+    "build": "tsc && tsc-alias",
     "test": "echo \"Error: no test specified\" && exit 1",
     "commit": "git add . && npx gitmoji -c",
     "format": "npx prettier --write .",
@@ -29,6 +29,8 @@
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-promise": "6.1.1",
     "prettier": "2.7.1",
+    "tsc-alias": "1.7.0",
+    "tsconfig-paths": "4.1.0",
     "typescript": "4.8.4"
   }
 }

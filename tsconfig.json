@@ -4,7 +4,16 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "baseUrl": ".",
-    "paths": {},
+    "paths": {
+      "@api/*": ["./src/api/*"],
+      "@common/*": ["./src/common/*"],
+      "@config/*": ["./src/config/*"],
+      "@core/*": ["./src/core/*"],
+      "@languages/*": ["./src/languages/*"],
+      "@middlewares/*": ["./src/middlewares/*"],
+      "@services/*": ["./src/services/*"],
+      "@types/*": ["./src/types/*"]
+    },
     "typeRoots": ["./node_modules/@types", ".src/@types"],
     "resolveJsonModule": true,
     "outDir": "./build",
