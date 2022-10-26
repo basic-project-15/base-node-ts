@@ -1,0 +1,8 @@
+dist
+public
+build
+
+package-lock.json
+package.json
+README.md
+tsconfig.json
