@@ -15,12 +15,12 @@ ajv.addKeyword({
   errors: false,
 })
 
-const validate = (data: any, dto: any): DataResponse => {
+const validate = (data: any, schema: any): DataResponse => {
   const response: DataResponse = {
     success: true,
     message: '',
   }
-  const validate = ajv.compile(dto)
+  const validate = ajv.compile(schema)
   const isValid: boolean = validate(data)
   if (!isValid) {
     response.success = false

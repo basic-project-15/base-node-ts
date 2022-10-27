@@ -1,7 +1,1 @@
-export {
-  getUsers,
-  getUser,
-  createUser,
-  updateUser,
-  deleteUser,
-} from './usersAdmin'
+export { default as usersAdmin } from './usersAdmin.controllers'

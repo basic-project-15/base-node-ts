@@ -1,13 +1,47 @@
-import mongoose from 'mongoose'
+import { Type } from '@sinclair/typebox'
 
-const usersAdminSchema = new mongoose.Schema({
-  _id: String,
-  name: String,
-  email: String,
-  password: String,
-  role: String,
-})
+const create = Type.Object(
+  {
+    name: Type.String({
+      isNotEmpty: true,
+      errorMessage: {
+        isNotEmpty: 'No debe ser vacío',
+        type: 'Debe ser un string',
+      },
+    }),
+    email: Type.String({
+      format: 'email',
+      errorMessage: {
+        type: 'Debe ser un string',
+        format: 'Debe ser un correo electrónico válido',
+      },
+    }),
+    password: Type.String({
+      isNotEmpty: true,
+      errorMessage: {
+        isNotEmpty: 'No debe ser vacío',
+        type: 'Debe ser un string',
+      },
+    }),
+    role: Type.String({
+      isNotEmpty: true,
+      errorMessage: {
+        isNotEmpty: 'No debe ser vacío',
+        type: 'Debe ser un string',
+      },
+    }),
+  },
+  {
+    additionalProperties: false,
+    errorMessage: {
+      type: 'Debe ser un objeto',
+      additionalProperties: 'El formato del objeto no es válido',
+      required: {
+        email: 'El email es requerido',
+        password: 'La password es requerido',
+      },
+    },
+  },
+)
 
-const usersAdminModel = mongoose.model('usersAdmin', usersAdminSchema)
-
-export default usersAdminModel
+export default { create }

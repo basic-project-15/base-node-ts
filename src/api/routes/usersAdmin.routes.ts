@@ -1,43 +1,17 @@
-import {
-  createUser,
-  deleteUser,
-  getUser,
-  getUsers,
-  updateUser,
-} from '@api/controllers'
-import { dtoUserAdminCreate, validate } from '@core/validations'
+import { usersAdmin } from '@api/controllers'
+import { dtoUsersAdmin } from '@middlewares/validations'
 import { Router } from 'express'
 
-const usersAdminRouter = Router()
+const routeUsersAdmin = Router()
 
-usersAdminRouter.get('/', (_req, res) => {
-  const message: string = getUsers()
-  res.status(200).send(message)
-})
+routeUsersAdmin.get('/', usersAdmin.getUsers)
 
-usersAdminRouter.get('/:idUser', (_req, res) => {
-  const message: string = getUser()
-  res.status(200).send(message)
-})
+routeUsersAdmin.get('/:idUser', usersAdmin.getUser)
 
-usersAdminRouter.post('/', (req, res) => {
-  const { success, message } = validate(req.body, dtoUserAdminCreate)
-  const msg: string = createUser()
-  res.status(200).send({
-    success: success,
-    message: msg,
-    data: message,
-  })
-})
+routeUsersAdmin.post('/', dtoUsersAdmin.createUser, usersAdmin.createUser)
 
-usersAdminRouter.patch('/', (_req, res) => {
-  const message: string = updateUser()
-  res.status(200).send(message)
-})
+routeUsersAdmin.patch('/', usersAdmin.updateUser)
 
-usersAdminRouter.delete('/', (_req, res) => {
-  const message: string = deleteUser()
-  res.status(200).send(message)
-})
+routeUsersAdmin.delete('/', usersAdmin.deleteUser)
 
-export default usersAdminRouter
+export default routeUsersAdmin
