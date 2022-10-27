@@ -3,7 +3,10 @@ import { schemaUsersAdmin } from '@common/schema'
 import { validateAJV } from '@core/helpers'
 
 const createUser = (req: Request, res: Response, next: NextFunction) => {
-  const { success, message } = validateAJV(req.body, schemaUsersAdmin.create)
+  const { success, message } = validateAJV(
+    req.body,
+    schemaUsersAdmin.createUser,
+  )
   if (success) {
     next()
   } else {
