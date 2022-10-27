@@ -1,6 +1,8 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import { helloWorld } from '@core/helpers'
+import { connectDB } from '@config/index'
+import { usersAdminRouter } from '@api/routes'
 
 dotenv.config()
 
@@ -16,12 +18,19 @@ app.use('/', (req, _res, next) => {
   next()
 })
 
+app.use('/api/usersAdmin', usersAdminRouter)
+
 app.get('/helloworld', (_req, res) => {
   const message = helloWorld()
   console.log(message)
   res.send(message)
 })
 
-app.listen(PORT, () => {
-  console.log(`Server running on port http://localhost:${PORT}/`)
-})
+const bootstrap = async () => {
+  await connectDB()
+  app.listen(PORT, () => {
+    console.log(`Server running on port http://localhost:${PORT}/`)
+  })
+}
+
+bootstrap()
