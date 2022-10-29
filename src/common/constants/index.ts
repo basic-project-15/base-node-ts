@@ -1,1 +1,1 @@
-export {}
+export { SALT } from './bcrypt'

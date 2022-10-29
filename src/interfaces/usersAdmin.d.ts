@@ -7,3 +7,5 @@ export interface UsersAdmin {
 }
 
 export type UsersAdminCreate = Omit<UsersAdmin, 'id'>
+
+export type UsersAdminProfile = Omit<UsersAdmin, 'password'>

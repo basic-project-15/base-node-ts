@@ -1,13 +1,60 @@
 import { Request, Response } from 'express'
-import { UsersAdminCreate } from '@interfaces/usersAdmin'
+import { hash } from 'bcrypt'
+import { UsersAdminCreate, UsersAdminProfile } from '@interfaces/usersAdmin'
 import { usersAdminModels } from '@common/models'
+import { SALT } from '@common/constants'
 
-const getUsers = (_req: Request, res: Response) => {
-  return res.status(200).send('usersAdmin get')
+const getUsers = async (_req: Request, res: Response) => {
+  try {
+    const userAdmins = await usersAdminModels.find().exec()
+    const usersAdminsFormat: UsersAdminProfile[] = userAdmins.map(user => ({
+      id: user.id,
+      name: user.name ?? '',
+      email: user.email ?? '',
+      role: user.role ?? '',
+    }))
+    return res.status(200).send({
+      message: 'usersAdmin get',
+      data: usersAdminsFormat,
+    })
+  } catch (error) {
+    return res.status(500).send({
+      message: 'Problema interno del servidor',
+      data: error,
+    })
+  }
 }
 
-const getUser = (_req: Request, res: Response) => {
-  return res.status(200).send('usersAdmin get by id')
+const getUser = async (req: Request, res: Response) => {
+  const idUser: string = req.params.idUser
+  try {
+    const userAdmin = await usersAdminModels.findById(idUser).exec()
+
+    // Validations
+    if (!userAdmin) {
+      return res.status(404).send({
+        message: 'Usuario no encontrado',
+        data: null,
+      })
+    }
+
+    // Actions
+    const userAdminFormat: UsersAdminProfile = {
+      id: userAdmin.id,
+      name: userAdmin.name ?? '',
+      email: userAdmin.email ?? '',
+      role: userAdmin.role ?? '',
+    }
+    return res.status(200).send({
+      message: 'usersAdmin get by id',
+      data: userAdminFormat,
+    })
+  } catch (error) {
+    return res.status(500).send({
+      message: 'Problema interno del servidor',
+      data: error,
+    })
+  }
 }
 
 const createUser = async (req: Request, res: Response) => {
@@ -32,6 +79,7 @@ const createUser = async (req: Request, res: Response) => {
     }
 
     // Actions
+    newUser.password = await hash(newUser.password, SALT)
     const userModel = new usersAdminModels(newUser)
     userModel.save()
     let { password, ...userProfile } = newUser
@@ -43,8 +91,8 @@ const createUser = async (req: Request, res: Response) => {
       },
     })
   } catch (error) {
-    return res.status(400).send({
-      message: 'Error al guardar el usuario',
+    return res.status(500).send({
+      message: 'Problema interno del servidor',
       data: error,
     })
   }

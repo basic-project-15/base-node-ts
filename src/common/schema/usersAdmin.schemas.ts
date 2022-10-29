@@ -1,13 +1,5 @@
 import { Type } from '@sinclair/typebox'
 
-const idUser = Type.String({
-  isNotEmpty: true,
-  errorMessage: {
-    isNotEmpty: 'No debe ser vacío',
-    type: 'Debe ser un string',
-  },
-})
-
 const createUser = Type.Object(
   {
     name: Type.String({
@@ -107,4 +99,4 @@ const updateUser = Type.Object(
   },
 )
 
-export default { createUser, idUser, updateUser }
+export default { createUser, updateUser }
