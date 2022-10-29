@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { UsersAdminCreate } from '@interfaces/usersAdmin'
-import { modelUsersAdmin } from '@common/models'
+import { usersAdminModels } from '@common/models'
 
 const getUsers = (_req: Request, res: Response) => {
   return res.status(200).send('usersAdmin get')
@@ -21,7 +21,7 @@ const createUser = async (req: Request, res: Response) => {
     }
 
     // Validations
-    const userFind = await modelUsersAdmin
+    const userFind = await usersAdminModels
       .findOne({ email: newUser.email })
       .exec()
     if (userFind) {
@@ -32,7 +32,7 @@ const createUser = async (req: Request, res: Response) => {
     }
 
     // Actions
-    const userModel = new modelUsersAdmin(newUser)
+    const userModel = new usersAdminModels(newUser)
     userModel.save()
     let { password, ...userProfile } = newUser
     return res.status(200).send({

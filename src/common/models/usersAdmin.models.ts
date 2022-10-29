@@ -1,12 +1,12 @@
 import mongoose from 'mongoose'
 
-const schemaUsersAdmin = new mongoose.Schema({
+const usersAdminSchemas = new mongoose.Schema({
   name: String,
   email: String,
   password: String,
   role: String,
 })
 
-const modelUsersAdmin = mongoose.model('useradmins', schemaUsersAdmin)
+const usersAdminModels = mongoose.model('useradmins', usersAdminSchemas)
 
-export default modelUsersAdmin
+export default usersAdminModels

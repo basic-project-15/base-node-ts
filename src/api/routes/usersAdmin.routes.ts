@@ -1,21 +1,21 @@
 import { Router } from 'express'
-import { controllerUsersAdmin } from '@api/controllers'
-import { dtoUsersAdmin } from '@middlewares/validations'
+import { usersAdminControllers } from '@api/controllers'
+import { usersAdminDto } from '@middlewares/validations'
 
-const routeUsersAdmin = Router()
+const usersAdminRoutes = Router()
 
-routeUsersAdmin.get('/', controllerUsersAdmin.getUsers)
+usersAdminRoutes.get('/', usersAdminControllers.getUsers)
 
-routeUsersAdmin.get('/:idUser', controllerUsersAdmin.getUser)
+usersAdminRoutes.get('/:idUser', usersAdminControllers.getUser)
 
-routeUsersAdmin.post(
+usersAdminRoutes.post(
   '/',
-  dtoUsersAdmin.createUser,
-  controllerUsersAdmin.createUser,
+  usersAdminDto.createUser,
+  usersAdminControllers.createUser,
 )
 
-routeUsersAdmin.patch('/', controllerUsersAdmin.updateUser)
+usersAdminRoutes.patch('/', usersAdminControllers.updateUser)
 
-routeUsersAdmin.delete('/', controllerUsersAdmin.deleteUser)
+usersAdminRoutes.delete('/', usersAdminControllers.deleteUser)
 
-export default routeUsersAdmin
+export default usersAdminRoutes

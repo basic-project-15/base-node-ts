@@ -1,1 +1,1 @@
-export { default as modelUsersAdmin } from './usersAdmin.models'
+export { default as usersAdminModels } from './usersAdmin.models'

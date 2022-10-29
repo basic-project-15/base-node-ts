@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express'
-import { schemaUsersAdmin } from '@common/schema'
+import { usersAdminSchemas } from '@common/schema'
 import { validateAJV } from '@core/helpers'
 
 const createUser = (req: Request, res: Response, next: NextFunction) => {
   const { success, message } = validateAJV(
     req.body,
-    schemaUsersAdmin.createUser,
+    usersAdminSchemas.createUser,
   )
   if (success) {
     next()

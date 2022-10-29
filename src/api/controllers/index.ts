@@ -1,1 +1,1 @@
-export { default as controllerUsersAdmin } from './usersAdmin.controllers'
+export { default as usersAdminControllers } from './usersAdmin.controllers'
