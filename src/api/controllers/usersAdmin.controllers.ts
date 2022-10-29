@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { hash } from 'bcrypt'
-import { UsersAdminCreate, UsersAdminProfile } from '@interfaces/usersAdmin'
+import { UsersAdminCreate, UsersAdminProfile } from '@interfaces/index'
 import { usersAdminModels } from '@common/models'
 import { SALT } from '@common/constants'
 

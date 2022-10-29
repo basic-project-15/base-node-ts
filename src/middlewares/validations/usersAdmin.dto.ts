@@ -2,62 +2,30 @@ import { Request, Response, NextFunction } from 'express'
 import { usersAdminSchemas } from '@common/schema'
 import { validateAJV } from '@core/helpers'
 
+const { createUserSchema, updateUserSchema, loginSchema } = usersAdminSchemas
+
 const createUser = (req: Request, res: Response, next: NextFunction) => {
   const { body } = req
-  try {
-    if (Object.entries(body).length === 0) {
-      return res.status(400).send({
-        message: 'Formato del body no vállido',
-        data: null,
-      })
-    }
-    const { success, message, data } = validateAJV(
-      body,
-      usersAdminSchemas.createUser,
-    )
-    if (success) {
-      return next()
-    } else {
-      return res.status(400).send({
-        message: 'Error de validación',
-        data: { message, data },
-      })
-    }
-  } catch (error) {
-    return res.status(500).send({
-      message: 'Problema interno del servidor',
-      data: error,
-    })
-  }
+  const dataResponse = validateAJV(body, createUserSchema)
+  const { statusCode, message, data } = dataResponse
+  if (statusCode === 200) return res.status(statusCode).send({ message, data })
+  return next()
 }
 
 const updateUser = (req: Request, res: Response, next: NextFunction) => {
   const { body } = req
-  try {
-    if (Object.entries(body).length === 0) {
-      return res.status(400).send({
-        message: 'Formato del body no vállido',
-        data: null,
-      })
-    }
-    const { success, message, data } = validateAJV(
-      body,
-      usersAdminSchemas.updateUser,
-    )
-    if (success) {
-      return next()
-    } else {
-      return res.status(400).send({
-        message: 'Error de validación',
-        data: { message, data },
-      })
-    }
-  } catch (error) {
-    return res.status(500).send({
-      message: 'Problema interno del servidor',
-      data: error,
-    })
-  }
+  const dataResponse = validateAJV(body, updateUserSchema)
+  const { statusCode, message, data } = dataResponse
+  if (statusCode !== 200) return res.status(statusCode).send({ message, data })
+  return next()
 }
 
-export default { createUser, updateUser }
+const login = (req: Request, res: Response, next: NextFunction) => {
+  const { body } = req
+  const dataResponse = validateAJV(body, loginSchema)
+  const { statusCode, message, data } = dataResponse
+  if (statusCode !== 200) return res.status(statusCode).send({ message, data })
+  return next()
+}
+
+export default { createUser, updateUser, login }

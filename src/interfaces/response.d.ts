@@ -1,5 +1,11 @@
 export interface DataResponse {
-  success: boolean
+  statusCode: number
   message: string
-  data?: any
+  data: any
+}
+
+export interface TokenResponse {
+  statusCode: number
+  message: string
+  token: string
 }

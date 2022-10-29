@@ -11,7 +11,7 @@
 8. Run `npm i` to install dependencies.
 9. Generate the "private.key" and "public.key" files through the secret word saved in the ".env". For demonstration purposes the secret word "foobar" will be used.
 10. Create the folder "certs".
-11. Run the comanda: `openssl genrsa -aes128 -passout pass:foobar -out private.key 1024`
+11. Run the comanda: `openssl genrsa -aes128 -passout pass:foobar -out private.key 512`
 12. Run the comanda: `openssl rsa -in private.key -passin pass:foobar -pubout -out public.key`
 13. Move the "private.key" and "public.key" files to the "certs" folder.
 14. Run `npm start` to run the project.

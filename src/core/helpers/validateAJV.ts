@@ -17,22 +17,38 @@ ajv.addKeyword({
 
 const validate = (data: any, schema: any): DataResponse => {
   const response: DataResponse = {
-    success: true,
+    statusCode: 200,
     message: '',
     data: null,
   }
-  const validate = ajv.compile(schema)
-  const isValid: boolean = validate(data)
-  if (!isValid) {
-    const errors = validate.errors?.map(error => {
-      return {
-        path: error.instancePath.replace('/', ''),
-        message: error.message,
-      }
-    })
-    response.success = false
-    response.message = ajv.errorsText(validate.errors)
-    response.data = errors
+  if (Object.entries(data).length === 0) {
+    response.statusCode = 400
+    response.message = 'Formato de datos no vállido.'
+    response.data = {
+      path: '',
+      message: 'JSON no válido',
+    }
+    return response
+  }
+
+  try {
+    const validate = ajv.compile(schema)
+    const isValid: boolean = validate(data)
+    if (!isValid) {
+      const errors = validate.errors?.map(error => {
+        return {
+          path: error.instancePath.replace('/', ''),
+          message: error.message,
+        }
+      })
+      response.statusCode = 400
+      response.message = 'Formato de datos no vállido.'
+      response.data = errors
+    }
+  } catch (error) {
+    response.statusCode = 500
+    response.message = 'Problemas de validación'
+    response.data = error
   }
   return response
 }

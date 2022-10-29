@@ -2,7 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import { helloWorld } from '@core/helpers'
 import { connectDB } from '@config/index'
-import { usersAdminRoutes } from '@api/routes'
+import { authRoutes, usersAdminRoutes } from '@api/routes'
 
 dotenv.config()
 
@@ -18,6 +18,7 @@ app.use('/', (req, _res, next) => {
   next()
 })
 
+app.use('/api', authRoutes)
 app.use('/api/usersAdmin', usersAdminRoutes)
 
 app.get('/helloworld', (_req, res) => {
