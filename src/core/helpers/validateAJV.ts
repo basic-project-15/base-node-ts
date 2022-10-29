@@ -19,14 +19,20 @@ const validate = (data: any, schema: any): DataResponse => {
   const response: DataResponse = {
     success: true,
     message: '',
+    data: null,
   }
   const validate = ajv.compile(schema)
   const isValid: boolean = validate(data)
   if (!isValid) {
-    response.success = false
-    response.message = ajv.errorsText(validate.errors, {
-      separator: '\n',
+    const errors = validate.errors?.map(error => {
+      return {
+        path: error.instancePath.replace('/', ''),
+        message: error.message,
+      }
     })
+    response.success = false
+    response.message = ajv.errorsText(validate.errors)
+    response.data = errors
   }
   return response
 }
