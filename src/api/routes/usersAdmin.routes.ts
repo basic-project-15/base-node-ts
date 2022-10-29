@@ -14,8 +14,12 @@ usersAdminRoutes.post(
   usersAdminControllers.createUser,
 )
 
-usersAdminRoutes.patch('/', usersAdminControllers.updateUser)
+usersAdminRoutes.patch(
+  '/:idUser',
+  usersAdminDto.updateUser,
+  usersAdminControllers.updateUser,
+)
 
-usersAdminRoutes.delete('/', usersAdminControllers.deleteUser)
+usersAdminRoutes.delete('/:idUser', usersAdminControllers.deleteUser)
 
 export default usersAdminRoutes
