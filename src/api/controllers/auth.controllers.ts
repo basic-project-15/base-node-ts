@@ -17,7 +17,7 @@ const loginAdmin = async (req: Request, res: Response) => {
       .findOne({ email: newUser.email })
       .exec()
     if (!userAdmin) {
-      return res.status(400).send({
+      return res.status(401).send({
         message: 'Credenciales no válidas',
         data: null,
       })
@@ -27,7 +27,7 @@ const loginAdmin = async (req: Request, res: Response) => {
       userAdmin.password ?? '',
     )
     if (!checkPassword) {
-      return res.status(400).send({
+      return res.status(401).send({
         message: 'Credenciales no válidas',
         data: null,
       })

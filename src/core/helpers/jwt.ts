@@ -31,14 +31,19 @@ const verifyToken = (token: string): DataResponse => {
   const response: DataResponse = {
     statusCode: 200,
     message: '',
-    data: '',
+    data: null,
   }
   try {
     const userToken = jwt.verify(token, jwtPublicKey, jwtVerifyOptions)
-    console.log(userToken)
+    response.data = userToken
   } catch (error) {
-    response.statusCode = 500
-    response.message = 'Error al generar token'
+    if (error.name === 'TokenExpiredError') {
+      response.statusCode = 401
+      response.message = 'Token expirado'
+    } else {
+      response.statusCode = 500
+      response.message = 'Problema interno del servidor'
+    }
     response.data = error
   }
   return response
