@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import { compare } from 'bcrypt'
-import { UsersAdminLogin, UserToken } from '@interfaces/index'
+import { UserAdminLogin, UserToken } from '@interfaces/index'
 import { usersAdminModels } from '@common/models'
 import { jwt } from '@core/helpers'
 
 const loginAdmin = async (req: Request, res: Response) => {
   const { body } = req
   try {
-    const newUser: UsersAdminLogin = {
+    const newUser: UserAdminLogin = {
       email: body.email,
       password: body.password,
     }
@@ -39,8 +39,8 @@ const loginAdmin = async (req: Request, res: Response) => {
       email: userAdmin.email ?? '',
       role: userAdmin.role ?? '',
     }
-    const dataResponse = jwt.generateToken(userAdminFormat)
-    const { statusCode, message, token } = dataResponse
+    const response = jwt.generateToken(userAdminFormat)
+    const { statusCode, message, token } = response
     return res.status(statusCode).send({
       message,
       data: { ...userAdminFormat, token },

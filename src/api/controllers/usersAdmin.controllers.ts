@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import { hash } from 'bcrypt'
-import { UsersAdminCreate, UsersAdminProfile } from '@interfaces/index'
+import { UserAdminCreate, UserAdminProfile } from '@interfaces/index'
 import { usersAdminModels } from '@common/models'
 import { SALT } from '@common/constants'
 
 const getUsers = async (_req: Request, res: Response) => {
   try {
     const userAdmins = await usersAdminModels.find().exec()
-    const usersAdminsFormat: UsersAdminProfile[] = userAdmins.map(user => ({
+    const usersAdminsFormat: UserAdminProfile[] = userAdmins.map(user => ({
       id: user.id,
       name: user.name ?? '',
       email: user.email ?? '',
@@ -39,7 +39,7 @@ const getUser = async (req: Request, res: Response) => {
     }
 
     // Actions
-    const userAdminFormat: UsersAdminProfile = {
+    const userAdminFormat: UserAdminProfile = {
       id: userAdmin.id,
       name: userAdmin.name ?? '',
       email: userAdmin.email ?? '',
@@ -60,7 +60,7 @@ const getUser = async (req: Request, res: Response) => {
 const createUser = async (req: Request, res: Response) => {
   const { body } = req
   try {
-    const newUser: UsersAdminCreate = {
+    const newUser: UserAdminCreate = {
       name: body.name,
       email: body.email,
       password: body.password,
@@ -148,7 +148,7 @@ const deleteUser = async (req: Request, res: Response) => {
     }
 
     // Actions
-    const userAdminFormat: UsersAdminProfile = {
+    const userAdminFormat: UserAdminProfile = {
       id: userAdmin.id,
       name: userAdmin.name ?? '',
       email: userAdmin.email ?? '',

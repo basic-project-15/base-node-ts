@@ -1,8 +1,8 @@
 export { DataResponse, TokenResponse } from './response'
 export { UserToken } from './token'
 export {
-  UsersAdmin,
-  UsersAdminCreate,
-  UsersAdminProfile,
-  UsersAdminLogin,
+  UserAdmin,
+  UserAdminCreate,
+  UserAdminProfile,
+  UserAdminLogin,
 } from './usersAdmin'

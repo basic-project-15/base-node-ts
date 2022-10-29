@@ -1,4 +1,4 @@
-export interface UsersAdmin {
+export interface UserAdmin {
   id: string
   name: string
   email: string
@@ -6,8 +6,8 @@ export interface UsersAdmin {
   role: string
 }
 
-export type UsersAdminCreate = Omit<UsersAdmin, 'id'>
+export type UserAdminCreate = Omit<UsersAdmin, 'id'>
 
-export type UsersAdminProfile = Omit<UsersAdmin, 'password'>
+export type UserAdminProfile = Omit<UsersAdmin, 'password'>
 
-export type UsersAdminLogin = Pick<UsersAdmin, 'email', 'password'>
+export type UserAdminLogin = Pick<UsersAdmin, 'email', 'password'>

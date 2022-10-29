@@ -1,6 +1,11 @@
-import jwt, { SignOptions, Secret, VerifyOptions } from 'jsonwebtoken'
-import * as fs from 'fs'
+import jwt, { Secret } from 'jsonwebtoken'
 import { DataResponse, TokenResponse, UserToken } from '@interfaces/index'
+import {
+  jwtPrivateKey,
+  jwtPublicKey,
+  jwtSingOptions,
+  jwtVerifyOptions,
+} from '@common/constants'
 
 const generateToken = (payload: UserToken): TokenResponse => {
   const response: TokenResponse = {
@@ -9,16 +14,11 @@ const generateToken = (payload: UserToken): TokenResponse => {
     token: '',
   }
   try {
-    const jwtOptions: SignOptions = {
-      algorithm: 'RS256',
-      expiresIn: '10m',
-    }
-    const privateKey: Buffer = fs.readFileSync('./certs/private.key')
     const key: Secret = {
-      key: privateKey,
+      key: jwtPrivateKey,
       passphrase: process.env.JWT_PASSPHRASE ?? '',
     }
-    response.token = jwt.sign(payload, key, jwtOptions)
+    response.token = jwt.sign(payload, key, jwtSingOptions)
   } catch (error) {
     response.statusCode = 500
     response.message = 'Error al generar token'
@@ -34,11 +34,7 @@ const verifyToken = (token: string): DataResponse => {
     data: '',
   }
   try {
-    const publicKey = fs.readFileSync('./certs/public.key')
-    const jwtOptions: VerifyOptions = {
-      algorithms: ['RS256'],
-    }
-    const userToken = jwt.verify(token, publicKey, jwtOptions)
+    const userToken = jwt.verify(token, jwtPublicKey, jwtVerifyOptions)
     console.log(userToken)
   } catch (error) {
     response.statusCode = 500
