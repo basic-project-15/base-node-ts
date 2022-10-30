@@ -1,11 +1,12 @@
 import { Router } from 'express'
 import { usersAdminControllers } from '@api/controllers'
 import { usersAdminDto } from '@middlewares/validations'
+import { authToken, authBasic } from '@middlewares/authentication'
 
 const usersAdminRoutes = Router()
 
-usersAdminRoutes.get('/', usersAdminControllers.getUsers)
-usersAdminRoutes.get('/:idUser', usersAdminControllers.getUser)
+usersAdminRoutes.get('/', authToken, usersAdminControllers.getUsers)
+usersAdminRoutes.get('/:idUser', authBasic, usersAdminControllers.getUser)
 usersAdminRoutes.post(
   '/',
   usersAdminDto.createUser,

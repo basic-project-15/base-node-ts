@@ -40,6 +40,9 @@ const verifyToken = (token: string): DataResponse => {
     if (error.name === 'TokenExpiredError') {
       response.statusCode = 401
       response.message = 'Token expirado'
+    } else if (error.name === 'JsonWebTokenError') {
+      response.statusCode = 401
+      response.message = 'Token no válido'
     } else {
       response.statusCode = 500
       response.message = 'Problema interno del servidor'

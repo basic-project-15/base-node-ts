@@ -14,7 +14,7 @@
       "@middlewares/*": ["./src/middlewares/*"],
       "@services/*": ["./src/services/*"]
     },
-    "typeRoots": ["./node_modules/@types", ".src/@types"],
+    "typeRoots": ["./src/interfaces", "./node_modules/@types" ],
     "resolveJsonModule": true,
     "outDir": "./build",
     "esModuleInterop": true,
