@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { hash } from 'bcrypt'
 import { UserAdminCreate, UserAdminProfile } from '@interfaces/index'
 import { usersAdminModels } from '@common/models'
-import { SALT } from '@common/constants'
+import { bcryptSalt } from '@config/index'
 
 const getUsers = async (_req: Request, res: Response) => {
   try {
@@ -79,7 +79,7 @@ const createUser = async (req: Request, res: Response) => {
     }
 
     // Actions
-    newUser.password = await hash(newUser.password, SALT)
+    newUser.password = await hash(newUser.password, bcryptSalt)
     const userModel = new usersAdminModels(newUser)
     const { password, ...userProfile } = newUser
     await userModel.save()
@@ -115,7 +115,7 @@ const updateUser = async (req: Request, res: Response) => {
     // Actions
     let newPassword: string = ''
     if (newUser.password) {
-      newPassword = await hash(newUser.password, SALT)
+      newPassword = await hash(newUser.password, bcryptSalt)
     }
     userAdmin.name = newUser.name || userAdmin.name
     userAdmin.email = newUser.email || userAdmin.email

@@ -1,11 +1,7 @@
 import jwt, { Secret } from 'jsonwebtoken'
 import { DataResponse, TokenResponse, UserToken } from '@interfaces/index'
-import {
-  jwtPrivateKey,
-  jwtPublicKey,
-  jwtSingOptions,
-  jwtVerifyOptions,
-} from '@common/constants'
+import { jwtSingOptions, jwtVerifyOptions } from '@config/index'
+import { privateKeyFile, publicKeyFile } from '@common/constants'
 
 const generateToken = (payload: UserToken): TokenResponse => {
   const response: TokenResponse = {
@@ -15,7 +11,7 @@ const generateToken = (payload: UserToken): TokenResponse => {
   }
   try {
     const key: Secret = {
-      key: jwtPrivateKey,
+      key: privateKeyFile,
       passphrase: process.env.JWT_PASSPHRASE ?? '',
     }
     response.token = jwt.sign(payload, key, jwtSingOptions)
@@ -34,7 +30,7 @@ const verifyToken = (token: string): DataResponse => {
     data: null,
   }
   try {
-    const userToken = jwt.verify(token, jwtPublicKey, jwtVerifyOptions)
+    const userToken = jwt.verify(token, publicKeyFile, jwtVerifyOptions)
     response.data = userToken
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
