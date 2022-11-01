@@ -8,7 +8,7 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
   const { body } = req
   const response = validateAJV(body, createUserSchema)
   const { statusCode, message, data } = response
-  if (statusCode === 200) return res.status(statusCode).send({ message, data })
+  if (statusCode !== 200) return res.status(statusCode).send({ message, data })
   return next()
 }
 
