@@ -1,31 +1,26 @@
 import { Request, Response } from 'express'
 import { compare } from 'bcrypt'
-import { UserAdminLogin, UserToken } from '@interfaces/index'
-import { usersAdminModels } from '@common/models'
+import { UserLogin, UserToken } from '@interfaces/index'
+import { usersModels } from '@common/models'
 import { jwt } from '@core/helpers'
 
-const loginAdmin = async (req: Request, res: Response) => {
+const login = async (req: Request, res: Response) => {
   const { body } = req
   try {
-    const newUser: UserAdminLogin = {
+    const newUser: UserLogin = {
       email: body.email,
       password: body.password,
     }
 
     // Validations
-    const userAdmin = await usersAdminModels
-      .findOne({ email: newUser.email })
-      .exec()
-    if (!userAdmin) {
+    const user = await usersModels.findOne({ email: newUser.email }).exec()
+    if (!user) {
       return res.status(401).send({
         message: 'Credenciales no válidas',
         data: null,
       })
     }
-    const checkPassword = await compare(
-      newUser.password,
-      userAdmin.password ?? '',
-    )
+    const checkPassword = await compare(newUser.password, user.password)
     if (!checkPassword) {
       return res.status(401).send({
         message: 'Credenciales no válidas',
@@ -34,16 +29,16 @@ const loginAdmin = async (req: Request, res: Response) => {
     }
 
     // Actions
-    const userAdminFormat: UserToken = {
-      id: userAdmin.id,
-      email: userAdmin.email ?? '',
-      role: userAdmin.role ?? '',
+    const userFormat: UserToken = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
     }
-    const response = jwt.generateToken(userAdminFormat)
+    const response = jwt.generateToken(userFormat)
     const { statusCode, message, token } = response
     return res.status(statusCode).send({
       message,
-      data: { ...userAdminFormat, token },
+      data: { ...userFormat, token, permissions: user.permissions },
     })
   } catch (error) {
     return res.status(500).send({
@@ -53,4 +48,4 @@ const loginAdmin = async (req: Request, res: Response) => {
   }
 }
 
-export default { loginAdmin }
+export default { login }

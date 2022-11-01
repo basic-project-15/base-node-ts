@@ -1,4 +1,4 @@
-import { usersAdminModels } from '@common/models'
+import { usersModels } from '@common/models'
 import { roles } from '@common/types'
 import { UserToken } from '@interfaces/token'
 import { Request, Response, NextFunction } from 'express'
@@ -8,14 +8,14 @@ const authorization = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const user: UserToken = req.user
-  if (user.role === roles.SuperAdmin) return next()
+  const userToken: UserToken = req.user
+  if (userToken.role === roles.SuperAdmin) return next()
 
   const paths: string[] = req.baseUrl.split('/')
   const path: string = paths[paths.length - 1]
   const method: string = req.method
-  const userAdmin = await usersAdminModels.findById(user.id).exec()
-  const permission = userAdmin?.permissions.find(
+  const user = await usersModels.findById(userToken.id).exec()
+  const permission = user?.permissions.find(
     permission => permission.path === path && permission.method === method,
   )
   if (!permission) {

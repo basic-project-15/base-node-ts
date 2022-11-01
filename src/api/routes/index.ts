@@ -1,2 +1,2 @@
-export { default as usersAdminRoutes } from './usersAdmin.routes'
+export { default as usersRoutes } from './users.routes'
 export { default as authRoutes } from './auth.routes'

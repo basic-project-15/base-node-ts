@@ -1,5 +1,5 @@
 import { Response, NextFunction, Request } from 'express'
-import { usersAdminModels } from '@common/models'
+import { usersModels } from '@common/models'
 import { jwt } from '@core/helpers'
 
 const authToken = async (req: Request, res: Response, next: NextFunction) => {
@@ -27,8 +27,8 @@ const authToken = async (req: Request, res: Response, next: NextFunction) => {
   }
 
   // Validation user
-  const userAdmin = await usersAdminModels.findById(data.id).exec()
-  if (!userAdmin) {
+  const user = await usersModels.findById(data.id).exec()
+  if (!user) {
     return res.status(401).send({
       message: 'Token no válido',
       data: null,

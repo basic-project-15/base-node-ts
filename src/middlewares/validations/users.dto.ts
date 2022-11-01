@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
-import { usersAdminSchemas } from '@common/schema'
+import { usersSchemas } from '@common/schema'
 import { validateAJV } from '@core/helpers'
 
-const { createUserSchema, updateUserSchema, loginSchema } = usersAdminSchemas
+const { createUserSchema, updateUserSchema, loginSchema } = usersSchemas
 
 const createUser = (req: Request, res: Response, next: NextFunction) => {
   const { body } = req

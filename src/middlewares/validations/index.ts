@@ -1,1 +1,1 @@
-export { default as usersAdminDto } from './usersAdmin.dto'
+export { default as usersDto } from './users.dto'

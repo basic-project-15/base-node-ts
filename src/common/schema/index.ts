@@ -1,1 +1,1 @@
-export { default as usersAdminSchemas } from './usersAdmin.schemas'
+export { default as usersSchemas } from './users.schemas'

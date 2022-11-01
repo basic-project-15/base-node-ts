@@ -1,8 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import { helloWorld } from '@core/helpers'
 import { connectDB } from '@config/index'
-import { authRoutes, usersAdminRoutes } from '@api/routes'
+import { authRoutes, usersRoutes } from '@api/routes'
 
 dotenv.config()
 
@@ -19,13 +18,7 @@ app.use('/', (req, _res, next) => {
 })
 
 app.use('/api', authRoutes)
-app.use('/api/userAdmins', usersAdminRoutes)
-
-app.get('/helloworld', (_req, res) => {
-  const message = helloWorld()
-  console.log(message)
-  res.send(message)
-})
+app.use('/api/users', usersRoutes)
 
 const bootstrap = async () => {
   await connectDB()
