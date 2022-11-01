@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { permissionsControllers } from '@api/controllers'
 import { authorization, authToken } from '@middlewares/authentication'
+import { permissionsDto } from '@middlewares/validations'
 
 const permissionsRoutes = Router()
 
@@ -15,6 +16,7 @@ permissionsRoutes.post(
   '/',
   authToken,
   authorization,
+  permissionsDto.createPermission,
   permissionsControllers.createPermission,
 )
 permissionsRoutes.delete(

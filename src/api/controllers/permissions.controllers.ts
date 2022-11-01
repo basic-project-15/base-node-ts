@@ -14,11 +14,12 @@ const getPermissions = async (_req: Request, res: Response) => {
   }
 }
 
-const createPermission = async (_req: Request, res: Response) => {
+const createPermission = async (req: Request, res: Response) => {
+  const permission = req.body
   try {
     return res.status(200).send({
       message: 'createPermission',
-      data: null,
+      data: permission,
     })
   } catch (error) {
     return res.status(500).send({
