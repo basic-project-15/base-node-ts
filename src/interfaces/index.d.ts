@@ -11,4 +11,4 @@ declare global {
 export { DataResponse, TokenResponse } from './response'
 export { UserToken } from './token'
 export { User, UserCreate, UserProfile, UserLogin } from './users'
-export { Permissions } from './permissions'
+export { Permission } from './permissions'

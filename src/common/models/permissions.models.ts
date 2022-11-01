@@ -5,6 +5,6 @@ const permissionsSchemas = new mongoose.Schema({
   method: { type: String, required: true, minLength: 3, maxLenght: 10 },
 })
 
-const permissionsModels = mongoose.model('permissins', permissionsSchemas)
+const permissionsModels = mongoose.model('permissions', permissionsSchemas)
 
 export default permissionsModels

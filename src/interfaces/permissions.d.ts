@@ -1,5 +1,6 @@
-export interface Permissions {
-  _id: string
+export interface Permission {
+  _id?: string
+  id?: string
   path: string
   method: string
 }

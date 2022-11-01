@@ -1,6 +1,6 @@
 import { usersModels } from '@common/models'
 import { roles } from '@common/types'
-import { UserToken } from '@interfaces/token'
+import { UserToken } from '@interfaces/index'
 import { Request, Response, NextFunction } from 'express'
 
 const authorization = async (

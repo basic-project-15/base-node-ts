@@ -1,4 +1,4 @@
-import { Permissions } from './permissions'
+import { Permission } from './permissions'
 
 export interface User {
   id: string
@@ -6,7 +6,7 @@ export interface User {
   email: string
   password: string
   role: string
-  permissions?: Permissions[]
+  permissions?: Permission[]
 }
 
 export type UserCreate = Omit<User, 'id'>

@@ -1,10 +1,18 @@
 import { Request, Response } from 'express'
+import { permissionsModels } from '@common/models'
+import { Permission } from '@interfaces/index'
 
 const getPermissions = async (_req: Request, res: Response) => {
   try {
+    const permissions = await permissionsModels.find().exec()
+    const permissionsFormat: Permission[] = permissions.map(permission => ({
+      id: permission.id,
+      path: permission.path,
+      method: permission.method,
+    }))
     return res.status(200).send({
-      message: 'getPermissions',
-      data: null,
+      message: 'Permisos listados',
+      data: permissionsFormat,
     })
   } catch (error) {
     return res.status(500).send({
