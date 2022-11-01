@@ -1,7 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import { connectDB } from '@config/index'
-import { authRoutes, usersRoutes } from '@api/routes'
+import { authRoutes, permissionsRoutes, usersRoutes } from '@api/routes'
 
 dotenv.config()
 
@@ -19,6 +19,7 @@ app.use('/', (req, _res, next) => {
 
 app.use('/api', authRoutes)
 app.use('/api/users', usersRoutes)
+app.use('/api/permissions', permissionsRoutes)
 
 const bootstrap = async () => {
   await connectDB()
