@@ -19,7 +19,7 @@ app.use('/', (req, _res, next) => {
 })
 
 app.use('/api', authRoutes)
-app.use('/api/usersAdmin', usersAdminRoutes)
+app.use('/api/userAdmins', usersAdminRoutes)
 
 app.get('/helloworld', (_req, res) => {
   const message = helloWorld()

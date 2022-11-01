@@ -1,7 +1,8 @@
 enum Methods {
-  SuperAdmin = 'super-admin',
-  Admin = 'admin',
-  user = 'user',
+  get = 'GET',
+  post = 'POST',
+  patch = 'PATCH',
+  delete = 'DELETE',
 }
 
 export default Methods

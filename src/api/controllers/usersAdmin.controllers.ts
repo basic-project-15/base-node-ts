@@ -12,6 +12,7 @@ const getUsers = async (_req: Request, res: Response) => {
       name: user.name ?? '',
       email: user.email ?? '',
       role: user.role ?? '',
+      permissions: user.permissions ?? '',
     }))
     return res.status(200).send({
       message: 'Usuarios listados',
@@ -44,6 +45,7 @@ const getUser = async (req: Request, res: Response) => {
       name: userAdmin.name ?? '',
       email: userAdmin.email ?? '',
       role: userAdmin.role ?? '',
+      permissions: userAdmin.permissions ?? '',
     }
     return res.status(200).send({
       message: 'Usuario encontrado',
@@ -169,6 +171,7 @@ const deleteUser = async (req: Request, res: Response) => {
       name: userAdmin.name ?? '',
       email: userAdmin.email ?? '',
       role: userAdmin.role ?? '',
+      permissions: userAdmin.permissions ?? '',
     }
     await userAdmin.remove()
     return res.status(200).send({

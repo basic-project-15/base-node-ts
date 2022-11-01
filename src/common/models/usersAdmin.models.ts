@@ -7,7 +7,7 @@ const usersAdminSchemas = new mongoose.Schema({
   role: { type: String, require: true, maxLenght: 50 },
   permissions: [
     {
-      id: String,
+      _id: String,
       path: String,
       method: String,
     },
