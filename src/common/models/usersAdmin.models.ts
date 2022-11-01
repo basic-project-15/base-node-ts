@@ -5,6 +5,13 @@ const usersAdminSchemas = new mongoose.Schema({
   email: { type: String, require: true, maxLenght: 100 },
   password: { type: String, require: true },
   role: { type: String, require: true, maxLenght: 50 },
+  permissions: [
+    {
+      id: String,
+      path: String,
+      method: String,
+    },
+  ],
 })
 
 const usersAdminModels = mongoose.model('useradmins', usersAdminSchemas)

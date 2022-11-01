@@ -65,6 +65,7 @@ const createUser = async (req: Request, res: Response) => {
       email: body.email,
       password: body.password,
       role: body.role,
+      permissions: [],
     }
 
     // Validations
