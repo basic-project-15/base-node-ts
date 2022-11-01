@@ -103,11 +103,20 @@ const updateUser = async (req: Request, res: Response) => {
   const newUser = req.body
   try {
     const userAdmin = await usersAdminModels.findById(idUser).exec()
+    const userFind = await usersAdminModels
+      .findOne({ email: newUser.email })
+      .exec()
 
     // Validations
     if (!userAdmin) {
       return res.status(404).send({
         message: 'Usuario no encontrado',
+        data: null,
+      })
+    }
+    if (userFind?.email && userFind.email !== userAdmin.email) {
+      return res.status(409).send({
+        message: 'Ya existe un usuario con ese correo electrónico',
         data: null,
       })
     }
@@ -143,6 +152,12 @@ const deleteUser = async (req: Request, res: Response) => {
     if (!userAdmin) {
       return res.status(404).send({
         message: 'Usuario no encontrado',
+        data: null,
+      })
+    }
+    if (userAdmin.email === req.user.email) {
+      return res.status(404).send({
+        message: 'No se puede eliminar a si mismo',
         data: null,
       })
     }

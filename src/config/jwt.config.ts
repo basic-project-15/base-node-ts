@@ -2,7 +2,7 @@ import { SignOptions, VerifyOptions } from 'jsonwebtoken'
 
 export const jwtSingOptions: SignOptions = {
   algorithm: 'RS256',
-  expiresIn: '10m',
+  expiresIn: '8h',
 }
 
 export const jwtVerifyOptions: VerifyOptions = {
