@@ -10,7 +10,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "commit": "git add . && npx gitmoji -c",
     "format": "npx prettier --write .",
-    "format-check": "npx prettier --check ."
+    "format-check": "npx prettier --check .",
+    "generate-token-keys": "sh generate-token-keys.sh"
   },
   "keywords": [],
   "author": "",
