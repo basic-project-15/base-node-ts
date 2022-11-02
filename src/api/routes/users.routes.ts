@@ -33,5 +33,11 @@ usersRoutes.patch(
   authorization,
   usersControllers.assignPermission,
 )
+usersRoutes.patch(
+  '/removePermission/:idUser',
+  authToken,
+  authorization,
+  usersControllers.removePermission,
+)
 
 export default usersRoutes

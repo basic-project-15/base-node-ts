@@ -227,6 +227,54 @@ const assignPermission = async (req: Request, res: Response) => {
   }
 }
 
+const removePermission = async (req: Request, res: Response) => {
+  const idUser: string = req.params.idUser
+  const { idPermission } = req.body
+  try {
+    const user = await usersModels.findById(idUser).exec()
+    const permission = await permissionsModels.findById(idPermission).exec()
+
+    // Validations
+    if (!user) {
+      return res.status(404).send({
+        message: 'Usuario no encontrado',
+        data: null,
+      })
+    }
+    if (!permission) {
+      return res.status(404).send({
+        message: 'Permiso no encontrado',
+        data: null,
+      })
+    }
+    const permissionFind = user.permissions.find(
+      permission => permission._id.toString() === idPermission,
+    )
+    if (!permissionFind) {
+      return res.status(409).send({
+        message: 'Permiso ya removido',
+        data: null,
+      })
+    }
+
+    // Actions
+    const permissionIndex = user.permissions.findIndex(
+      permission => permission._id.toString() === idPermission,
+    )
+    user.permissions.splice(permissionIndex, 1)
+    await user.save()
+    return res.status(200).send({
+      message: 'Permiso removido',
+      data: permission,
+    })
+  } catch (error) {
+    return res.status(500).send({
+      message: 'Problema interno del servidor',
+      data: error,
+    })
+  }
+}
+
 export default {
   getUsers,
   getUser,
@@ -234,4 +282,5 @@ export default {
   updateUser,
   deleteUser,
   assignPermission,
+  removePermission,
 }
