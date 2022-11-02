@@ -1,6 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import { connectDB } from '@config/index'
+import { connectDB } from '@config/'
 import { authRoutes, permissionsRoutes, usersRoutes } from '@api/routes'
 import { Paths } from '@common/types'
 

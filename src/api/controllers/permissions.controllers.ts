@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { permissionsModels, usersModels } from '@common/models'
-import { Permission } from '@interfaces/index'
+import { Permission } from '@interfaces/'
 
 const getPermissions = async (_req: Request, res: Response) => {
   try {

@@ -1,6 +1,6 @@
 import jwt, { Secret } from 'jsonwebtoken'
-import { DataResponse, TokenResponse, UserToken } from '@interfaces/index'
-import { jwtSingOptions, jwtVerifyOptions } from '@config/index'
+import { DataResponse, TokenResponse, UserToken } from '@interfaces/'
+import { jwtSingOptions, jwtVerifyOptions } from '@config/'
 import { privateKeyFile, publicKeyFile } from '@common/constants'
 
 const generateToken = (payload: UserToken): TokenResponse => {

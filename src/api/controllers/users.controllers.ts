@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 import { hash } from 'bcrypt'
-import { UserCreate, UserProfile } from '@interfaces/index'
+import { UserCreate, UserProfile } from '@interfaces/'
 import { permissionsModels, usersModels } from '@common/models'
-import { bcryptSalt } from '@config/index'
+import { bcryptSalt } from '@config/'
 
 const getUsers = async (_req: Request, res: Response) => {
   try {

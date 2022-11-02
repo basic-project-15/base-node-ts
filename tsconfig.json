@@ -5,14 +5,14 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "@api/*": ["./src/api/*"],
-      "@common/*": ["./src/common/*"],
-      "@config/*": ["./src/config/*"],
-      "@core/*": ["./src/core/*"],
-      "@interfaces/*": ["./src/interfaces/*"],
-      "@languages/*": ["./src/languages/*"],
-      "@middlewares/*": ["./src/middlewares/*"],
-      "@services/*": ["./src/services/*"]
+      "@api/*": ["./src/api", "./src/api/*"],
+      "@common/*": ["./src/common", "./src/common/*"],
+      "@config/*": ["./src/config", "./src/config/*"],
+      "@core/*": ["./src/core", "./src/core/*"],
+      "@interfaces/*": ["./src/interfaces", "./src/interfaces/*"],
+      "@languages/*": ["./src/languages", "./src/languages/*"],
+      "@middlewares/*": ["./src/middlewares", "./src/middlewares/*"],
+      "@services/*": ["./src/services", "./src/services/*"]
     },
     "typeRoots": ["./src/interfaces", "./node_modules/@types" ],
     "resolveJsonModule": true,
