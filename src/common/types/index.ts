@@ -1,2 +1,3 @@
-export { default as roles } from './roles'
-export { default as methods } from './methods'
+export { default as Roles } from './roles'
+export { default as Methods } from './methods'
+export { default as Paths } from './paths'

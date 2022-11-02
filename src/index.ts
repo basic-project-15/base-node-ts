@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import { connectDB } from '@config/index'
 import { authRoutes, permissionsRoutes, usersRoutes } from '@api/routes'
+import { Paths } from '@common/types'
 
 dotenv.config()
 
@@ -18,8 +19,8 @@ app.use('/', (req, _res, next) => {
 })
 
 app.use('/api', authRoutes)
-app.use('/api/users', usersRoutes)
-app.use('/api/permissions', permissionsRoutes)
+app.use(`/api/${Paths.users}`, usersRoutes)
+app.use(`/api/${Paths.permissions}`, permissionsRoutes)
 
 const bootstrap = async () => {
   await connectDB()

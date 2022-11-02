@@ -23,11 +23,33 @@ const getPermissions = async (_req: Request, res: Response) => {
 }
 
 const createPermission = async (req: Request, res: Response) => {
-  const permission = req.body
+  const { body } = req
   try {
+    const newPermission: Permission = {
+      path: body.path,
+      method: body.method,
+    }
+
+    // Validations
+    const permissionFind = await permissionsModels
+      .findOne({ path: newPermission.path, method: newPermission.method })
+      .exec()
+    if (permissionFind) {
+      return res.status(409).send({
+        message: 'Ya existe un permiso con la misma configuración',
+        data: null,
+      })
+    }
+
+    // Actions
+    const permissionModel = new permissionsModels(newPermission)
+    await permissionModel.save()
     return res.status(200).send({
-      message: 'createPermission',
-      data: permission,
+      message: 'Permiso creado',
+      data: {
+        id: permissionModel._id,
+        ...newPermission,
+      },
     })
   } catch (error) {
     return res.status(500).send({

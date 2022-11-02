@@ -1,5 +1,5 @@
 import { usersModels } from '@common/models'
-import { roles } from '@common/types'
+import { Roles } from '@common/types'
 import { UserToken } from '@interfaces/index'
 import { Request, Response, NextFunction } from 'express'
 
@@ -9,7 +9,7 @@ const authorization = async (
   next: NextFunction,
 ) => {
   const userToken: UserToken = req.user
-  if (userToken.role === roles.SuperAdmin) return next()
+  if (userToken.role === Roles.SuperAdmin) return next()
 
   const paths: string[] = req.baseUrl.split('/')
   const path: string = paths[paths.length - 1]

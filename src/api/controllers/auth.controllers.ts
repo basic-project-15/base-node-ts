@@ -3,6 +3,7 @@ import { compare } from 'bcrypt'
 import { UserLogin, UserToken } from '@interfaces/index'
 import { usersModels } from '@common/models'
 import { jwt } from '@core/helpers'
+import { Methods, Paths } from '@common/types'
 
 const login = async (req: Request, res: Response) => {
   const { body } = req
@@ -38,7 +39,13 @@ const login = async (req: Request, res: Response) => {
     const { statusCode, message, token } = response
     return res.status(statusCode).send({
       message,
-      data: { ...userFormat, token, permissions: user.permissions },
+      data: {
+        ...userFormat,
+        methods: Object.values(Methods),
+        paths: Object.values(Paths),
+        token,
+        permissions: user.permissions,
+      },
     })
   } catch (error) {
     return res.status(500).send({
