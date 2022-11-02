@@ -27,5 +27,11 @@ usersRoutes.delete(
   authorization,
   usersControllers.deleteUser,
 )
+usersRoutes.patch(
+  '/assignPermission/:idUser',
+  authToken,
+  authorization,
+  usersControllers.assignPermission,
+)
 
 export default usersRoutes

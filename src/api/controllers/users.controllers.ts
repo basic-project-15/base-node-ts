@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { hash } from 'bcrypt'
 import { UserCreate, UserProfile } from '@interfaces/index'
-import { usersModels } from '@common/models'
+import { permissionsModels, usersModels } from '@common/models'
 import { bcryptSalt } from '@config/index'
 
 const getUsers = async (_req: Request, res: Response) => {
@@ -182,10 +182,56 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 }
 
+const assignPermission = async (req: Request, res: Response) => {
+  const idUser: string = req.params.idUser
+  const { idPermission } = req.body
+  try {
+    const user = await usersModels.findById(idUser).exec()
+    const permission = await permissionsModels.findById(idPermission).exec()
+
+    // Validations
+    if (!user) {
+      return res.status(404).send({
+        message: 'Usuario no encontrado',
+        data: null,
+      })
+    }
+    if (!permission) {
+      return res.status(404).send({
+        message: 'Permiso no encontrado',
+        data: null,
+      })
+    }
+    const permissionFind = user.permissions.find(
+      permission => permission._id.toString() === idPermission,
+    )
+    if (permissionFind) {
+      return res.status(409).send({
+        message: 'Permiso ya asignado',
+        data: null,
+      })
+    }
+
+    // Actions
+    user.permissions.push(permission)
+    await user.save()
+    return res.status(200).send({
+      message: 'Permiso asignado',
+      data: permission,
+    })
+  } catch (error) {
+    return res.status(500).send({
+      message: 'Problema interno del servidor',
+      data: error,
+    })
+  }
+}
+
 export default {
   getUsers,
   getUser,
   createUser,
   updateUser,
   deleteUser,
+  assignPermission,
 }

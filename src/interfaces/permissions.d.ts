@@ -1,5 +1,7 @@
+import { Types } from 'mongoose'
+
 export interface Permission {
-  _id?: string
+  _id?: Types.ObjectId
   id?: string
   path: string
   method: string
