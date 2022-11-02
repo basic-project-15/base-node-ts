@@ -59,11 +59,28 @@ const createPermission = async (req: Request, res: Response) => {
   }
 }
 
-const deletePermission = async (_req: Request, res: Response) => {
+const deletePermission = async (req: Request, res: Response) => {
+  const idPermission: string = req.params.idPermission
   try {
+    const permission = await permissionsModels.findById(idPermission).exec()
+
+    // Validations
+    if (!permission) {
+      return res.status(404).send({
+        message: 'Permiso no encontrado',
+        data: null,
+      })
+    }
+
+    // Actions
+    const permissionFormat: Permission = {
+      path: permission.path,
+      method: permission.method,
+    }
+    await permission.remove()
     return res.status(200).send({
-      message: 'deletePermissions',
-      data: null,
+      message: 'Permiso eliminado',
+      data: permissionFormat,
     })
   } catch (error) {
     return res.status(500).send({
