@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { permissionsModels } from '@common/models'
+import { permissionsModels, usersModels } from '@common/models'
 import { Permission } from '@interfaces/index'
 
 const getPermissions = async (_req: Request, res: Response) => {
@@ -73,11 +73,28 @@ const deletePermission = async (req: Request, res: Response) => {
     }
 
     // Actions
+    /** Remove permission
+     * Before removing the permission,
+     * the permission is first removed for all users who have it.
+     */
+    const users = await usersModels.find().exec()
+    await Promise.all(
+      users.map(async user => {
+        const permissionIndex = user.permissions.findIndex(
+          permission => permission._id.toString() === idPermission,
+        )
+        if (permissionIndex >= 0) {
+          user.permissions.splice(permissionIndex, 1)
+          await user.save()
+        }
+        return user
+      }),
+    )
+    await permission.remove()
     const permissionFormat: Permission = {
       path: permission.path,
       method: permission.method,
     }
-    await permission.remove()
     return res.status(200).send({
       message: 'Permiso eliminado',
       data: permissionFormat,
