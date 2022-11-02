@@ -1,7 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
-import { connectDB } from '@config/'
+import { connectDB } from '@config'
 import { authRoutes, permissionsRoutes, usersRoutes } from '@api/routes'
 import { Paths } from '@common/types'
 

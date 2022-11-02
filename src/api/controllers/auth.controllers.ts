@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { compare } from 'bcrypt'
-import { UserLogin, UserToken } from '@interfaces/'
+import { UserLogin, UserToken } from '@interfaces'
 import { usersModels } from '@common/models'
 import { jwt } from '@core/helpers'
 import { Methods, Paths } from '@common/types'

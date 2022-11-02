@@ -1,8 +1,9 @@
 import { Request, Response } from 'express'
 import { hash } from 'bcrypt'
-import { UserCreate, UserProfile } from '@interfaces/'
+import { UserCreate, UserProfile } from '@interfaces'
+import { bcryptSalt } from '@config'
 import { permissionsModels, usersModels } from '@common/models'
-import { bcryptSalt } from '@config/'
+import { Roles } from '@common/types'
 
 const getUsers = async (_req: Request, res: Response) => {
   try {
@@ -119,6 +120,12 @@ const updateUser = async (req: Request, res: Response) => {
         data: null,
       })
     }
+    if (user.role === Roles.SuperAdmin && req.user.role !== Roles.SuperAdmin) {
+      return res.status(400).send({
+        message: 'No puede editar a un usuario super administrador',
+        data: null,
+      })
+    }
 
     // Actions
     let newPassword: string = ''
@@ -155,8 +162,14 @@ const deleteUser = async (req: Request, res: Response) => {
       })
     }
     if (user.email === req.user.email) {
-      return res.status(404).send({
+      return res.status(400).send({
         message: 'No se puede eliminar a si mismo',
+        data: null,
+      })
+    }
+    if (user.role === Roles.SuperAdmin && req.user.role !== Roles.SuperAdmin) {
+      return res.status(400).send({
+        message: 'No puede eliminar a un usuario super administrador',
         data: null,
       })
     }
@@ -208,6 +221,12 @@ const assignPermission = async (req: Request, res: Response) => {
     if (permissionFind) {
       return res.status(409).send({
         message: 'Permiso ya asignado',
+        data: null,
+      })
+    }
+    if (user.role === Roles.SuperAdmin) {
+      return res.status(400).send({
+        message: 'Este usuario ya cuenta con el rango más alto de permisos',
         data: null,
       })
     }
