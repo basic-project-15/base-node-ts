@@ -1,5 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv'
+import morgan from 'morgan'
 import { connectDB } from '@config/'
 import { authRoutes, permissionsRoutes, usersRoutes } from '@api/routes'
 import { Paths } from '@common/types'
@@ -13,10 +14,20 @@ app.use(express.json())
 
 app.use(express.text())
 
-app.use('/', (req, _res, next) => {
-  console.log(req.method, req.url)
-  next()
-})
+app.use(
+  '/',
+  morgan((tokens, req, res) => {
+    return [
+      tokens.method(req, res),
+      tokens.url(req, res),
+      tokens.status(req, res),
+      tokens.res(req, res, 'content-length'),
+      '-',
+      tokens['response-time'](req, res),
+      'ms',
+    ].join(' ')
+  }),
+)
 
 app.use('/api', authRoutes)
 app.use(`/api/${Paths.users}`, usersRoutes)
