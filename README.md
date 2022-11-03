@@ -11,7 +11,7 @@
 8. Add `.env` file.
 9. Run `npm i` to install dependencies.
 10. Generate the "private.key" and "public.key" files through the secret word saved in the ".env". Add a value to the `JWT_PASSPHRASE` environment variable.
-11. Run `npm run generate-token-keys` to generate token keys.
+11. Run `npm run generate-token-keys:local` to generate token keys.
 12. Run `npm run dev` to run the project in development mode.
 13. Run `npm run build` to compile the project.
 14. Run `npm start` to run the project in production mode.
