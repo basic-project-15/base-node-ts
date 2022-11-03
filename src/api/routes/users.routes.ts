@@ -28,13 +28,13 @@ usersRoutes.delete(
   usersControllers.deleteUser,
 )
 usersRoutes.patch(
-  '/assignPermission/:idUser',
+  '/:idUser/assignPermission',
   authToken,
   authorization,
   usersControllers.assignPermission,
 )
 usersRoutes.patch(
-  '/removePermission/:idUser',
+  '/:idUser/removePermission',
   authToken,
   authorization,
   usersControllers.removePermission,
