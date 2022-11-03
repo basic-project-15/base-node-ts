@@ -8,6 +8,7 @@ import { Paths } from '@common/types'
 dotenv.config()
 
 const PORT = process.env.PORT ?? 3000
+const SERVER_URL_NAME = process.env.SERVER_URL_NAME ?? ''
 const app = express()
 
 app.use(express.json())
@@ -36,7 +37,7 @@ app.use(`/api/${Paths.permissions}`, permissionsRoutes)
 const bootstrap = async () => {
   await connectDB()
   app.listen(PORT, () => {
-    console.log(`Server running on port http://localhost:${PORT}/`)
+    console.log(`Server running on ${SERVER_URL_NAME}`)
   })
 }
 
