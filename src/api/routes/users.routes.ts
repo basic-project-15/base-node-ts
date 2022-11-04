@@ -171,7 +171,7 @@ usersRoutes.post(
  *        required: true
  *        description: User id
  *    requestBody:
- *      description: The user to create.
+ *      description: The user to update.
  *      required: true
  *      content:
  *        application/json:
@@ -190,11 +190,6 @@ usersRoutes.post(
  *              role:
  *                type: string
  *                example: super-admin
- *            required:
- *              - name
- *              - email
- *              - password
- *              - role
  *    responses:
  *      200:
  *        description: User information
@@ -209,7 +204,7 @@ usersRoutes.post(
  *                  example: "User information"
  *                data:
  *                  type: object
- *                  description: User created
+ *                  description: User updated
  *                  example:
  *                    id: 6361d7b7e1c6aa506aa064c1
  *                    name: Luis Fernando Solano
@@ -282,12 +277,136 @@ usersRoutes.delete(
   authorization,
   usersControllers.deleteUser,
 )
+
+/**
+ * @swagger
+ * /users/{idUser}/assignPermission:
+ *  patch:
+ *    tags:
+ *    - Users
+ *    summary: Assign permissions to a user
+ *    security:
+ *    - bearerAuth: []
+ *    parameters:
+ *      - in: path
+ *        name: idUser
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: User id
+ *    requestBody:
+ *      description: The id permission information.
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              idPermission:
+ *                type: string
+ *                example: 63617387baa1db43744d588c
+ *            required:
+ *              - idPermission
+ *    responses:
+ *      200:
+ *        description: Permission information added
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  description: The message of the response
+ *                  example: "Permission information"
+ *                data:
+ *                  type: object
+ *                  description: Assigned permission
+ *                  example:
+ *                    id: 6361d7b7e1c6aa506aa064c1
+ *                    path: users
+ *                    method: GET
+ *      400:
+ *        $ref: '#/components/responses/BadRequest'
+ *      401:
+ *        $ref: '#/components/responses/Unauthorized'
+ *      403:
+ *        $ref: '#/components/responses/Forbiden'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      409:
+ *        $ref: '#/components/responses/Conflict'
+ *      500:
+ *        $ref: '#/components/responses/Error'
+ */
 usersRoutes.patch(
   '/:idUser/assignPermission',
   authToken,
   authorization,
   usersControllers.assignPermission,
 )
+
+/**
+ * @swagger
+ * /users/{idUser}/removePermission:
+ *  patch:
+ *    tags:
+ *    - Users
+ *    summary: Remove permissions to a user
+ *    security:
+ *    - bearerAuth: []
+ *    parameters:
+ *      - in: path
+ *        name: idUser
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: User id
+ *    requestBody:
+ *      description: The id permission information.
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              idPermission:
+ *                type: string
+ *                example: 63617387baa1db43744d588c
+ *            required:
+ *              - idPermission
+ *    responses:
+ *      200:
+ *        description: Permission information removed
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  description: The message of the response
+ *                  example: "Permission information"
+ *                data:
+ *                  type: object
+ *                  description: Removed permission
+ *                  example:
+ *                    id: 6361d7b7e1c6aa506aa064c1
+ *                    path: users
+ *                    method: GET
+ *      400:
+ *        $ref: '#/components/responses/BadRequest'
+ *      401:
+ *        $ref: '#/components/responses/Unauthorized'
+ *      403:
+ *        $ref: '#/components/responses/Forbiden'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      409:
+ *        $ref: '#/components/responses/Conflict'
+ *      500:
+ *        $ref: '#/components/responses/Error'
+ */
 usersRoutes.patch(
   '/:idUser/removePermission',
   authToken,
