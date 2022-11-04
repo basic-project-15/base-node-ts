@@ -12,6 +12,20 @@
  *      bearerFormat: JWT
  *      scheme: bearer
  *  responses:
+ *    BadRequest:
+ *      description: Bad Request
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              message:
+ *                type: string
+ *                description: The message of the response
+ *                example: "Invalid data format"
+ *              data:
+ *                type: "object"
+ *                description: More information about the problem
  *    Unauthorized:
  *      description: Unauthorized
  *      content:
@@ -21,7 +35,7 @@
  *            properties:
  *              message:
  *                type: string
- *                description: the message of the response
+ *                description: The message of the response
  *                example: "Invalid token"
  *              data:
  *                type: "null"
@@ -34,7 +48,7 @@
  *            properties:
  *              message:
  *                type: string
- *                description: the message of the response
+ *                description: The message of the response
  *                example: "You do not have permissions"
  *              data:
  *                type: "null"
@@ -47,7 +61,7 @@
  *            properties:
  *              message:
  *                type: string
- *                description: the message of the response
+ *                description: The message of the response
  *                example: "Resource not found"
  *              data:
  *                type: "null"
@@ -60,7 +74,7 @@
  *            properties:
  *              message:
  *                type: string
- *                description: the message of the response
+ *                description: The message of the response
  *                example: "Parameter conflict"
  *              data:
  *                type: "null"
@@ -73,7 +87,7 @@
  *            properties:
  *              message:
  *                type: string
- *                description: the message of the response
+ *                description: The message of the response
  *                example: "Internal server problem"
  *              data:
  *                type: "null"

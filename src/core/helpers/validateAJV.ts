@@ -23,7 +23,7 @@ const validate = (data: any, schema: any): DataResponse => {
   }
   if (Object.entries(data).length === 0) {
     response.statusCode = 400
-    response.message = 'Formato de datos no vállido.'
+    response.message = 'Formato de datos no válido.'
     response.data = {
       path: '',
       message: 'JSON no válido',
@@ -42,7 +42,7 @@ const validate = (data: any, schema: any): DataResponse => {
         }
       })
       response.statusCode = 400
-      response.message = 'Formato de datos no vállido.'
+      response.message = 'Formato de datos no válido.'
       response.data = errors
     }
   } catch (error) {
