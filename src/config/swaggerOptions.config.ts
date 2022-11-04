@@ -15,5 +15,5 @@ export default {
       },
     ],
   },
-  apis: ['./src/api/routes/*.ts'],
+  apis: ['./src/api/docs/*.ts'],
 }
