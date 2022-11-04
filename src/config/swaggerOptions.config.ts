@@ -11,7 +11,7 @@ export default {
     },
     servers: [
       {
-        url: process.env.SERVER_URL_NAME,
+        url: `${process.env.SERVER_URL_NAME}/api`,
       },
     ],
   },
