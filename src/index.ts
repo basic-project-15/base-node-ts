@@ -4,7 +4,7 @@ import morgan from 'morgan'
 import swaggerUI from 'swagger-ui-express'
 import YAML from 'yamljs'
 import { connectDB, swaggerOptions } from '@config'
-import { authRoutes, permissionsRoutes, usersRoutes } from '@api/routes'
+import { authRoutes, permissionsRoutes, usersRoutes } from '@api/v1/routes'
 import { Paths } from '@common/types'
 
 dotenv.config()
@@ -39,9 +39,9 @@ app.use(
   swaggerUI.setup(undefined, swaggerOptions),
 )
 app.get('/api/v1/docs/swagger.yaml', (_req, res) => res.json(swaggerDocumentV1))
-app.use('/api', authRoutes)
-app.use(`/api/${Paths.users}`, usersRoutes)
-app.use(`/api/${Paths.permissions}`, permissionsRoutes)
+app.use('/api/v1', authRoutes)
+app.use(`/api/v1/${Paths.users}`, usersRoutes)
+app.use(`/api/v1/${Paths.permissions}`, permissionsRoutes)
 
 const bootstrap = async () => {
   await connectDB()
