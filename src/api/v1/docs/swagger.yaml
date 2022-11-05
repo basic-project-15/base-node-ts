@@ -16,12 +16,76 @@ servers:
   - url: https://base-node-ts.up.railway.app/api
 
 tags:
+  - name: Auth
+    description: Endpoints for authentications
   - name: Users
     description: Endpoints for user management
   - name: Permissions
     description: Endpoints for permissions management
 
 paths:
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: Login user
+      security:
+        - basicAuth: []
+      requestBody:
+        description: The user credentials
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: luis@gmail.com
+                password:
+                  type: string
+                  example: "****"
+              required:
+                - email
+                - password
+      responses:
+        200:
+          description: User information login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The message of the response
+                    example: "User information login"
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+                      paths:
+                        type: array
+                        items:
+                          type: string
+                          example: users
+                      methods:
+                        type: array
+                        items:
+                          type: string
+                          example: GET
+                      toekn:
+                        type: string
+                        example: eyJhbGciOiJ.eyJpZCI6IjYzNjE4ZTU1YTNlZTMxNj.CU19JELdK6wP
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/Error'
   /users:
     get:
       tags:
@@ -552,6 +616,9 @@ components:
       type: http
       bearerFormat: JWT
       scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic
   responses:
     BadRequest:
       description: Bad Request

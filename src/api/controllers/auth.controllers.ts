@@ -40,11 +40,13 @@ const login = async (req: Request, res: Response) => {
     return res.status(statusCode).send({
       message,
       data: {
-        ...userFormat,
-        methods: Object.values(Methods),
+        user: {
+          ...userFormat,
+          permissions: user.permissions,
+        },
         paths: Object.values(Paths),
+        methods: Object.values(Methods),
         token,
-        permissions: user.permissions,
       },
     })
   } catch (error) {
