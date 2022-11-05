@@ -2,18 +2,13 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export default {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Base-Node-TS API',
-      version: '1.0.0',
-      description: 'Documentation of the NodeJS base project with TypeScript.',
-    },
-    servers: [
+  explorer: true,
+  swaggerOptions: {
+    urls: [
       {
-        url: `${process.env.SERVER_URL_NAME}/api`,
+        url: `${process.env.SERVER_URL_NAME}/api/v1/docs/swagger.yaml`,
+        name: 'v1',
       },
     ],
   },
-  apis: ['./src/api/docs/*.ts'],
 }

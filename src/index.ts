@@ -2,7 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
 import swaggerUI from 'swagger-ui-express'
-import swaggerJsDoc from 'swagger-jsdoc'
+import YAML from 'yamljs'
 import { connectDB, swaggerOptions } from '@config'
 import { authRoutes, permissionsRoutes, usersRoutes } from '@api/routes'
 import { Paths } from '@common/types'
@@ -12,12 +12,11 @@ dotenv.config()
 const PORT = process.env.PORT ?? 3000
 const SERVER_URL_NAME = process.env.SERVER_URL_NAME ?? ''
 const app = express()
-const specs = swaggerJsDoc(swaggerOptions)
+const swaggerDocumentV1 = YAML.load('./src/api/v1/docs/swagger.yaml')
 
+// Middlewares
 app.use(express.json())
-
 app.use(express.text())
-
 app.use(
   '/',
   morgan((tokens, req, res) => {
@@ -33,10 +32,16 @@ app.use(
   }),
 )
 
+// API
+app.use(
+  `/api-docs`,
+  swaggerUI.serve,
+  swaggerUI.setup(undefined, swaggerOptions),
+)
+app.get('/api/v1/docs/swagger.yaml', (_req, res) => res.json(swaggerDocumentV1))
 app.use('/api', authRoutes)
 app.use(`/api/${Paths.users}`, usersRoutes)
 app.use(`/api/${Paths.permissions}`, permissionsRoutes)
-app.use(`/api/docs`, swaggerUI.serve, swaggerUI.setup(specs))
 
 const bootstrap = async () => {
   await connectDB()

@@ -1,0 +1,505 @@
+openapi: 3.0.0
+info:
+  title: Base-Node-TS API - v1
+  description: Documentation of the NodeJS base project with TypeScript.
+  version: 1.0.0
+  contact:
+    email: luisfer.sm15@gmail.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+externalDocs:
+  description: Find out more about Proyect
+  url: https://www.notion.so/luissolano/Proyecto-base-MERN-Stack-0db74dd9fbe549239d6ba0f61e877a49
+servers:
+  - url: http://localhost:3000/api
+  - url: https://base-node-ts.up.railway.app/api
+
+tags:
+  - name: Users
+    description: Endpoints for user management
+  - name: Permissions
+    description: Endpoints for permissions management
+
+paths:
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Get users List
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Users list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The message of the response
+                    example: "Users list"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        409:
+          $ref: '#/components/responses/Conflict'
+        500:
+          $ref: '#/components/responses/Error'
+    post:
+      tags:
+        - Users
+      summary: Create a user
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: The user to create.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Luis Fernando
+                email:
+                  type: string
+                  example: luis@gmail.com
+                password:
+                  type: string
+                  example: "****"
+                role:
+                  type: string
+                  example: super-admin
+              required:
+                - name
+                - email
+                - password
+                - role
+      responses:
+        200:
+          description: User information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The message of the response
+                    example: "User information"
+                  data:
+                    type: object
+                    description: User created
+                    example:
+                      id: 6361d7b7e1c6aa506aa064c1
+                      name: Luis Fernando
+                      email: luis@gmail.com
+                      role: super-admin
+                      permissions: []
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbiden'
+        409:
+          $ref: '#/components/responses/Conflict'
+        500:
+          $ref: '#/components/responses/Error'
+  /users/{idUser}:
+    get:
+      tags:
+      - Users
+      summary: Get user
+      security:
+      - bearerAuth: []
+      parameters:
+        - in: path
+          name: idUser
+          schema:
+            type: string
+          required: true
+          description: User id
+      responses:
+        200:
+          description: User information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The message of the response
+                    example: "User information"
+                  data:
+                    $ref: '#/components/schemas/User'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbiden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/Error'
+    patch:
+      tags:
+        - Users
+      summary: Update a user
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: idUser
+          schema:
+            type: string
+          required: true
+          description: User id
+      requestBody:
+        description: The user to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Luis Fernando
+                email:
+                  type: string
+                  example: luis@gmail.com
+                password:
+                  type: string
+                  example: "****"
+                role:
+                  type: string
+                  example: super-admin
+      responses:
+        200:
+          description: User information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The message of the response
+                    example: "User information"
+                  data:
+                    type: object
+                    description: User updated
+                    example:
+                      id: 6361d7b7e1c6aa506aa064c1
+                      name: Luis Fernando Solano
+                      email: luisfer@gmail.com
+                      role: admin
+                      permissions: []
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbiden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        409:
+          $ref: '#/components/responses/Conflict'
+        500:
+          $ref: '#/components/responses/Error'
+    delete:
+      tags:
+        - Users
+      summary: Delete user
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: idUser
+          schema:
+            type: string
+          required: true
+          description: User id
+      responses:
+        200:
+          description: User information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The message of the response
+                    example: "User information"
+                  data:
+                    $ref: '#/components/schemas/User'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbiden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/Error'
+  /users/{idUser}/assignPermission:
+    patch:
+      tags:
+        - Users
+      summary: Assign permissions to a user
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: idUser
+          schema:
+            type: string
+          required: true
+          description: User id
+      requestBody:
+        description: The id permission information.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idPermission:
+                  type: string
+                  example: 63617387baa1db43744d588c
+              required:
+                - idPermission
+      responses:
+        200:
+          description: Permission information added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The message of the response
+                    example: "Permission information"
+                  data:
+                    type: object
+                    description: Assigned permission
+                    example:
+                      id: 6361d7b7e1c6aa506aa064c1
+                      path: users
+                      method: GET
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbiden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        409:
+          $ref: '#/components/responses/Conflict'
+        500:
+          $ref: '#/components/responses/Error'
+  /users/{idUser}/removePermission:
+    patch:
+      tags:
+      - Users
+      summary: Remove permissions to a user
+      security:
+      - bearerAuth: []
+      parameters:
+        - in: path
+          name: idUser
+          schema:
+            type: string
+          required: true
+          description: User id
+      requestBody:
+        description: The id permission information.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idPermission:
+                  type: string
+                  example: 63617387baa1db43744d588c
+              required:
+                - idPermission
+      responses:
+        200:
+          description: Permission information removed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The message of the response
+                    example: "Permission information"
+                  data:
+                    type: object
+                    description: Removed permission
+                    example:
+                      id: 6361d7b7e1c6aa506aa064c1
+                      path: users
+                      method: GET
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbiden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        409:
+          $ref: '#/components/responses/Conflict'
+        500:
+          $ref: '#/components/responses/Error'
+
+components:
+  schemas:
+    Permission:
+      type: object
+      properties:
+        id:
+          type: string
+          description: the id permission
+          example: 63617387baa1db43744d588c
+        path:
+          type: string
+          description: the path permission
+          example: users
+        method:
+          type: string
+          description: the method permission
+          example: GET
+      required:
+        - id
+        - path
+        - method
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: the id user
+          example: 6361d7b7e1c6aa506aa064c1
+        name:
+          type: string
+          description: the name user
+          example: Luis Fernando
+        email:
+          type: string
+          description: the email user
+          example: luis@gmail.com
+        role:
+          type: string
+          description: the role user
+          example: admin
+        permissions:
+          type: array
+          description: the permissions user
+          items:
+            $ref: '#/components/schemas/Permission'
+      required:
+        - id
+        - name
+        - email
+        - role
+        - permissions
+  securitySchemes:
+    bearerAuth:
+      type: http
+      bearerFormat: JWT
+      scheme: bearer
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: The message of the response
+                example: "Invalid data format"
+              data:
+                type: "object"
+                description: More information about the problem
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: The message of the response
+                example: "Invalid token"
+              data:
+                type: "null"
+    Forbiden:
+      description: Forbiden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: The message of the response
+                example: "You do not have permissions"
+              data:
+                type: "null"
+    NotFound:
+      description: "Not Found"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: The message of the response
+                example: "Resource not found"
+              data:
+                type: "null"
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: The message of the response
+                example: "Parameter conflict"
+              data:
+                type: "null"
+    Error:
+      description: "Error: Internal Server Error"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: The message of the response
+                example: "Internal server problem"
+              data:
+                type: "null"
