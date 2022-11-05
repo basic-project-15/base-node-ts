@@ -47,6 +47,10 @@ paths:
                       $ref: '#/components/schemas/User'
         401:
           $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbiden'
+        404:
+          $ref: '#/components/responses/NotFound'
         409:
           $ref: '#/components/responses/Conflict'
         500:
@@ -109,6 +113,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         403:
           $ref: '#/components/responses/Forbiden'
+        404:
+          $ref: '#/components/responses/NotFound'
         409:
           $ref: '#/components/responses/Conflict'
         500:
@@ -364,6 +370,129 @@ paths:
           $ref: '#/components/responses/NotFound'
         409:
           $ref: '#/components/responses/Conflict'
+        500:
+          $ref: '#/components/responses/Error'
+  /permissions:
+    get:
+      tags:
+        - Permissions
+      summary: Get permissions List
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Permissions list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The message of the response
+                    example: "Permissions list"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Permission'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbiden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        409:
+          $ref: '#/components/responses/Conflict'
+        500:
+          $ref: '#/components/responses/Error'
+    post:
+      tags:
+        - Permissions
+      summary: Create permissions
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: The user to create
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                path:
+                  type: string
+                  example: users
+                method:
+                  type: string
+                  example: GET
+              required:
+                - path
+                - method
+      responses:
+        200:
+          description: Permission information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The message of the response
+                    example: "Permission information"
+                  data:
+                    type: object
+                    description: Permission created
+                    example:
+                      id: 63617387baa1db43744d588c
+                      path: users
+                      method: GET
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbiden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        409:
+          $ref: '#/components/responses/Conflict'
+        500:
+          $ref: '#/components/responses/Error'
+  /permissions/{idPermission}:
+    delete:
+      tags:
+        - Permissions
+      summary: Delete permission
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: idPermission
+          schema:
+            type: string
+          required: true
+          description: Permission id
+      responses:
+        200:
+          description: Permission information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The message of the response
+                    example: "Permission information"
+                  data:
+                    $ref: '#/components/schemas/Permission'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbiden'
+        404:
+          $ref: '#/components/responses/NotFound'
         500:
           $ref: '#/components/responses/Error'
 
