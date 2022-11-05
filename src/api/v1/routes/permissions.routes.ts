@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { permissionsControllers } from '@api/controllers'
+import { permissionsControllers } from '@api/v1/controllers'
 import { authorization, authToken } from '@middlewares/authentication'
 import { permissionsDto } from '@middlewares/validations'
 
