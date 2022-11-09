@@ -35,10 +35,9 @@ const login = async (req: Request, res: Response) => {
       email: user.email,
       role: user.role,
     }
-    const response = jwt.generateToken(userFormat)
-    const { statusCode, message, token } = response
-    return res.status(statusCode).send({
-      message,
+    const token = jwt.generateToken(userFormat)
+    return res.status(200).send({
+      message: 'Usuario autenticado',
       data: {
         user: {
           ...userFormat,

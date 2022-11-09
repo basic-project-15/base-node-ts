@@ -9,7 +9,7 @@ declare global {
   }
 }
 
-export { DataResponse, TokenResponse } from './response'
+export { DataResponse } from './response'
 export { UserToken } from './token'
 export { User, UserCreate, UserProfile, UserLogin } from './users'
 export { Permission } from './permissions'
