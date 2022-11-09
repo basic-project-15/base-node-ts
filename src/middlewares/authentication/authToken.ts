@@ -4,10 +4,7 @@ import { jwt } from '@core/helpers'
 import { DataResponse } from '@interfaces'
 
 const authToken = async (req: Request, res: Response, next: NextFunction) => {
-  const dataResponse: DataResponse = {
-    message: '',
-    data: null,
-  }
+  const dataResponse: DataResponse = { message: '', data: null }
   try {
     // Validation token
     const headerToken: string = req.headers.authorization ?? ''

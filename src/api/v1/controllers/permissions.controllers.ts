@@ -3,10 +3,7 @@ import { permissionsModels, usersModels } from '@common/models'
 import { DataResponse, Permission } from '@interfaces'
 
 const getPermissions = async (_req: Request, res: Response) => {
-  const dataResponse: DataResponse = {
-    message: '',
-    data: null,
-  }
+  const dataResponse: DataResponse = { message: '', data: null }
   try {
     const permissions = await permissionsModels.find().exec()
     const permissionsFormat: Permission[] = permissions.map(permission => ({
@@ -25,10 +22,7 @@ const getPermissions = async (_req: Request, res: Response) => {
 }
 
 const createPermission = async (req: Request, res: Response) => {
-  const dataResponse: DataResponse = {
-    message: '',
-    data: null,
-  }
+  const dataResponse: DataResponse = { message: '', data: null }
   const { body } = req
   try {
     const newPermission: Permission = {
@@ -62,10 +56,7 @@ const createPermission = async (req: Request, res: Response) => {
 }
 
 const deletePermission = async (req: Request, res: Response) => {
-  const dataResponse: DataResponse = {
-    message: '',
-    data: null,
-  }
+  const dataResponse: DataResponse = { message: '', data: null }
   const idPermission: string = req.params.idPermission
   try {
     const permission = await permissionsModels.findById(idPermission).exec()

@@ -6,10 +6,7 @@ import { permissionsModels, usersModels } from '@common/models'
 import { Roles } from '@common/types'
 
 const getUsers = async (_req: Request, res: Response) => {
-  const dataResponse: DataResponse = {
-    message: '',
-    data: null,
-  }
+  const dataResponse: DataResponse = { message: '', data: null }
   try {
     const users = await usersModels.find().exec()
     const usersFormat: UserProfile[] = users.map(user => ({
@@ -30,10 +27,7 @@ const getUsers = async (_req: Request, res: Response) => {
 }
 
 const getUser = async (req: Request, res: Response) => {
-  const dataResponse: DataResponse = {
-    message: '',
-    data: null,
-  }
+  const dataResponse: DataResponse = { message: '', data: null }
   const idUser: string = req.params.idUser
   try {
     const user = await usersModels.findById(idUser).exec()
@@ -63,10 +57,7 @@ const getUser = async (req: Request, res: Response) => {
 }
 
 const createUser = async (req: Request, res: Response) => {
-  const dataResponse: DataResponse = {
-    message: '',
-    data: null,
-  }
+  const dataResponse: DataResponse = { message: '', data: null }
   const { body } = req
   try {
     const newUser: UserCreate = {
@@ -103,10 +94,7 @@ const createUser = async (req: Request, res: Response) => {
 }
 
 const updateUser = async (req: Request, res: Response) => {
-  const dataResponse: DataResponse = {
-    message: '',
-    data: null,
-  }
+  const dataResponse: DataResponse = { message: '', data: null }
   const idUser: string = req.params.idUser
   const newUser = req.body
   try {
@@ -147,10 +135,7 @@ const updateUser = async (req: Request, res: Response) => {
 }
 
 const deleteUser = async (req: Request, res: Response) => {
-  const dataResponse: DataResponse = {
-    message: '',
-    data: null,
-  }
+  const dataResponse: DataResponse = { message: '', data: null }
   const idUser: string = req.params.idUser
   try {
     const user = await usersModels.findById(idUser).exec()
@@ -190,10 +175,7 @@ const deleteUser = async (req: Request, res: Response) => {
 }
 
 const assignPermission = async (req: Request, res: Response) => {
-  const dataResponse: DataResponse = {
-    message: '',
-    data: null,
-  }
+  const dataResponse: DataResponse = { message: '', data: null }
   const idUser: string = req.params.idUser
   const { idPermission } = req.body
   try {
@@ -236,10 +218,7 @@ const assignPermission = async (req: Request, res: Response) => {
 }
 
 const removePermission = async (req: Request, res: Response) => {
-  const dataResponse: DataResponse = {
-    message: '',
-    data: null,
-  }
+  const dataResponse: DataResponse = { message: '', data: null }
   const idUser: string = req.params.idUser
   const { idPermission } = req.body
   try {

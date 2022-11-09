@@ -3,10 +3,7 @@ import { Request, Response, NextFunction } from 'express'
 import { DataResponse } from '@interfaces'
 
 const authBasic = (req: Request, res: Response, next: NextFunction) => {
-  const dataResponse: DataResponse = {
-    message: '',
-    data: null,
-  }
+  const dataResponse: DataResponse = { message: '', data: null }
   const user = auth(req)
   const email: string = user?.name ?? ''
   const password: string = user?.pass ?? ''

@@ -5,10 +5,7 @@ import { Methods, Paths } from '@common/types'
 import { DataResponse } from '@interfaces'
 
 const createPermission = (req: Request, res: Response, next: NextFunction) => {
-  const dataResponse: DataResponse = {
-    message: '',
-    data: null,
-  }
+  const dataResponse: DataResponse = { message: '', data: null }
   const { body } = req
   try {
     const createPermissionSchema = Type.Object(

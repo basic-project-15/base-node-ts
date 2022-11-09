@@ -8,10 +8,7 @@ const authorization = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const dataResponse: DataResponse = {
-    message: '',
-    data: null,
-  }
+  const dataResponse: DataResponse = { message: '', data: null }
   const userToken: UserToken = req.user
   if (userToken.role === Roles.SuperAdmin) return next()
 

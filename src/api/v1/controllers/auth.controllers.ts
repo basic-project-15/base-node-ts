@@ -6,10 +6,7 @@ import { jwt } from '@core/helpers'
 import { Methods, Paths } from '@common/types'
 
 const login = async (req: Request, res: Response) => {
-  const dataResponse: DataResponse = {
-    message: '',
-    data: null,
-  }
+  const dataResponse: DataResponse = { message: '', data: null }
   const { body } = req
   try {
     const newUser: UserLogin = {
