@@ -1,7 +1,6 @@
 import Ajv from 'ajv'
 import addFormats from 'ajv-formats'
 import addErrors from 'ajv-errors'
-import { DataResponse } from '@interfaces'
 
 const ajv = new Ajv({ allErrors: true })
 addFormats(ajv, ['email']).addKeyword('kind').addKeyword('modifier')
@@ -15,42 +14,20 @@ ajv.addKeyword({
   errors: false,
 })
 
-const validate = (data: any, schema: any): DataResponse => {
-  const response: DataResponse = {
-    statusCode: 200,
-    message: '',
-    data: null,
+const validate = (data: any, schema: any) => {
+  if (Object.entries(data).length === 0)
+    throw { name: 'DataValidationError', data: 'Empty JSON' }
+  const validate = ajv.compile(schema)
+  const isValid: boolean = validate(data)
+  if (!isValid) {
+    const data = validate.errors?.map(error => {
+      return {
+        path: error.instancePath.replace('/', ''),
+        message: error.message,
+      }
+    })
+    throw { name: 'DataValidationError', data }
   }
-  if (Object.entries(data).length === 0) {
-    response.statusCode = 400
-    response.message = 'Formato de datos no válido.'
-    response.data = {
-      path: '',
-      message: 'JSON no válido',
-    }
-    return response
-  }
-
-  try {
-    const validate = ajv.compile(schema)
-    const isValid: boolean = validate(data)
-    if (!isValid) {
-      const errors = validate.errors?.map(error => {
-        return {
-          path: error.instancePath.replace('/', ''),
-          message: error.message,
-        }
-      })
-      response.statusCode = 400
-      response.message = 'Formato de datos no válido.'
-      response.data = errors
-    }
-  } catch (error) {
-    response.statusCode = 500
-    response.message = 'Problemas de validación'
-    response.data = error
-  }
-  return response
 }
 
 export default validate
