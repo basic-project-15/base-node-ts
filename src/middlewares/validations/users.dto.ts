@@ -4,11 +4,11 @@ import { validateAJV } from '@core/helpers'
 import { DataResponse } from '@interfaces'
 
 const createUser = (req: Request, res: Response, next: NextFunction) => {
-  const { body } = req
   const dataResponse: DataResponse = {
     message: '',
     data: null,
   }
+  const { body } = req
   try {
     const createUserSchema = Type.Object(
       {
@@ -65,11 +65,11 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
 }
 
 const updateUser = (req: Request, res: Response, next: NextFunction) => {
-  const { body } = req
   const dataResponse: DataResponse = {
     message: '',
     data: null,
   }
+  const { body } = req
   try {
     const updateUserSchema = Type.Object(
       {
@@ -128,11 +128,11 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
 }
 
 const login = (req: Request, res: Response, next: NextFunction) => {
-  const { body } = req
   const dataResponse: DataResponse = {
     message: '',
     data: null,
   }
+  const { body } = req
   try {
     const loginSchema = Type.Object(
       {

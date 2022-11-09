@@ -1,6 +1,6 @@
 import { usersModels } from '@common/models'
 import { Roles } from '@common/types'
-import { UserToken } from '@interfaces'
+import { DataResponse, UserToken } from '@interfaces'
 import { Request, Response, NextFunction } from 'express'
 
 const authorization = async (
@@ -8,6 +8,10 @@ const authorization = async (
   res: Response,
   next: NextFunction,
 ) => {
+  const dataResponse: DataResponse = {
+    message: '',
+    data: null,
+  }
   const userToken: UserToken = req.user
   if (userToken.role === Roles.SuperAdmin) return next()
 
@@ -19,10 +23,8 @@ const authorization = async (
     permission => permission.path === path && permission.method === method,
   )
   if (!permission) {
-    return res.status(403).send({
-      message: 'No tiene permisos para realizar esta acción',
-      data: null,
-    })
+    dataResponse.message = 'No tiene permisos para realizar esta acción'
+    return res.status(403).send(dataResponse)
   }
   return next()
 }
