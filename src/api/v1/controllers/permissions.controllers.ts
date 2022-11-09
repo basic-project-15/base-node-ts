@@ -1,8 +1,12 @@
 import { Request, Response } from 'express'
 import { permissionsModels, usersModels } from '@common/models'
-import { Permission } from '@interfaces'
+import { DataResponse, Permission } from '@interfaces'
 
 const getPermissions = async (_req: Request, res: Response) => {
+  const dataResponse: DataResponse = {
+    message: '',
+    data: null,
+  }
   try {
     const permissions = await permissionsModels.find().exec()
     const permissionsFormat: Permission[] = permissions.map(permission => ({
@@ -10,19 +14,21 @@ const getPermissions = async (_req: Request, res: Response) => {
       path: permission.path,
       method: permission.method,
     }))
-    return res.status(200).send({
-      message: 'Permisos listados',
-      data: permissionsFormat,
-    })
+    dataResponse.message = 'Permisos listados'
+    dataResponse.data = permissionsFormat
+    return res.status(200).send(dataResponse)
   } catch (error) {
-    return res.status(500).send({
-      message: 'Problema interno del servidor',
-      data: error,
-    })
+    dataResponse.message = 'Problema interno del servidor'
+    dataResponse.data = error
+    return res.status(500).send(dataResponse)
   }
 }
 
 const createPermission = async (req: Request, res: Response) => {
+  const dataResponse: DataResponse = {
+    message: '',
+    data: null,
+  }
   const { body } = req
   try {
     const newPermission: Permission = {
@@ -35,41 +41,39 @@ const createPermission = async (req: Request, res: Response) => {
       .findOne({ path: newPermission.path, method: newPermission.method })
       .exec()
     if (permissionFind) {
-      return res.status(409).send({
-        message: 'Ya existe un permiso con la misma configuración',
-        data: null,
-      })
+      dataResponse.message = 'Ya existe un permiso con la misma configuración'
+      return res.status(409).send(dataResponse)
     }
 
     // Actions
     const permissionModel = new permissionsModels(newPermission)
     await permissionModel.save()
-    return res.status(200).send({
-      message: 'Permiso creado',
-      data: {
-        id: permissionModel._id,
-        ...newPermission,
-      },
-    })
+    dataResponse.message = 'Permiso creado'
+    dataResponse.data = {
+      id: permissionModel._id,
+      ...newPermission,
+    }
+    return res.status(200).send(dataResponse)
   } catch (error) {
-    return res.status(500).send({
-      message: 'Problema interno del servidor',
-      data: error,
-    })
+    dataResponse.message = 'Problema interno del servidor'
+    dataResponse.data = error
+    return res.status(500).send(dataResponse)
   }
 }
 
 const deletePermission = async (req: Request, res: Response) => {
+  const dataResponse: DataResponse = {
+    message: '',
+    data: null,
+  }
   const idPermission: string = req.params.idPermission
   try {
     const permission = await permissionsModels.findById(idPermission).exec()
 
     // Validations
     if (!permission) {
-      return res.status(404).send({
-        message: 'Permiso no encontrado',
-        data: null,
-      })
+      dataResponse.message = 'Permiso no encontrado'
+      return res.status(404).send(dataResponse)
     }
 
     // Actions
@@ -95,15 +99,13 @@ const deletePermission = async (req: Request, res: Response) => {
       path: permission.path,
       method: permission.method,
     }
-    return res.status(200).send({
-      message: 'Permiso eliminado',
-      data: permissionFormat,
-    })
+    dataResponse.message = 'Permiso eliminado'
+    dataResponse.data = permissionFormat
+    return res.status(200).send(dataResponse)
   } catch (error) {
-    return res.status(500).send({
-      message: 'Problema interno del servidor',
-      data: error,
-    })
+    dataResponse.message = 'Problema interno del servidor'
+    dataResponse.data = error
+    return res.status(500).send(dataResponse)
   }
 }
 
