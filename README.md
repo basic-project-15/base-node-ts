@@ -1,4 +1,5 @@
 # Base-Node-TS
+Version: v0.3.0
 
 ## Steps to follow
 1. Clone the project.
@@ -15,3 +16,7 @@
 12. Run `npm run dev` to run the project in development mode.
 13. Run `npm run build` to compile the project.
 14. Run `npm start` to run the project in production mode.
+
+## More information
+- Oficial documentation: https://luissolano.notion.site/luissolano/Proyecto-base-MERN-Stack-0db74dd9fbe549239d6ba0f61e877a49
+- Deploy: https://base-node-ts.up.railway.app/
