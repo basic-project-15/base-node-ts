@@ -1,6 +1,6 @@
 {
   "name": "base-node-ts",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "NodeJS base project with TypeScript for the rapid creation of backends with certain functionalities already created and programming patterns already defined.",
   "main": "index.js",
   "scripts": {
