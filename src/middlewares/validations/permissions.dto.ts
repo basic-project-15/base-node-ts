@@ -6,33 +6,33 @@ import { DataResponse } from '@interfaces'
 
 const createPermission = (req: Request, res: Response, next: NextFunction) => {
   const dataResponse: DataResponse = { message: '', data: null }
-  const { body } = req
+  const { body, t } = req
   try {
     const createPermissionSchema = Type.Object(
       {
         path: Type.String({
           isNotEmpty: true,
           errorMessage: {
-            isNotEmpty: 'No debe ser vacío',
-            type: 'Debe ser un string',
+            isNotEmpty: t('VALID_NotEmpty'),
+            type: t('VALID_String'),
           },
         }),
         method: Type.String({
           isNotEmpty: true,
           errorMessage: {
-            isNotEmpty: 'No debe ser vacío',
-            type: 'Debe ser un string',
+            isNotEmpty: t('VALID_NotEmpty'),
+            type: t('VALID_String'),
           },
         }),
       },
       {
         additionalProperties: false,
         errorMessage: {
-          type: 'Debe ser un objeto',
-          additionalProperties: 'El formato del objeto no es válido',
+          type: t('VALID_Object'),
+          additionalProperties: t('VALID_FormatObject'),
           required: {
-            path: 'La ruta es requerida',
-            method: 'El método es requerido',
+            path: t('REQUIRED_Path'),
+            method: t('REQUIRED_Method'),
           },
         },
       },
@@ -43,12 +43,12 @@ const createPermission = (req: Request, res: Response, next: NextFunction) => {
     const methods: string[] = Object.values(Methods)
     const paths: string[] = Object.values(Paths)
     if (!methods.includes(body.method))
-      dataResponse.message = `El método solo puede ser: ${methods}`
+      dataResponse.message = `${t('VALID_Method')} ${methods}`
     if (!paths.includes(body.path))
-      dataResponse.message = `La ruta solo puede ser: ${paths}`
+      dataResponse.message = `${t('VALID_Path')} ${paths}`
     if (dataResponse.message) return res.status(400).send(dataResponse)
   } catch (error) {
-    dataResponse.message = 'Formato de datos no válido.'
+    dataResponse.message = t('RES_InvalidDataFormat')
     dataResponse.data = error
     return res.status(400).send(dataResponse)
   }

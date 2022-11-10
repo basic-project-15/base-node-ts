@@ -5,56 +5,56 @@ import { DataResponse } from '@interfaces'
 
 const createUser = (req: Request, res: Response, next: NextFunction) => {
   const dataResponse: DataResponse = { message: '', data: null }
-  const { body } = req
+  const { body, t } = req
   try {
     const createUserSchema = Type.Object(
       {
         name: Type.String({
           isNotEmpty: true,
           errorMessage: {
-            isNotEmpty: 'No debe estar vacío',
-            type: 'Debe ser un string',
+            isNotEmpty: t('VALID_NotEmpty'),
+            type: t('VALID_String'),
           },
         }),
         email: Type.String({
           format: 'email',
           errorMessage: {
-            type: 'Debe ser un string',
-            format: 'Debe ser un correo electrónico válido',
+            type: t('VALID_String'),
+            format: t('VALID_Email'),
           },
         }),
         password: Type.String({
           isNotEmpty: true,
           errorMessage: {
-            isNotEmpty: 'No debe estar vacío',
-            type: 'Debe ser un string',
+            isNotEmpty: t('VALID_NotEmpty'),
+            type: t('VALID_String'),
           },
         }),
         role: Type.String({
           isNotEmpty: true,
           errorMessage: {
-            isNotEmpty: 'No debe estar vacío',
-            type: 'Debe ser un string',
+            isNotEmpty: t('VALID_NotEmpty'),
+            type: t('VALID_String'),
           },
         }),
       },
       {
         additionalProperties: false,
         errorMessage: {
-          type: 'Debe ser un objeto',
-          additionalProperties: 'El formato del objeto no es válido',
+          type: t('VALID_Object'),
+          additionalProperties: t('VALID_FormatObject'),
           required: {
-            name: 'El nombre es requerido',
-            email: 'El email es requerido',
-            password: 'La password es requerido',
-            role: 'El rol es requerido',
+            name: t('REQUIRED_Name'),
+            email: t('REQUIRED_Email'),
+            password: t('REQUIRED_Password'),
+            role: t('REQUIRED_Role'),
           },
         },
       },
     )
     validateAJV(body, createUserSchema)
   } catch (error) {
-    dataResponse.message = 'Formato de datos no válido.'
+    dataResponse.message = t('RES_InvalidDataFormat')
     dataResponse.data = error
     return res.status(400).send(dataResponse)
   }
@@ -63,7 +63,7 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
 
 const updateUser = (req: Request, res: Response, next: NextFunction) => {
   const dataResponse: DataResponse = { message: '', data: null }
-  const { body } = req
+  const { body, t } = req
   try {
     const updateUserSchema = Type.Object(
       {
@@ -71,8 +71,8 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
           Type.String({
             isNotEmpty: true,
             errorMessage: {
-              isNotEmpty: 'No debe estar vacío',
-              type: 'Debe ser un string',
+              isNotEmpty: t('VALID_NotEmpty'),
+              type: t('VALID_String'),
             },
           }),
         ),
@@ -80,8 +80,8 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
           Type.String({
             format: 'email',
             errorMessage: {
-              type: 'Debe ser un string',
-              format: 'Debe ser un correo electrónico válido',
+              type: t('VALID_String'),
+              format: t('VALID_Email'),
             },
           }),
         ),
@@ -89,8 +89,8 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
           Type.String({
             isNotEmpty: true,
             errorMessage: {
-              isNotEmpty: 'No debe estar vacío',
-              type: 'Debe ser un string',
+              isNotEmpty: t('VALID_NotEmpty'),
+              type: t('VALID_String'),
             },
           }),
         ),
@@ -98,8 +98,8 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
           Type.String({
             isNotEmpty: true,
             errorMessage: {
-              isNotEmpty: 'No debe estar vacío',
-              type: 'Debe ser un string',
+              isNotEmpty: t('VALID_NotEmpty'),
+              type: t('VALID_String'),
             },
           }),
         ),
@@ -107,14 +107,14 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
       {
         additionalProperties: false,
         errorMessage: {
-          type: 'Debe ser un objeto',
-          additionalProperties: 'El formato del objeto no es válido',
+          type: t('VALID_Object'),
+          additionalProperties: t('VALID_FormatObject'),
         },
       },
     )
     validateAJV(body, updateUserSchema)
   } catch (error) {
-    dataResponse.message = 'Formato de datos no válido.'
+    dataResponse.message = t('RES_InvalidDataFormat')
     dataResponse.data = error
     return res.status(400).send(dataResponse)
   }
@@ -123,40 +123,40 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
 
 const login = (req: Request, res: Response, next: NextFunction) => {
   const dataResponse: DataResponse = { message: '', data: null }
-  const { body } = req
+  const { body, t } = req
   try {
     const loginSchema = Type.Object(
       {
         email: Type.String({
           format: 'email',
           errorMessage: {
-            type: 'Debe ser un string',
-            format: 'Debe ser un correo electrónico válido',
+            type: t('VALID_String'),
+            format: t('VALID_Email'),
           },
         }),
         password: Type.String({
           isNotEmpty: true,
           errorMessage: {
-            isNotEmpty: 'No debe estar vacío',
-            type: 'Debe ser un string',
+            isNotEmpty: t('VALID_NotEmpty'),
+            type: t('VALID_String'),
           },
         }),
       },
       {
         additionalProperties: false,
         errorMessage: {
-          type: 'Debe ser un objeto',
-          additionalProperties: 'El formato del objeto no es válido',
+          type: t('VALID_Object'),
+          additionalProperties: t('VALID_FormatObject'),
           required: {
-            email: 'El email es requerido',
-            password: 'La password es requerido',
+            email: t('REQUIRED_Email'),
+            password: t('REQUIRED_Password'),
           },
         },
       },
     )
     validateAJV(body, loginSchema)
   } catch (error) {
-    dataResponse.message = 'Formato de datos no válido.'
+    dataResponse.message = t('RES_InvalidDataFormat')
     dataResponse.data = error
     return res.status(400).send(dataResponse)
   }

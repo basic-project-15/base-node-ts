@@ -7,7 +7,7 @@ import { Methods, Paths } from '@common/types'
 
 const login = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
-  const { body } = req
+  const { body, t } = req
   try {
     const newUser: UserLogin = {
       email: body.email,
@@ -17,12 +17,12 @@ const login = async (req: Request, res: Response) => {
     // Validations
     const user = await usersModels.findOne({ email: newUser.email }).exec()
     if (!user) {
-      dataResponse.message = 'Credenciales no válidas'
+      dataResponse.message = t('RES_InvalidCredentials')
       return res.status(401).send(dataResponse)
     }
     const checkPassword = await compare(newUser.password, user.password)
     if (!checkPassword) {
-      dataResponse.message = 'Credenciales no válidas'
+      dataResponse.message = t('RES_InvalidCredentials')
       return res.status(401).send(dataResponse)
     }
 
@@ -33,7 +33,7 @@ const login = async (req: Request, res: Response) => {
       role: user.role,
     }
     const token = jwt.generateToken(userFormat)
-    dataResponse.message = 'Usuario autenticado'
+    dataResponse.message = t('USERS_Login')
     dataResponse.data = {
       user: {
         ...userFormat,
@@ -45,7 +45,7 @@ const login = async (req: Request, res: Response) => {
     }
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = 'Problema interno del servidor'
+    dataResponse.message = t('RES_ServerError')
     dataResponse.data = error
     return res.status(500).send(dataResponse)
   }

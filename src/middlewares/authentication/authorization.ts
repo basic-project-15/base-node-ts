@@ -10,8 +10,8 @@ const authorization = async (
 ) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const userToken: UserToken = req.user
+  const { t } = req
   if (userToken.role === Roles.SuperAdmin) return next()
-
   const paths: string[] = req.baseUrl.split('/')
   const path: string = paths[paths.length - 1]
   const method: string = req.method
@@ -20,7 +20,7 @@ const authorization = async (
     permission => permission.path === path && permission.method === method,
   )
   if (!permission) {
-    dataResponse.message = 'No tiene permisos para realizar esta acción'
+    dataResponse.message = t('RES_Forbiden')
     return res.status(403).send(dataResponse)
   }
   return next()

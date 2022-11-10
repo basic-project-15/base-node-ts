@@ -2,8 +2,9 @@ import { Request, Response } from 'express'
 import { permissionsModels, usersModels } from '@common/models'
 import { DataResponse, Permission } from '@interfaces'
 
-const getPermissions = async (_req: Request, res: Response) => {
+const getPermissions = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
+  const { t } = req
   try {
     const permissions = await permissionsModels.find().exec()
     const permissionsFormat: Permission[] = permissions.map(permission => ({
@@ -11,11 +12,11 @@ const getPermissions = async (_req: Request, res: Response) => {
       path: permission.path,
       method: permission.method,
     }))
-    dataResponse.message = 'Permisos listados'
+    dataResponse.message = t('Permissions_GetPermissions')
     dataResponse.data = permissionsFormat
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = 'Problema interno del servidor'
+    dataResponse.message = t('RES_ServerError')
     dataResponse.data = error
     return res.status(500).send(dataResponse)
   }
@@ -23,7 +24,7 @@ const getPermissions = async (_req: Request, res: Response) => {
 
 const createPermission = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
-  const { body } = req
+  const { body, t } = req
   try {
     const newPermission: Permission = {
       path: body.path,
@@ -35,21 +36,21 @@ const createPermission = async (req: Request, res: Response) => {
       .findOne({ path: newPermission.path, method: newPermission.method })
       .exec()
     if (permissionFind) {
-      dataResponse.message = 'Ya existe un permiso con la misma configuración'
+      dataResponse.message = t('Permissions_AlreadyExists')
       return res.status(409).send(dataResponse)
     }
 
     // Actions
     const permissionModel = new permissionsModels(newPermission)
     await permissionModel.save()
-    dataResponse.message = 'Permiso creado'
+    dataResponse.message = t('Permissions_CreatePermission')
     dataResponse.data = {
       id: permissionModel._id,
       ...newPermission,
     }
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = 'Problema interno del servidor'
+    dataResponse.message = t('RES_ServerError')
     dataResponse.data = error
     return res.status(500).send(dataResponse)
   }
@@ -57,13 +58,14 @@ const createPermission = async (req: Request, res: Response) => {
 
 const deletePermission = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
+  const { t } = req
   const idPermission: string = req.params.idPermission
   try {
     const permission = await permissionsModels.findById(idPermission).exec()
 
     // Validations
     if (!permission) {
-      dataResponse.message = 'Permiso no encontrado'
+      dataResponse.message = t('Permissions_NotFound')
       return res.status(404).send(dataResponse)
     }
 
@@ -90,11 +92,11 @@ const deletePermission = async (req: Request, res: Response) => {
       path: permission.path,
       method: permission.method,
     }
-    dataResponse.message = 'Permiso eliminado'
+    dataResponse.message = t('Permissions_DeletePermission')
     dataResponse.data = permissionFormat
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = 'Problema interno del servidor'
+    dataResponse.message = t('RES_ServerError')
     dataResponse.data = error
     return res.status(500).send(dataResponse)
   }

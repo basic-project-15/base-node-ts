@@ -5,16 +5,17 @@ import { DataResponse } from '@interfaces'
 
 const authToken = async (req: Request, res: Response, next: NextFunction) => {
   const dataResponse: DataResponse = { message: '', data: null }
+  const { t } = req
   try {
     // Validation token
     const headerToken: string = req.headers.authorization ?? ''
     if (!headerToken?.toLowerCase().startsWith('bearer')) {
-      dataResponse.message = 'Token no válido'
+      dataResponse.message = t('RES_InvalidToken')
       return res.status(401).send(dataResponse)
     }
     const token: string = headerToken.replace('Bearer ', '')
     if (!token) {
-      dataResponse.message = 'Token no válido'
+      dataResponse.message = t('RES_InvalidToken')
       return res.status(401).send(dataResponse)
     }
     // Validation with JWT
@@ -23,21 +24,21 @@ const authToken = async (req: Request, res: Response, next: NextFunction) => {
     // Validation user
     const user = await usersModels.findById(userToken.id).exec()
     if (!user) {
-      dataResponse.message = 'Token no válido'
+      dataResponse.message = t('RES_InvalidToken')
       return res.status(401).send(dataResponse)
     }
     req.user = userToken
     return next()
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
-      dataResponse.message = 'Token expirado'
+      dataResponse.message = t('RES_ExpiredToken')
       return res.status(401).send(dataResponse)
     }
     if (error.name === 'JsonWebTokenError') {
-      dataResponse.message = 'Token no válido'
+      dataResponse.message = t('RES_InvalidToken')
       return res.status(401).send(dataResponse)
     }
-    dataResponse.message = 'Problema interno del servidor'
+    dataResponse.message = t('RES_ServerError')
     return res.status(500).send(dataResponse)
   }
 }
