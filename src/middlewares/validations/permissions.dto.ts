@@ -1,26 +1,56 @@
 import { Request, Response, NextFunction } from 'express'
-import { permissionsSchemas } from '@common/schema'
+import { Type } from '@sinclair/typebox'
 import { validateAJV } from '@core/helpers'
 import { Methods, Paths } from '@common/types'
-
-const { createPermissionSchema } = permissionsSchemas
+import { DataResponse } from '@interfaces'
 
 const createPermission = (req: Request, res: Response, next: NextFunction) => {
-  const { body } = req
-  const response = validateAJV(body, createPermissionSchema)
-  const { statusCode, message, data } = response
-  if (statusCode !== 200) return res.status(statusCode).send({ message, data })
-  if (!Object.values(Methods).includes(body.method)) {
-    return res.status(400).send({
-      message: `El método solo puede ser: ${Object.values(Methods)}`,
-      data: null,
-    })
-  }
-  if (!Object.values(Paths).includes(body.path)) {
-    return res.status(400).send({
-      message: `La ruta solo puede ser: ${Object.values(Paths)}`,
-      data: null,
-    })
+  const dataResponse: DataResponse = { message: '', data: null }
+  const { body, t } = req
+  try {
+    const createPermissionSchema = Type.Object(
+      {
+        path: Type.String({
+          isNotEmpty: true,
+          errorMessage: {
+            isNotEmpty: t('VALID_NotEmpty'),
+            type: t('VALID_String'),
+          },
+        }),
+        method: Type.String({
+          isNotEmpty: true,
+          errorMessage: {
+            isNotEmpty: t('VALID_NotEmpty'),
+            type: t('VALID_String'),
+          },
+        }),
+      },
+      {
+        additionalProperties: false,
+        errorMessage: {
+          type: t('VALID_Object'),
+          additionalProperties: t('VALID_FormatObject'),
+          required: {
+            path: t('REQUIRED_Path'),
+            method: t('REQUIRED_Method'),
+          },
+        },
+      },
+    )
+    validateAJV(body, createPermissionSchema)
+
+    // Validate Paths and Methods
+    const methods: string[] = Object.values(Methods)
+    const paths: string[] = Object.values(Paths)
+    if (!methods.includes(body.method))
+      dataResponse.message = `${t('VALID_Method')} ${methods}`
+    if (!paths.includes(body.path))
+      dataResponse.message = `${t('VALID_Path')} ${paths}`
+    if (dataResponse.message) return res.status(400).send(dataResponse)
+  } catch (error) {
+    dataResponse.message = t('RES_InvalidDataFormat')
+    dataResponse.data = error
+    return res.status(400).send(dataResponse)
   }
   return next()
 }

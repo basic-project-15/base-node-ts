@@ -1,7 +1,7 @@
 {
   "name": "base-node-ts",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.2.0",
+  "description": "NodeJS base project with TypeScript for the rapid creation of backends with certain functionalities already created and programming patterns already defined.",
   "main": "index.js",
   "scripts": {
     "start": "node build/index.js",
@@ -14,9 +14,26 @@
     "generate-token-keys": "sh generate-token-keys.sh",
     "generate-token-keys:local": "sh generate-token-keys.sh local"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "mvc",
+    "node",
+    "nodejs",
+    "typescript",
+    "eslint",
+    "prettier",
+    "mongodb",
+    "jsonwebtoken",
+    "api versioning",
+    "swagger documentation",
+    "path alias",
+    "mit"
+  ],
+  "author": {
+    "name": "Luis Fernando Solano Martínez",
+    "email": "luisfer.sm15@gmail.com",
+    "url": "https://github.com/XxLuisFer15xX"
+  },
+  "license": "MIT",
   "dependencies": {
     "@sinclair/typebox": "0.24.51",
     "ajv": "8.11.0",

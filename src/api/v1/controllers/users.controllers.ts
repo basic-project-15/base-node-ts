@@ -1,11 +1,13 @@
 import { Request, Response } from 'express'
 import { hash } from 'bcrypt'
-import { UserCreate, UserProfile } from '@interfaces'
+import { DataResponse, UserCreate, UserProfile } from '@interfaces'
 import { bcryptSalt } from '@config'
 import { permissionsModels, usersModels } from '@common/models'
 import { Roles } from '@common/types'
 
-const getUsers = async (_req: Request, res: Response) => {
+const getUsers = async (req: Request, res: Response) => {
+  const dataResponse: DataResponse = { message: '', data: null }
+  const { t } = req
   try {
     const users = await usersModels.find().exec()
     const usersFormat: UserProfile[] = users.map(user => ({
@@ -15,29 +17,27 @@ const getUsers = async (_req: Request, res: Response) => {
       role: user.role,
       permissions: user.permissions,
     }))
-    return res.status(200).send({
-      message: 'Usuarios listados',
-      data: usersFormat,
-    })
+    dataResponse.message = t('USERS_GetUsers')
+    dataResponse.data = usersFormat
+    return res.status(200).send(dataResponse)
   } catch (error) {
-    return res.status(500).send({
-      message: 'Problema interno del servidor',
-      data: error,
-    })
+    dataResponse.message = t('RES_ServerError')
+    dataResponse.data = error
+    return res.status(500).send(dataResponse)
   }
 }
 
 const getUser = async (req: Request, res: Response) => {
+  const dataResponse: DataResponse = { message: '', data: null }
+  const { t } = req
   const idUser: string = req.params.idUser
   try {
     const user = await usersModels.findById(idUser).exec()
 
     // Validations
     if (!user) {
-      return res.status(404).send({
-        message: 'Usuario no encontrado',
-        data: null,
-      })
+      dataResponse.message = t('USERS_NotFound')
+      return res.status(404).send(dataResponse)
     }
 
     // Actions
@@ -48,20 +48,19 @@ const getUser = async (req: Request, res: Response) => {
       role: user.role,
       permissions: user.permissions,
     }
-    return res.status(200).send({
-      message: 'Usuario encontrado',
-      data: userFormat,
-    })
+    dataResponse.message = t('USERS_GetUser')
+    dataResponse.data = userFormat
+    return res.status(200).send(dataResponse)
   } catch (error) {
-    return res.status(500).send({
-      message: 'Problema interno del servidor',
-      data: error,
-    })
+    dataResponse.message = t('RES_ServerError')
+    dataResponse.data = error
+    return res.status(500).send(dataResponse)
   }
 }
 
 const createUser = async (req: Request, res: Response) => {
-  const { body } = req
+  const dataResponse: DataResponse = { message: '', data: null }
+  const { body, t } = req
   try {
     const newUser: UserCreate = {
       name: body.name,
@@ -74,10 +73,8 @@ const createUser = async (req: Request, res: Response) => {
     // Validations
     const userFind = await usersModels.findOne({ email: newUser.email }).exec()
     if (userFind) {
-      return res.status(409).send({
-        message: 'Ya existe un usuario con ese correo electrónico',
-        data: null,
-      })
+      dataResponse.message = t('USERS_AlreadyExists')
+      return res.status(409).send(dataResponse)
     }
 
     // Actions
@@ -85,46 +82,39 @@ const createUser = async (req: Request, res: Response) => {
     const userModel = new usersModels(newUser)
     const { password, ...userProfile } = newUser
     await userModel.save()
-    return res.status(200).send({
-      message: 'Usuario creado',
-      data: {
-        id: userModel._id,
-        ...userProfile,
-      },
-    })
+    dataResponse.message = t('USERS_CreateUser')
+    dataResponse.data = {
+      id: userModel._id,
+      ...userProfile,
+    }
+    return res.status(200).send(dataResponse)
   } catch (error) {
-    return res.status(500).send({
-      message: 'Problema interno del servidor',
-      data: error,
-    })
+    dataResponse.message = t('RES_ServerError')
+    dataResponse.data = error
+    return res.status(500).send(dataResponse)
   }
 }
 
 const updateUser = async (req: Request, res: Response) => {
+  const dataResponse: DataResponse = { message: '', data: null }
+  const { body: newUser, t } = req
   const idUser: string = req.params.idUser
-  const newUser = req.body
   try {
     const user = await usersModels.findById(idUser).exec()
     const userFind = await usersModels.findOne({ email: newUser.email }).exec()
 
     // Validations
     if (!user) {
-      return res.status(404).send({
-        message: 'Usuario no encontrado',
-        data: null,
-      })
+      dataResponse.message = t('USERS_NotFound')
+      return res.status(404).send(dataResponse)
     }
     if (userFind?.email && userFind.email !== user.email) {
-      return res.status(409).send({
-        message: 'Ya existe un usuario con ese correo electrónico',
-        data: null,
-      })
+      dataResponse.message = t('USERS_AlreadyExists')
+      return res.status(409).send(dataResponse)
     }
     if (user.role === Roles.SuperAdmin && req.user.role !== Roles.SuperAdmin) {
-      return res.status(400).send({
-        message: 'No puede editar a un usuario super administrador',
-        data: null,
-      })
+      dataResponse.message = t('USERS_EditSuperAdmin')
+      return res.status(400).send(dataResponse)
     }
 
     // Actions
@@ -137,41 +127,34 @@ const updateUser = async (req: Request, res: Response) => {
     user.password = newPassword || user.password
     user.role = newUser.role || user.role
     await user.save()
-    return res.status(200).send({
-      message: 'Usuario actualizado',
-      data: null,
-    })
+    dataResponse.message = t('USERS_UpdateUser')
+    return res.status(200).send(dataResponse)
   } catch (error) {
-    return res.status(500).send({
-      message: 'Problema interno del servidor',
-      data: error,
-    })
+    dataResponse.message = t('RES_ServerError')
+    dataResponse.data = error
+    return res.status(500).send(dataResponse)
   }
 }
 
 const deleteUser = async (req: Request, res: Response) => {
+  const dataResponse: DataResponse = { message: '', data: null }
+  const { t } = req
   const idUser: string = req.params.idUser
   try {
     const user = await usersModels.findById(idUser).exec()
 
     // Validations
     if (!user) {
-      return res.status(404).send({
-        message: 'Usuario no encontrado',
-        data: null,
-      })
+      dataResponse.message = t('USERS_NotFound')
+      return res.status(404).send(dataResponse)
     }
     if (user.email === req.user.email) {
-      return res.status(400).send({
-        message: 'No se puede eliminar a si mismo',
-        data: null,
-      })
+      dataResponse.message = t('USERS_DeletYourself')
+      return res.status(400).send(dataResponse)
     }
     if (user.role === Roles.SuperAdmin && req.user.role !== Roles.SuperAdmin) {
-      return res.status(400).send({
-        message: 'No puede eliminar a un usuario super administrador',
-        data: null,
-      })
+      dataResponse.message = t('USERS_DeleteSuperAdmin')
+      return res.status(400).send(dataResponse)
     }
 
     // Actions
@@ -183,97 +166,83 @@ const deleteUser = async (req: Request, res: Response) => {
       permissions: user.permissions ?? [],
     }
     await user.remove()
-    return res.status(200).send({
-      message: 'Usuario eliminado',
-      data: userFormat,
-    })
+    dataResponse.message = t('USERS_DeleteUser')
+    dataResponse.data = userFormat
+    return res.status(200).send(dataResponse)
   } catch (error) {
-    return res.status(500).send({
-      message: 'Problema interno del servidor',
-      data: error,
-    })
+    dataResponse.message = t('RES_ServerError')
+    dataResponse.data = error
+    return res.status(500).send(dataResponse)
   }
 }
 
 const assignPermission = async (req: Request, res: Response) => {
+  const dataResponse: DataResponse = { message: '', data: null }
+  const { body, t } = req
   const idUser: string = req.params.idUser
-  const { idPermission } = req.body
+  const { idPermission } = body
   try {
     const user = await usersModels.findById(idUser).exec()
     const permission = await permissionsModels.findById(idPermission).exec()
 
     // Validations
     if (!user) {
-      return res.status(404).send({
-        message: 'Usuario no encontrado',
-        data: null,
-      })
+      dataResponse.message = t('USERS_NotFound')
+      return res.status(404).send(dataResponse)
     }
     if (!permission) {
-      return res.status(404).send({
-        message: 'Permiso no encontrado',
-        data: null,
-      })
+      dataResponse.message = t('Permissions_NotFound')
+      return res.status(404).send(dataResponse)
     }
     const permissionFind = user.permissions.find(
       permission => permission._id.toString() === idPermission,
     )
     if (permissionFind) {
-      return res.status(409).send({
-        message: 'Permiso ya asignado',
-        data: null,
-      })
+      dataResponse.message = t('USERS_AlreadyAssignPermission')
+      return res.status(409).send(dataResponse)
     }
     if (user.role === Roles.SuperAdmin) {
-      return res.status(400).send({
-        message: 'Este usuario ya cuenta con el rango más alto de permisos',
-        data: null,
-      })
+      dataResponse.message = t('USERS_PermissionSuperAdmin')
+      return res.status(400).send(dataResponse)
     }
 
     // Actions
     user.permissions.push(permission)
     await user.save()
-    return res.status(200).send({
-      message: 'Permiso asignado',
-      data: permission,
-    })
+    dataResponse.message = t('USERS_AssignPermission')
+    dataResponse.data = permission
+    return res.status(200).send(dataResponse)
   } catch (error) {
-    return res.status(500).send({
-      message: 'Problema interno del servidor',
-      data: error,
-    })
+    dataResponse.message = t('RES_ServerError')
+    dataResponse.data = error
+    return res.status(500).send(dataResponse)
   }
 }
 
 const removePermission = async (req: Request, res: Response) => {
+  const dataResponse: DataResponse = { message: '', data: null }
+  const { body, t } = req
   const idUser: string = req.params.idUser
-  const { idPermission } = req.body
+  const { idPermission } = body
   try {
     const user = await usersModels.findById(idUser).exec()
     const permission = await permissionsModels.findById(idPermission).exec()
 
     // Validations
     if (!user) {
-      return res.status(404).send({
-        message: 'Usuario no encontrado',
-        data: null,
-      })
+      dataResponse.message = t('USERS_NotFound')
+      return res.status(404).send(dataResponse)
     }
     if (!permission) {
-      return res.status(404).send({
-        message: 'Permiso no encontrado',
-        data: null,
-      })
+      dataResponse.message = t('Permissions_NotFound')
+      return res.status(404).send(dataResponse)
     }
     const permissionFind = user.permissions.find(
       permission => permission._id.toString() === idPermission,
     )
     if (!permissionFind) {
-      return res.status(409).send({
-        message: 'Permiso ya removido',
-        data: null,
-      })
+      dataResponse.message = t('USERS_AlreadyRemovePermission')
+      return res.status(409).send(dataResponse)
     }
 
     // Actions
@@ -282,15 +251,13 @@ const removePermission = async (req: Request, res: Response) => {
     )
     user.permissions.splice(permissionIndex, 1)
     await user.save()
-    return res.status(200).send({
-      message: 'Permiso removido',
-      data: permission,
-    })
+    dataResponse.message = t('USERS_RemovePermission')
+    dataResponse.data = permission
+    return res.status(200).send(dataResponse)
   } catch (error) {
-    return res.status(500).send({
-      message: 'Problema interno del servidor',
-      data: error,
-    })
+    dataResponse.message = t('RES_ServerError')
+    dataResponse.data = error
+    return res.status(500).send(dataResponse)
   }
 }
 

@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Base-Node-TS API - v1
   description: Documentation of the NodeJS base project with TypeScript.
-  version: 1.0.0
+  version: 0.2.0
   contact:
     email: luisfer.sm15@gmail.com
   license:

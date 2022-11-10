@@ -4,11 +4,11 @@ import morgan from 'morgan'
 import swaggerUI from 'swagger-ui-express'
 import YAML from 'yamljs'
 import { connectDB, swaggerOptions } from '@config'
-import { authRoutes, permissionsRoutes, usersRoutes } from '@api/v1/routes'
 import { Paths } from '@common/types'
+import { authRoutes, permissionsRoutes, usersRoutes } from '@api/v1/routes'
+import { languages } from '@middlewares/validations'
 
 dotenv.config()
-
 const PORT = process.env.PORT ?? 3000
 const SERVER_URL_NAME = process.env.SERVER_URL_NAME ?? ''
 const app = express()
@@ -31,6 +31,7 @@ app.use(
     ].join(' ')
   }),
 )
+app.use('/', languages)
 
 // API
 app.use(

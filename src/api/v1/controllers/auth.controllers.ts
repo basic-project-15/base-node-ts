@@ -1,12 +1,13 @@
 import { Request, Response } from 'express'
 import { compare } from 'bcrypt'
-import { UserLogin, UserToken } from '@interfaces'
+import { DataResponse, UserLogin, UserToken } from '@interfaces'
 import { usersModels } from '@common/models'
 import { jwt } from '@core/helpers'
 import { Methods, Paths } from '@common/types'
 
 const login = async (req: Request, res: Response) => {
-  const { body } = req
+  const dataResponse: DataResponse = { message: '', data: null }
+  const { body, t } = req
   try {
     const newUser: UserLogin = {
       email: body.email,
@@ -16,17 +17,13 @@ const login = async (req: Request, res: Response) => {
     // Validations
     const user = await usersModels.findOne({ email: newUser.email }).exec()
     if (!user) {
-      return res.status(401).send({
-        message: 'Credenciales no válidas',
-        data: null,
-      })
+      dataResponse.message = t('RES_InvalidCredentials')
+      return res.status(401).send(dataResponse)
     }
     const checkPassword = await compare(newUser.password, user.password)
     if (!checkPassword) {
-      return res.status(401).send({
-        message: 'Credenciales no válidas',
-        data: null,
-      })
+      dataResponse.message = t('RES_InvalidCredentials')
+      return res.status(401).send(dataResponse)
     }
 
     // Actions
@@ -35,25 +32,22 @@ const login = async (req: Request, res: Response) => {
       email: user.email,
       role: user.role,
     }
-    const response = jwt.generateToken(userFormat)
-    const { statusCode, message, token } = response
-    return res.status(statusCode).send({
-      message,
-      data: {
-        user: {
-          ...userFormat,
-          permissions: user.permissions,
-        },
-        paths: Object.values(Paths),
-        methods: Object.values(Methods),
-        token,
+    const token = jwt.generateToken(userFormat)
+    dataResponse.message = t('USERS_Login')
+    dataResponse.data = {
+      user: {
+        ...userFormat,
+        permissions: user.permissions,
       },
-    })
+      paths: Object.values(Paths),
+      methods: Object.values(Methods),
+      token,
+    }
+    return res.status(200).send(dataResponse)
   } catch (error) {
-    return res.status(500).send({
-      message: 'Problema interno del servidor',
-      data: error,
-    })
+    dataResponse.message = t('RES_ServerError')
+    dataResponse.data = error
+    return res.status(500).send(dataResponse)
   }
 }
 
