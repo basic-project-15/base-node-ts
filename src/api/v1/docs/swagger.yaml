@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Base-Node-TS API - v1
   description: Documentation of the NodeJS base project with TypeScript.
-  version: 0.2.0
+  version: 0.3.0
   contact:
     email: luisfer.sm15@gmail.com
   license:
@@ -31,6 +31,9 @@ paths:
       summary: Login user
       security:
         - basicAuth: []
+      parameters:
+        - in: header
+          $ref: '#/components/parameters/acceptLanguages'
       requestBody:
         description: The user credentials
         required: true
@@ -93,6 +96,9 @@ paths:
       summary: Get users List
       security:
         - bearerAuth: []
+      parameters:
+        - in: header
+          $ref: '#/components/parameters/acceptLanguages'
       responses:
         200:
           description: Users list
@@ -125,6 +131,9 @@ paths:
       summary: Create a user
       security:
         - bearerAuth: []
+      parameters:
+        - in: header
+          $ref: '#/components/parameters/acceptLanguages'
       requestBody:
         description: The user to create.
         required: true
@@ -191,6 +200,8 @@ paths:
       security:
       - bearerAuth: []
       parameters:
+        - in: header
+          $ref: '#/components/parameters/acceptLanguages'
         - in: path
           name: idUser
           schema:
@@ -226,6 +237,8 @@ paths:
       security:
         - bearerAuth: []
       parameters:
+        - in: header
+          $ref: '#/components/parameters/acceptLanguages'
         - in: path
           name: idUser
           schema:
@@ -292,6 +305,8 @@ paths:
       security:
         - bearerAuth: []
       parameters:
+        - in: header
+          $ref: '#/components/parameters/acceptLanguages'
         - in: path
           name: idUser
           schema:
@@ -328,6 +343,8 @@ paths:
       security:
         - bearerAuth: []
       parameters:
+        - in: header
+          $ref: '#/components/parameters/acceptLanguages'
         - in: path
           name: idUser
           schema:
@@ -386,6 +403,8 @@ paths:
       security:
       - bearerAuth: []
       parameters:
+        - in: header
+          $ref: '#/components/parameters/acceptLanguages'
         - in: path
           name: idUser
           schema:
@@ -443,6 +462,9 @@ paths:
       summary: Get permissions List
       security:
         - bearerAuth: []
+      parameters:
+        - in: header
+          $ref: '#/components/parameters/acceptLanguages'
       responses:
         200:
           description: Permissions list
@@ -475,6 +497,9 @@ paths:
       summary: Create permissions
       security:
         - bearerAuth: []
+      parameters:
+        - in: header
+          $ref: '#/components/parameters/acceptLanguages'
       requestBody:
         description: The user to create
         required: true
@@ -531,6 +556,8 @@ paths:
       security:
         - bearerAuth: []
       parameters:
+        - in: header
+          $ref: '#/components/parameters/acceptLanguages'
         - in: path
           name: idPermission
           schema:
@@ -619,6 +646,10 @@ components:
     basicAuth:
       type: http
       scheme: basic
+  parameters:
+    acceptLanguages:
+      name: Accept-Language
+      description: 'Specify language "en" or "es". Default language is: "en".'
   responses:
     BadRequest:
       description: Bad Request
