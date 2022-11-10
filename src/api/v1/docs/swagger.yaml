@@ -12,8 +12,8 @@ externalDocs:
   description: Find out more about Proyect
   url: https://www.notion.so/luissolano/Proyecto-base-MERN-Stack-0db74dd9fbe549239d6ba0f61e877a49
 servers:
-  - url: http://localhost:3000/api/v1
   - url: https://base-node-ts.up.railway.app/api/v1
+  - url: http://localhost:3000/api/v1
 
 tags:
   - name: Auth
@@ -32,8 +32,7 @@ paths:
       security:
         - basicAuth: []
       parameters:
-        - in: header
-          $ref: '#/components/parameters/acceptLanguages'
+        - $ref: '#/components/parameters/acceptLanguages'
       requestBody:
         description: The user credentials
         required: true
@@ -97,8 +96,7 @@ paths:
       security:
         - bearerAuth: []
       parameters:
-        - in: header
-          $ref: '#/components/parameters/acceptLanguages'
+        - $ref: '#/components/parameters/acceptLanguages'
       responses:
         200:
           description: Users list
@@ -132,8 +130,7 @@ paths:
       security:
         - bearerAuth: []
       parameters:
-        - in: header
-          $ref: '#/components/parameters/acceptLanguages'
+        - $ref: '#/components/parameters/acceptLanguages'
       requestBody:
         description: The user to create.
         required: true
@@ -200,8 +197,7 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-        - in: header
-          $ref: '#/components/parameters/acceptLanguages'
+        - $ref: '#/components/parameters/acceptLanguages'
         - in: path
           name: idUser
           schema:
@@ -237,8 +233,7 @@ paths:
       security:
         - bearerAuth: []
       parameters:
-        - in: header
-          $ref: '#/components/parameters/acceptLanguages'
+        - $ref: '#/components/parameters/acceptLanguages'
         - in: path
           name: idUser
           schema:
@@ -305,8 +300,7 @@ paths:
       security:
         - bearerAuth: []
       parameters:
-        - in: header
-          $ref: '#/components/parameters/acceptLanguages'
+        - $ref: '#/components/parameters/acceptLanguages'
         - in: path
           name: idUser
           schema:
@@ -343,8 +337,7 @@ paths:
       security:
         - bearerAuth: []
       parameters:
-        - in: header
-          $ref: '#/components/parameters/acceptLanguages'
+        - $ref: '#/components/parameters/acceptLanguages'
         - in: path
           name: idUser
           schema:
@@ -403,8 +396,7 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-        - in: header
-          $ref: '#/components/parameters/acceptLanguages'
+        - $ref: '#/components/parameters/acceptLanguages'
         - in: path
           name: idUser
           schema:
@@ -463,8 +455,7 @@ paths:
       security:
         - bearerAuth: []
       parameters:
-        - in: header
-          $ref: '#/components/parameters/acceptLanguages'
+        - $ref: '#/components/parameters/acceptLanguages'
       responses:
         200:
           description: Permissions list
@@ -498,8 +489,7 @@ paths:
       security:
         - bearerAuth: []
       parameters:
-        - in: header
-          $ref: '#/components/parameters/acceptLanguages'
+        - $ref: '#/components/parameters/acceptLanguages'
       requestBody:
         description: The user to create
         required: true
@@ -556,8 +546,7 @@ paths:
       security:
         - bearerAuth: []
       parameters:
-        - in: header
-          $ref: '#/components/parameters/acceptLanguages'
+        - $ref: '#/components/parameters/acceptLanguages'
         - in: path
           name: idPermission
           schema:
@@ -648,8 +637,9 @@ components:
       scheme: basic
   parameters:
     acceptLanguages:
+      in: header
       name: Accept-Language
-      description: 'Specify language "en" or "es". Default language is: "en".'
+      description: 'Specify language "en" or "es". Default language is: "en". (test)'
   responses:
     BadRequest:
       description: Bad Request
