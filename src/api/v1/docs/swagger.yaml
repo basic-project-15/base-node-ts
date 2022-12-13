@@ -639,7 +639,7 @@ components:
     acceptLanguages:
       in: header
       name: Accept-Language
-      description: 'Specify language "en" or "es". Default language is: "en". (test)'
+      description: 'Specify language "en" or "es". Default language is: "en".'
   responses:
     BadRequest:
       description: Bad Request

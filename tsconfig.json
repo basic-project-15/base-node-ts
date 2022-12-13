@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2015",
+    "skipLibCheck": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "baseUrl": ".",
@@ -31,9 +32,7 @@
     "useUnknownInCatchVariables": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "skipLibCheck": true
+    "noImplicitReturns": true
   },
   "include": ["./src/**/*"],
   "exclude": ["node_modules"]
