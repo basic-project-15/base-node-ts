@@ -37,6 +37,7 @@ const login = async (req: Request, res: Response) => {
     dataResponse.data = {
       user: {
         ...userFormat,
+        name: user.name,
         permissions: user.permissions,
       },
       paths: Object.values(Paths),
