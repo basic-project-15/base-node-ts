@@ -7,7 +7,7 @@ const usersSchemas = new mongoose.Schema({
   role: { type: String, required: true, maxLenght: 50 },
   permissions: [
     {
-      _id: { type: mongoose.Schema.Types.ObjectId, required: true },
+      id: { type: mongoose.Schema.Types.ObjectId, required: true },
       path: { type: String, required: true },
       method: { type: String, required: true },
     },

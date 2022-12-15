@@ -195,7 +195,7 @@ const assignPermission = async (req: Request, res: Response) => {
       return res.status(404).send(dataResponse)
     }
     const permissionFind = user.permissions.find(
-      permission => permission._id.toString() === idPermission,
+      permission => permission.id.toString() === idPermission,
     )
     if (permissionFind) {
       dataResponse.message = t('USERS_AlreadyAssignPermission')
@@ -207,7 +207,11 @@ const assignPermission = async (req: Request, res: Response) => {
     }
 
     // Actions
-    user.permissions.push(permission)
+    user.permissions.push({
+      id: permission._id,
+      path: permission.path,
+      method: permission.method,
+    })
     await user.save()
     dataResponse.message = t('USERS_AssignPermission')
     dataResponse.data = permission
@@ -238,7 +242,7 @@ const removePermission = async (req: Request, res: Response) => {
       return res.status(404).send(dataResponse)
     }
     const permissionFind = user.permissions.find(
-      permission => permission._id.toString() === idPermission,
+      permission => permission.id.toString() === idPermission,
     )
     if (!permissionFind) {
       dataResponse.message = t('USERS_AlreadyRemovePermission')
@@ -247,7 +251,7 @@ const removePermission = async (req: Request, res: Response) => {
 
     // Actions
     const permissionIndex = user.permissions.findIndex(
-      permission => permission._id.toString() === idPermission,
+      permission => permission.id.toString() === idPermission,
     )
     user.permissions.splice(permissionIndex, 1)
     await user.save()
