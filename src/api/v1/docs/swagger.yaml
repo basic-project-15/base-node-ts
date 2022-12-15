@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Base-Node-TS API - v1
   description: Documentation of the NodeJS base project with TypeScript.
-  version: 0.3.0
+  version: 0.3.1
   contact:
     email: luisfer.sm15@gmail.com
   license:
@@ -639,7 +639,7 @@ components:
     acceptLanguages:
       in: header
       name: Accept-Language
-      description: 'Specify language "en" or "es". Default language is: "en". (test)'
+      description: 'Specify language "en" or "es". Default language is: "en".'
   responses:
     BadRequest:
       description: Bad Request

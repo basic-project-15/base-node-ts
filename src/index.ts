@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
+import cors from 'cors'
 import swaggerUI from 'swagger-ui-express'
 import YAML from 'yamljs'
 import { connectDB, swaggerOptions } from '@config'
@@ -17,6 +18,7 @@ const swaggerDocumentV1 = YAML.load('./src/api/v1/docs/swagger.yaml')
 // Middlewares
 app.use(express.json())
 app.use(express.text())
+app.use(cors())
 app.use(
   '/',
   morgan((tokens, req, res) => {

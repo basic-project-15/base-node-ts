@@ -1,5 +1,4 @@
 # Base-Node-TS
-Version: v0.3.0
 
 ## Steps to follow
 1. Clone the project.
