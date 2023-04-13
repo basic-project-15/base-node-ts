@@ -78,7 +78,7 @@ const deletePermission = async (req: Request, res: Response) => {
     await Promise.all(
       users.map(async user => {
         const permissionIndex = user.permissions.findIndex(
-          permission => permission._id.toString() === idPermission,
+          permission => permission.id.toString() === idPermission,
         )
         if (permissionIndex >= 0) {
           user.permissions.splice(permissionIndex, 1)
