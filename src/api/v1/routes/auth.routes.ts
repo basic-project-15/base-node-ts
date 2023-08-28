@@ -1,11 +1,10 @@
 import { Router } from 'express'
 import { authControllers } from '@api/v1/controllers'
-import { usersDto } from '@middlewares/validations'
-import { authBasic } from '@middlewares/authentication'
+import { authBasic } from '@api/v1/middlewares'
 
 const authRoutes = Router()
 
 /* Auth */
-authRoutes.post('/login', authBasic, usersDto.login, authControllers.login)
+authRoutes.post('/login', authBasic, authControllers.login)
 
 export default authRoutes

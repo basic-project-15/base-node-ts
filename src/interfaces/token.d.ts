@@ -1,5 +1,7 @@
+import { Role } from './roles'
+
 export interface UserToken {
-  id: string
+  _id: string
   email: string
-  role: string
+  role: Role
 }

@@ -1,4 +1,4 @@
-import { usersModels } from '@common/models'
+import { rolesModels } from '@common/models'
 import { Roles } from '@common/types'
 import { DataResponse, UserToken } from '@interfaces'
 import { Request, Response, NextFunction } from 'express'
@@ -9,15 +9,15 @@ const authorization = async (
   next: NextFunction,
 ) => {
   const dataResponse: DataResponse = { message: '', data: null }
-  const userToken: UserToken = req.user
+  const userToken: UserToken = req.userToken
   const { t } = req
-  if (userToken.role === Roles.SuperAdmin) return next()
-  const paths: string[] = req.baseUrl.split('/')
-  const path: string = paths[paths.length - 1]
-  const method: string = req.method
-  const user = await usersModels.findById(userToken.id).exec()
-  const permission = user?.permissions.find(
-    permission => permission.path === path && permission.method === method,
+  if (userToken.role.type === Roles.SuperAdmin) return next()
+  const urlArray: string[] = req.baseUrl.split('/')
+  const path: string = urlArray[urlArray.length - 1]
+  const action: string = req.method
+  const role = await rolesModels.findById(userToken.role._id).exec()
+  const permission = role?.permissions.find(
+    permission => permission.module === path && permission.action === action,
   )
   if (!permission) {
     dataResponse.message = t('RES_Forbiden')

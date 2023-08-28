@@ -1,17 +1,17 @@
 import mongoose from 'mongoose'
 
 const usersSchemas = new mongoose.Schema({
-  name: { type: String, required: true, minLength: 2, maxLenght: 100 },
-  email: { type: String, required: true, maxLenght: 100 },
-  password: { type: String, required: true },
-  role: { type: String, required: true, maxLenght: 50 },
-  permissions: [
-    {
-      id: { type: mongoose.Schema.Types.ObjectId, required: true },
-      path: { type: String, required: true },
-      method: { type: String, required: true },
-    },
-  ],
+  firstName: { type: String, required: true, maxLenght: 100 },
+  lastName: { type: String, required: true, maxLenght: 100 },
+  email: { type: String, required: true, maxLenght: 50 },
+  phoneNumber: { type: String, required: true, maxLenght: 30 },
+  password: { type: String, required: true, maxLenght: 100 },
+  photo: { type: String, required: true, maxLenght: 255 },
+  created_at: { type: Date, required: true, maxLenght: 50 },
+  created_by: { type: mongoose.Schema.Types.ObjectId },
+  updated_at: { type: Date, required: true, maxLenght: 50 },
+  updated_by: { type: mongoose.Schema.Types.ObjectId },
+  idRole: { type: mongoose.Schema.Types.ObjectId },
 })
 
 const usersModels = mongoose.model('users', usersSchemas)

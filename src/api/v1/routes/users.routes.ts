@@ -1,43 +1,33 @@
 import { Router } from 'express'
 import { usersControllers } from '@api/v1/controllers'
-import { usersDto } from '@middlewares/validations'
-import { authorization, authToken } from '@middlewares/authentication'
+import { authorization, authentication } from '@api/v1/middlewares'
 
 const usersRoutes = Router()
 
-usersRoutes.get('/', authToken, authorization, usersControllers.getUsers)
-usersRoutes.get('/:idUser', authToken, authorization, usersControllers.getUser)
+usersRoutes.get('/', authentication, authorization, usersControllers.getUsers)
+usersRoutes.get(
+  '/:idUser',
+  authentication,
+  authorization,
+  usersControllers.getUser,
+)
 usersRoutes.post(
   '/',
-  authToken,
+  authentication,
   authorization,
-  usersDto.createUser,
   usersControllers.createUser,
 )
 usersRoutes.patch(
   '/:idUser',
-  authToken,
+  authentication,
   authorization,
-  usersDto.updateUser,
   usersControllers.updateUser,
 )
 usersRoutes.delete(
   '/:idUser',
-  authToken,
+  authentication,
   authorization,
   usersControllers.deleteUser,
-)
-usersRoutes.patch(
-  '/:idUser/assignPermission',
-  authToken,
-  authorization,
-  usersControllers.assignPermission,
-)
-usersRoutes.patch(
-  '/:idUser/removePermission',
-  authToken,
-  authorization,
-  usersControllers.removePermission,
 )
 
 export default usersRoutes

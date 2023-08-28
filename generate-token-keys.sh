@@ -23,7 +23,7 @@ fi
 
 # Generate keys
 echo "Generating public and private keys"
-openssl genrsa -aes128 -passout pass:$JWT_PASSPHRASE -out private.key 512
+openssl genrsa -aes128 -passout pass:$JWT_PASSPHRASE -out private.key 2048
 openssl rsa -in private.key -passin pass:$JWT_PASSPHRASE -pubout -out public.key
 
 # Move keys

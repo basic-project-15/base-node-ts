@@ -3,7 +3,11 @@ import { usersModels } from '@common/models'
 import { jwt } from '@core/helpers'
 import { DataResponse } from '@interfaces'
 
-const authToken = async (req: Request, res: Response, next: NextFunction) => {
+const authentication = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { t } = req
   try {
@@ -22,12 +26,12 @@ const authToken = async (req: Request, res: Response, next: NextFunction) => {
     const userToken = jwt.verifyToken(token)
 
     // Validation user
-    const user = await usersModels.findById(userToken.id).exec()
+    const user = await usersModels.findById(userToken._id).exec()
     if (!user) {
       dataResponse.message = t('RES_InvalidToken')
       return res.status(401).send(dataResponse)
     }
-    req.user = userToken
+    req.userToken = userToken
     return next()
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
@@ -43,4 +47,4 @@ const authToken = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
-export default authToken
+export default authentication

@@ -18,7 +18,7 @@ const verifyToken = (token: string): UserToken => {
     jwtVerifyOptions,
   )
   const userToken: UserToken = {
-    id: tokenVerificated.id,
+    _id: tokenVerificated._id,
     email: tokenVerificated.email,
     role: tokenVerificated.role,
   }

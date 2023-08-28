@@ -37,7 +37,6 @@
               "@core": "./src/core",
               "@interfaces": "./src/interfaces",
               "@languages": "./src/languages",
-              "@middlewares": "./src/middlewares",
               "@services": "./src/services"
             }
           }
