@@ -107,7 +107,7 @@ const createUser = async (req: Request, res: Response) => {
       dataResponse.message = t('USERS_AlreadyExists')
       return res.status(409).send(dataResponse)
     }
-    if (body.idRole && !roleFound) {
+    if (!roleFound) {
       dataResponse.message = t('ROLES_NotFound')
       return res.status(404).send(dataResponse)
     }
@@ -233,7 +233,7 @@ const updateUser = async (req: Request, res: Response) => {
       newPassword = await hash(body.password, bcryptSalt)
     }
     await usersModels.updateOne(
-      { _id: userFoundById.id },
+      { _id: userFoundById._id },
       {
         $set: {
           firstName: body.firstName || userFoundById.firstName,
