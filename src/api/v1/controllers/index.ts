@@ -1,3 +1,9 @@
-export { default as authControllers } from './auth.controllers'
-export { default as usersControllers } from './users.controllers'
-export { default as rolesControllers } from './roles.controllers'
+import * as auth from './auth.controllers'
+import * as users from './users.controllers'
+import * as roles from './roles.controllers'
+
+export const CONTROLLERS = {
+  auth,
+  users,
+  roles,
+}

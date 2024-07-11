@@ -1,45 +1,49 @@
 import { Router } from 'express'
-import { rolesControllers } from '@api/v1/controllers'
-import { authorization, authentication } from '@api/v1/middlewares'
+import { MIDDLEWARES, CONTROLLERS } from '@api/v1'
 
-const rolesRoutes = Router()
+const routes = Router()
 
-rolesRoutes.get('/', authentication, authorization, rolesControllers.getRoles)
-rolesRoutes.get(
-  '/:idRole',
-  authentication,
-  authorization,
-  rolesControllers.getRole,
-)
-rolesRoutes.post(
+routes.get(
   '/',
-  authentication,
-  authorization,
-  rolesControllers.createRole,
+  MIDDLEWARES.authentication.token,
+  MIDDLEWARES.authorization.token,
+  CONTROLLERS.roles.getRoles,
 )
-rolesRoutes.patch(
+routes.get(
   '/:idRole',
-  authentication,
-  authorization,
-  rolesControllers.updateRole,
+  MIDDLEWARES.authentication.token,
+  MIDDLEWARES.authorization.token,
+  CONTROLLERS.roles.getRole,
 )
-rolesRoutes.delete(
+routes.post(
+  '/',
+  MIDDLEWARES.authentication.token,
+  MIDDLEWARES.authorization.token,
+  CONTROLLERS.roles.createRole,
+)
+routes.patch(
   '/:idRole',
-  authentication,
-  authorization,
-  rolesControllers.deleteRole,
+  MIDDLEWARES.authentication.token,
+  MIDDLEWARES.authorization.token,
+  CONTROLLERS.roles.updateRole,
 )
-rolesRoutes.patch(
+routes.delete(
+  '/:idRole',
+  MIDDLEWARES.authentication.token,
+  MIDDLEWARES.authorization.token,
+  CONTROLLERS.roles.deleteRole,
+)
+routes.patch(
   '/:idRole/assignPermission',
-  authentication,
-  authorization,
-  rolesControllers.assignPermission,
+  MIDDLEWARES.authentication.token,
+  MIDDLEWARES.authorization.token,
+  CONTROLLERS.roles.assignPermission,
 )
-rolesRoutes.patch(
+routes.patch(
   '/:idRole/removePermission',
-  authentication,
-  authorization,
-  rolesControllers.removePermission,
+  MIDDLEWARES.authentication.token,
+  MIDDLEWARES.authorization.token,
+  CONTROLLERS.roles.removePermission,
 )
 
-export default rolesRoutes
+export default routes

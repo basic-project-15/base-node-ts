@@ -1,33 +1,37 @@
 import { Router } from 'express'
-import { usersControllers } from '@api/v1/controllers'
-import { authorization, authentication } from '@api/v1/middlewares'
+import { MIDDLEWARES, CONTROLLERS } from '@api/v1'
 
-const usersRoutes = Router()
+const routes = Router()
 
-usersRoutes.get('/', authentication, authorization, usersControllers.getUsers)
-usersRoutes.get(
-  '/:idUser',
-  authentication,
-  authorization,
-  usersControllers.getUser,
-)
-usersRoutes.post(
+routes.get(
   '/',
-  authentication,
-  authorization,
-  usersControllers.createUser,
+  MIDDLEWARES.authentication.token,
+  MIDDLEWARES.authorization.token,
+  CONTROLLERS.users.getUsers,
 )
-usersRoutes.patch(
+routes.get(
   '/:idUser',
-  authentication,
-  authorization,
-  usersControllers.updateUser,
+  MIDDLEWARES.authentication.token,
+  MIDDLEWARES.authorization.token,
+  CONTROLLERS.users.getUser,
 )
-usersRoutes.delete(
+routes.post(
+  '/',
+  MIDDLEWARES.authentication.token,
+  MIDDLEWARES.authorization.token,
+  CONTROLLERS.users.createUser,
+)
+routes.patch(
   '/:idUser',
-  authentication,
-  authorization,
-  usersControllers.deleteUser,
+  MIDDLEWARES.authentication.token,
+  MIDDLEWARES.authorization.token,
+  CONTROLLERS.users.updateUser,
+)
+routes.delete(
+  '/:idUser',
+  MIDDLEWARES.authentication.token,
+  MIDDLEWARES.authorization.token,
+  CONTROLLERS.users.deleteUser,
 )
 
-export default usersRoutes
+export default routes

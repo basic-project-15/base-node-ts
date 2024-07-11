@@ -1,3 +1,9 @@
-export { default as authRoutes } from './auth.routes'
-export { default as usersRoutes } from './users.routes'
-export { default as rolesRoutes } from './roles.routes'
+import auth from './auth.routes'
+import users from './users.routes'
+import roles from './roles.routes'
+
+export const ROUTES = {
+  auth,
+  users,
+  roles,
+}

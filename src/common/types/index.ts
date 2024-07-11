@@ -1,3 +1,3 @@
-export { default as Roles } from './roles'
-export { default as Actions } from './actions'
-export { default as Modules } from './modules'
+export * from './roles'
+export * from './actions'
+export * from './endpoints'

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const rolesSchemas = new mongoose.Schema({
+const schema = new mongoose.Schema({
   type: { type: String, required: true, maxLenght: 25 },
   description: { type: String, required: true, maxLenght: 50 },
   permissions: [
@@ -12,6 +12,6 @@ const rolesSchemas = new mongoose.Schema({
   ],
 })
 
-const rolesModels = mongoose.model('roles', rolesSchemas)
+const model = mongoose.model('roles', schema)
 
-export default rolesModels
+export default model

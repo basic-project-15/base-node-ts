@@ -1,14 +1,14 @@
-import { Request, Response } from 'express'
-import { DataResponse } from '@interfaces'
-import { permissionsModels, rolesModels, usersModels } from '@common/models'
+import type { Request, Response } from 'express'
 import mongoose from 'mongoose'
-import { Roles } from '@common/types'
+import type { DataResponse } from '@interfaces'
+import { ROLES } from '@common'
+import { MODELS } from '@api/v1'
 
-const getRoles = async (req: Request, res: Response) => {
+export const getRoles = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { t } = req
   try {
-    const roles = await rolesModels.aggregate([
+    const roles = await MODELS.Roles.aggregate([
       {
         $project: {
           id: 1,
@@ -27,15 +27,15 @@ const getRoles = async (req: Request, res: Response) => {
   }
 }
 
-const getRole = async (req: Request, res: Response) => {
+export const getRole = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { t } = req
   const idRole: string = req.params.idRole
   try {
-    const roleFound = await rolesModels.findById(idRole).exec()
+    const roleFound = await MODELS.Roles.findById(idRole).exec()
 
     // Validations
-    if (!roleFound) {
+    if (roleFound == null) {
       dataResponse.message = t('ROLES_NotFound')
       return res.status(404).send(dataResponse)
     }
@@ -50,25 +50,25 @@ const getRole = async (req: Request, res: Response) => {
   }
 }
 
-const createRole = async (req: Request, res: Response) => {
+export const createRole = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { body, t } = req
   try {
     // Validations
-    const roleFound = await rolesModels
-      .findOne({ description: body.description })
-      .exec()
-    if (roleFound) {
+    const roleFound = await MODELS.Roles.findOne({
+      description: body.description,
+    }).exec()
+    if (roleFound != null) {
       dataResponse.message = t('ROLES_AlreadyExists')
       return res.status(409).send(dataResponse)
     }
     // - No debe existir otro rol con la misma descripción.
     const newRol = {
-      type: Roles.Admin,
+      type: ROLES.Admin,
       description: body.description,
       permissions: [],
     }
-    const rolModel = new rolesModels(newRol)
+    const rolModel = new MODELS.Roles(newRol)
     await rolModel.save()
     dataResponse.message = t('ROLES_CreateRole')
     dataResponse.data = { _id: rolModel.id, ...newRol }
@@ -80,23 +80,23 @@ const createRole = async (req: Request, res: Response) => {
   }
 }
 
-const updateRole = async (req: Request, res: Response) => {
+export const updateRole = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { body, t } = req
   const idRole: string = req.params.idRole
   try {
-    const roleFoundById = await rolesModels.findById(idRole).exec()
-    const roleFoundByDescription = await rolesModels
-      .findOne({ description: body.description })
-      .exec()
+    const roleFoundById = await MODELS.Roles.findById(idRole).exec()
+    const roleFoundByDescription = await MODELS.Roles.findOne({
+      description: body.description,
+    }).exec()
 
     // Validations
-    if (!roleFoundById) {
+    if (roleFoundById == null) {
       dataResponse.message = t('ROLES_NotFound')
       return res.status(404).send(dataResponse)
     }
     if (
-      roleFoundByDescription?.description &&
+      roleFoundByDescription?.description != null &&
       roleFoundByDescription.description !== roleFoundById?.description
     ) {
       dataResponse.message = t('ROLES_AlreadyExists')
@@ -104,9 +104,9 @@ const updateRole = async (req: Request, res: Response) => {
     }
 
     // Actions
-    await rolesModels.updateOne(
+    await MODELS.Roles.updateOne(
       { _id: roleFoundById.id },
-      { $set: { description: body.description || roleFoundById.description } },
+      { $set: { description: body.description ?? roleFoundById.description } },
     )
 
     // Actions
@@ -119,27 +119,27 @@ const updateRole = async (req: Request, res: Response) => {
   }
 }
 
-const deleteRole = async (req: Request, res: Response) => {
+export const deleteRole = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { t } = req
   const idRole: string = req.params.idRole
   try {
-    const roleFound = await rolesModels.findById(idRole).exec()
+    const roleFound = await MODELS.Roles.findById(idRole).exec()
 
     // Validations
-    if (!roleFound) {
+    if (roleFound == null) {
       dataResponse.message = t('ROLES_NotFound')
       return res.status(404).send(dataResponse)
     }
 
-    const usersWithIdRol = await usersModels.find({ idRole }).exec()
-    if (usersWithIdRol.length) {
-      dataResponse.message = t('ROLES_NotFound')
+    const usersWithIdRol = await MODELS.Users.find({ idRole }).exec()
+    if (usersWithIdRol.length > 0) {
+      dataResponse.message = t('ROLES_RoleAlreadyUsed')
       return res.status(404).send(dataResponse)
     }
 
     // Actions
-    await rolesModels.deleteOne({ _id: new mongoose.mongo.ObjectId(idRole) })
+    await MODELS.Roles.deleteOne({ _id: new mongoose.mongo.ObjectId(idRole) })
     dataResponse.message = t('ROLES_DeleteRole')
     return res.status(200).send(dataResponse)
   } catch (error) {
@@ -149,32 +149,32 @@ const deleteRole = async (req: Request, res: Response) => {
   }
 }
 
-const assignPermission = async (req: Request, res: Response) => {
+export const assignPermission = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { body, t } = req
   const idRole: string = req.params.idRole
   const { idPermission } = body
   try {
-    const role = await rolesModels.findById(idRole).exec()
-    const permission = await permissionsModels.findById(idPermission).exec()
+    const role = await MODELS.Roles.findById(idRole).exec()
+    const permission = await MODELS.Permissions.findById(idPermission).exec()
 
     // Validations
-    if (!role) {
+    if (role == null) {
       dataResponse.message = t('ROLES_NotFound')
       return res.status(404).send(dataResponse)
     }
-    if (!permission) {
+    if (permission == null) {
       dataResponse.message = t('Permissions_NotFound')
       return res.status(404).send(dataResponse)
     }
     const permissionFind = role.permissions.find(
       permission => permission._id.toString() === idPermission,
     )
-    if (permissionFind) {
+    if (permissionFind != null) {
       dataResponse.message = t('ROLES_AlreadyAssignPermission')
       return res.status(409).send(dataResponse)
     }
-    if (role.type === Roles.SuperAdmin) {
+    if (role.type === ROLES.SuperAdmin) {
       dataResponse.message = t('ROLES_PermissionSuperAdmin')
       return res.status(400).send(dataResponse)
     }
@@ -196,28 +196,28 @@ const assignPermission = async (req: Request, res: Response) => {
   }
 }
 
-const removePermission = async (req: Request, res: Response) => {
+export const removePermission = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { body, t } = req
   const idRole: string = req.params.idRole
   const { idPermission } = body
   try {
-    const role = await rolesModels.findById(idRole).exec()
-    const permission = await permissionsModels.findById(idPermission).exec()
+    const role = await MODELS.Roles.findById(idRole).exec()
+    const permission = await MODELS.Permissions.findById(idPermission).exec()
 
     // Validations
-    if (!role) {
+    if (role == null) {
       dataResponse.message = t('ROLES_NotFound')
       return res.status(404).send(dataResponse)
     }
-    if (!permission) {
+    if (permission == null) {
       dataResponse.message = t('Permissions_NotFound')
       return res.status(404).send(dataResponse)
     }
     const permissionFind = role.permissions.find(
       permission => permission._id.toString() === idPermission,
     )
-    if (!permissionFind) {
+    if (permissionFind == null) {
       dataResponse.message = t('ROLES_AlreadyRemovePermission')
       return res.status(409).send(dataResponse)
     }
@@ -236,14 +236,4 @@ const removePermission = async (req: Request, res: Response) => {
     dataResponse.data = error
     return res.status(500).send(dataResponse)
   }
-}
-
-export default {
-  getRoles,
-  getRole,
-  createRole,
-  updateRole,
-  deleteRole,
-  assignPermission,
-  removePermission,
 }

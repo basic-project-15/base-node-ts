@@ -1,7 +1,5 @@
-enum Roles {
-  SuperAdmin = 'super-admin',
-  Admin = 'admin',
-  User = 'user',
+export const ROLES = {
+  SuperAdmin: 'super-admin',
+  Admin: 'admin',
+  User: 'user',
 }
-
-export default Roles

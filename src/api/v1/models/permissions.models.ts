@@ -1,10 +1,10 @@
 import mongoose from 'mongoose'
 
-const permissionsSchemas = new mongoose.Schema({
+const schema = new mongoose.Schema({
   module: { type: String, required: true, minLength: 2, maxLenght: 25 },
   action: { type: String, required: true, minLength: 3, maxLenght: 10 },
 })
 
-const permissionsModels = mongoose.model('permissions', permissionsSchemas)
+const model = mongoose.model('permissions', schema)
 
-export default permissionsModels
+export default model

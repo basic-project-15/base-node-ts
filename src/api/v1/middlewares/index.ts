@@ -1,4 +1,9 @@
-export { default as authBasic } from './authBasic'
-export { default as authentication } from './authentication'
-export { default as authorization } from './authorization'
-export { default as languagesDto } from './languages.dto'
+import * as authentication from './authentication'
+import * as authorization from './authorization'
+import * as languages from './languages'
+
+export const MIDDLEWARES = {
+  authentication,
+  authorization,
+  languages,
+}

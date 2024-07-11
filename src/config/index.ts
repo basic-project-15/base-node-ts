@@ -1,3 +1,3 @@
-export { default as connectDB } from './database.config'
-export { bcryptSalt } from './bcrypt.config'
-export { jwtSingOptions, jwtVerifyOptions } from './jwt.config'
+export * as mongodb from './mongodb.config'
+export * as bcrypt from './bcrypt.config'
+export * as jwt from './jwt.config'

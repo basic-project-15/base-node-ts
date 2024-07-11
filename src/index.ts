@@ -2,9 +2,9 @@ import express from 'express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
 import cors from 'cors'
-import { connectDB } from '@config'
-import v1Routes from '@api/v1'
-import v2Routes from '@api/v2'
+import { mongodb } from '@config'
+import { v1Routes } from '@api/v1'
+import { v2Routes } from '@api/v2'
 
 dotenv.config()
 const PORT = process.env.PORT ?? 3000
@@ -43,10 +43,10 @@ app.use('/api/v1', v1Routes)
 app.use('/api/v2', v2Routes)
 
 const bootstrap = async () => {
-  await connectDB()
+  await mongodb.connectDB()
   app.listen(PORT, () => {
     console.log(`Server running on ${SERVER_URL_NAME}`)
   })
 }
 
-bootstrap()
+void bootstrap()

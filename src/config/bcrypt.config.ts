@@ -1,1 +1,1 @@
-export const bcryptSalt = 12
+export const SALT = 12

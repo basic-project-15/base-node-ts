@@ -9,10 +9,15 @@
     "build": "tsc && tsc-alias",
     "test": "echo \"Error: no test specified\" && exit 1",
     "commit": "git add . && npx gitmoji -c",
+    "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
     "format": "npx prettier --write .",
     "format-check": "npx prettier --check .",
     "generate-token-keys": "sh generate-token-keys.sh",
-    "generate-token-keys:local": "sh generate-token-keys.sh local"
+    "generate-token-keys:local": "sh generate-token-keys.sh local",
+    "generate-credentials:local": "sh generate-environment-credentials.sh local",
+    "generate-credentials:dev": "sh generate-environment-credentials.sh dev",
+    "generate-credentials:qa": "sh generate-environment-credentials.sh qa",
+    "generate-credentials:prod": "sh generate-environment-credentials.sh prod"
   },
   "keywords": [
     "mvc",
@@ -35,10 +40,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@sinclair/typebox": "0.28.15",
-    "ajv": "8.12.0",
-    "ajv-errors": "3.0.0",
-    "ajv-formats": "2.1.1",
     "basic-auth": "2.0.1",
     "bcrypt": "5.1.0",
     "cors": "2.8.5",

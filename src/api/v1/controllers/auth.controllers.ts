@@ -1,22 +1,21 @@
-import { Request, Response } from 'express'
+import type { Request, Response } from 'express'
 import { compare } from 'bcrypt'
-import { DataResponse } from '@interfaces'
-import { rolesModels, usersModels } from '@common/models'
-import { jwt } from '@core/helpers'
-import { Role } from '@interfaces'
+import type { DataResponse, Role } from '@interfaces'
+import { jwt } from '@config'
+import { MODELS } from '@api/v1'
 
-const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { body, t } = req
   try {
     // Validations
-    const user = await usersModels.findOne({ email: body.email }).exec()
-    const roleFound = await rolesModels.findById(user?.idRole).exec()
-    if (!user) {
+    const user = await MODELS.Users.findOne({ email: body.email }).exec()
+    const roleFound = await MODELS.Roles.findById(user?.idRole).exec()
+    if (user == null) {
       dataResponse.message = t('RES_InvalidCredentials')
       return res.status(401).send(dataResponse)
     }
-    if (!roleFound) {
+    if (roleFound == null) {
       dataResponse.message = t('RES_ServerError')
       return res.status(500).send(dataResponse)
     }
@@ -59,5 +58,3 @@ const login = async (req: Request, res: Response) => {
     return res.status(500).send(dataResponse)
   }
 }
-
-export default { login }

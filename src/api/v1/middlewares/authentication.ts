@@ -1,13 +1,32 @@
-import { Response, NextFunction, Request } from 'express'
-import { usersModels } from '@common/models'
-import { jwt } from '@core/helpers'
-import { DataResponse } from '@interfaces'
+import type { Response, NextFunction, Request } from 'express'
+import auth from 'basic-auth'
+import type { DataResponse } from '@interfaces'
+import { jwt } from '@config'
+import { MODELS } from '@api/v1'
 
-const authentication = async (
+export const basic = (req: Request, res: Response, next: NextFunction): any => {
+  const dataResponse: DataResponse = { message: '', data: null }
+  const { t } = req
+  const user = auth(req)
+  const email: string = user?.name ?? ''
+  const password: string = user?.pass ?? ''
+  if (
+    email.length === 0 ||
+    password.length === 0 ||
+    email !== process.env.BASIC_AUTH_EMAIL ||
+    password !== process.env.BASIC_AUTH_PASSWORD
+  ) {
+    dataResponse.message = t('RES_Application')
+    return res.status(401).send(dataResponse)
+  }
+  next()
+}
+
+export const token = async (
   req: Request,
   res: Response,
   next: NextFunction,
-) => {
+): Promise<any> => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { t } = req
   try {
@@ -18,7 +37,7 @@ const authentication = async (
       return res.status(401).send(dataResponse)
     }
     const token: string = headerToken.replace('Bearer ', '')
-    if (!token) {
+    if (token.length === 0) {
       dataResponse.message = t('RES_InvalidToken')
       return res.status(401).send(dataResponse)
     }
@@ -26,13 +45,13 @@ const authentication = async (
     const userToken = jwt.verifyToken(token)
 
     // Validation user
-    const user = await usersModels.findById(userToken._id).exec()
-    if (!user) {
+    const user = await MODELS.Users.findById(userToken._id).exec()
+    if (user == null) {
       dataResponse.message = t('RES_InvalidToken')
       return res.status(401).send(dataResponse)
     }
     req.userToken = userToken
-    return next()
+    next()
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
       dataResponse.message = t('RES_ExpiredToken')
@@ -46,5 +65,3 @@ const authentication = async (
     return res.status(500).send(dataResponse)
   }
 }
-
-export default authentication

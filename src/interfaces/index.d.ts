@@ -1,4 +1,4 @@
-import { UserToken } from './token'
+import type { UserToken } from './token'
 
 declare global {
   namespace Express {
@@ -9,8 +9,8 @@ declare global {
   }
 }
 
-export { Permission } from './permissions'
-export { DataResponse } from './response'
-export { Role } from './role'
-export { UserToken } from './token'
-export { User, UserCreate, UserProfile, UserLogin } from './users'
+export type * from './permissions'
+export type * from './response'
+export type * from './roles'
+export type * from './token'
+export type * from './users'

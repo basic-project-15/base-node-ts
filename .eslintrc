@@ -24,26 +24,9 @@
     }
   },
   "rules": {
-    "import/no-unresolved": [
-      "error",
-      {
-        "plugins": [
-          "module-resolve",
-          {
-            "alias": {
-              "@api": "./src/api",
-              "@common": "./src/common",
-              "@config": "./src/config",
-              "@core": "./src/core",
-              "@interfaces": "./src/interfaces",
-              "@languages": "./src/languages",
-              "@services": "./src/services"
-            }
-          }
-        ]
-      }
-    ],
     "prettier/prettier": "warn",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-misused-promises": "off"
   }
 }

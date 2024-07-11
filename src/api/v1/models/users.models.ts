@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const usersSchemas = new mongoose.Schema({
+const schema = new mongoose.Schema({
   firstName: { type: String, required: true, maxLenght: 100 },
   lastName: { type: String, required: true, maxLenght: 100 },
   email: { type: String, required: true, maxLenght: 50 },
@@ -14,6 +14,6 @@ const usersSchemas = new mongoose.Schema({
   idRole: { type: mongoose.Schema.Types.ObjectId },
 })
 
-const usersModels = mongoose.model('users', usersSchemas)
+const model = mongoose.model('users', schema)
 
-export default usersModels
+export default model
