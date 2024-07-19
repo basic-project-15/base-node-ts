@@ -4,6 +4,8 @@
     "skipLibCheck": true,
     "module": "commonjs",
     "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "baseUrl": ".",
     "paths": {
       "@api": ["./src/api"],
