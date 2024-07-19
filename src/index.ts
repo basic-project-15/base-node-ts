@@ -7,6 +7,7 @@ import { v1Routes } from '@api/v1'
 import { v2Routes } from '@api/v2'
 
 dotenv.config()
+
 const PORT = process.env.PORT ?? 3000
 const SERVER_URL_NAME = process.env.SERVER_URL_NAME ?? ''
 const app = express()

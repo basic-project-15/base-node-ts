@@ -1,11 +1,3 @@
-// index.ts
-
-import Users from './users.models'
-import Roles from './roles.models'
-import Permissions from './permissions.models'
-
-export const MODELS = {
-  Users,
-  Roles,
-  Permissions,
-}
+export * from './user.model'
+export * from './role.model'
+export * from './permission.model'

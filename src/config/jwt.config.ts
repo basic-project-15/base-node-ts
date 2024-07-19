@@ -2,13 +2,16 @@ import * as fs from 'fs'
 import jwt from 'jsonwebtoken'
 import type { Secret, SignOptions, VerifyOptions } from 'jsonwebtoken'
 import type { UserToken } from '@interfaces'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const privateKeyFile: Buffer = fs.readFileSync('./certs/private.key')
 const publicKeyFile: Buffer = fs.readFileSync('./certs/public.key')
 
 const jwtSingOptions: SignOptions = {
   algorithm: 'RS256',
-  expiresIn: '30d',
+  expiresIn: '1d',
 }
 
 const jwtVerifyOptions: VerifyOptions = {
@@ -31,8 +34,7 @@ export const verifyToken = (token: string): UserToken => {
   )
   const userToken: UserToken = {
     _id: tokenVerificated._id,
-    email: tokenVerificated.email,
-    role: tokenVerificated.role,
+    passwordVersion: tokenVerificated.passwordVersion,
   }
   return userToken
 }

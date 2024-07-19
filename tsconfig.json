@@ -32,6 +32,6 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true
   },
-  "include": ["./src/**/*", "./tsconfig.json"],
+  "include": ["./src/**/*", "./seed", "./tsconfig.json"],
   "exclude": ["node_modules"]
 }

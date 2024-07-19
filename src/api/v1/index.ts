@@ -1,5 +1,4 @@
 export * from './controllers'
 export * from './models'
 export * from './middlewares'
-export * from './routes'
-export { default as v1Routes } from './index.routes'
+export { default as v1Routes } from './routes'

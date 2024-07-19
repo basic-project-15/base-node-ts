@@ -1,9 +1,3 @@
-import * as authentication from './authentication'
-import * as authorization from './authorization'
-import * as languages from './languages'
-
-export const MIDDLEWARES = {
-  authentication,
-  authorization,
-  languages,
-}
+export * from './authentication.middleware'
+export * from './authorization.middleware'
+export * from './languages.middleware'
