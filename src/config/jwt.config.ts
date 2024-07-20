@@ -34,6 +34,7 @@ export const verifyToken = (token: string): UserToken => {
   )
   const userToken: UserToken = {
     _id: tokenVerificated._id,
+    email: tokenVerificated.email,
     passwordVersion: tokenVerificated.passwordVersion,
   }
   return userToken

@@ -12,4 +12,5 @@ declare global {
 export type * from './models'
 export type * from './methods'
 export type * from './response'
+export type * from './sendEmails'
 export type * from './token'

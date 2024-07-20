@@ -61,6 +61,7 @@ export const login = async (req: Request, res: Response) => {
     delete user.password
     const token = jwt.generateToken({
       _id: user._id,
+      email: user.email,
       passwordVersion: user.passwordVersion,
     })
     dataResponse.message = t('USER_AUTHENTICATED')
