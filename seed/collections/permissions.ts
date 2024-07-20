@@ -1,4 +1,4 @@
-import { PermissionModel } from '@api/v1'
+import { PermissionModel } from '@api'
 import type { IPermission } from '@interfaces'
 
 export const createPermissions = async () => {

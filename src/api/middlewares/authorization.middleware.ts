@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express'
 import type { DataResponse, IRole, UserToken } from '@interfaces'
-import { UserModel } from '@api/v1'
+import { UserModel } from '@api'
 import { METHOD_ACTIONS } from '@common'
 
 const verifyPermissions = (path: string, method: string, roles: IRole[]) => {

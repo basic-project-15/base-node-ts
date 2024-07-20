@@ -1,23 +1,26 @@
 import type { Request, Response } from 'express'
 import type { DataResponse } from '@interfaces'
-import { RoleModel } from '@api/v1'
+import { UserModel } from '@api'
 
-export const getRoles = async (req: Request, res: Response) => {
+export const getUsers = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { t } = req
   try {
-    const roles = await RoleModel.aggregate([
+    const users = await UserModel.aggregate([
       {
         $project: {
           id: 1,
-          type: 1,
-          description: 1,
+          name: 1,
+          surname: 1,
+          userName: 1,
+          email: 1,
+          phoneNumber: 1,
           state: 1,
         },
       },
     ])
-    dataResponse.message = t('ROLES_LISTED')
-    dataResponse.data = roles
+    dataResponse.message = t('USERS_LISTED')
+    dataResponse.data = users
     return res.status(200).send(dataResponse)
   } catch (error) {
     dataResponse.message = t('RES_SERVER_ERROR')

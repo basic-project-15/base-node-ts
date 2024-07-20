@@ -1,13 +1,13 @@
 import type { Request, Response } from 'express'
 import type { DataResponse } from '@interfaces'
-import { RoleModel } from '@api/v1'
+import { UserModel } from '@api'
 
-export const getRoleById = async (req: Request, res: Response) => {
+export const getUserById = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { params, t } = req
-  const idRole: string = params.idRole
+  const idUser: string = params.idUser
   try {
-    const roleFoundById = await RoleModel.findById(idRole).populate([
+    const userFoundById = await UserModel.findById(idUser).populate([
       {
         path: 'created_by',
         select: '_id email',
@@ -17,13 +17,13 @@ export const getRoleById = async (req: Request, res: Response) => {
         select: '_id email',
       },
     ])
-    if (roleFoundById == null) {
-      dataResponse.message = t('ROLE_NOT_FOUND')
+    if (userFoundById == null) {
+      dataResponse.message = t('USER_NOT_FOUND')
       return res.status(404).send(dataResponse)
     }
 
-    dataResponse.message = t('ROLE_FOUND')
-    dataResponse.data = roleFoundById
+    dataResponse.message = t('USER_FOUND')
+    dataResponse.data = userFoundById
     return res.status(200).send(dataResponse)
   } catch (error) {
     dataResponse.message = t('RES_SERVER_ERROR')

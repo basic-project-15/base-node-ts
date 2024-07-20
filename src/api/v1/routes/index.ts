@@ -4,7 +4,7 @@ import {
   AuthenticationMiddleware,
   AuthorizationMiddleware,
   LanguagesMiddleware,
-} from '@api/v1'
+} from '@api'
 import auth from './auth.routes'
 import security from './security'
 

@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 import { Types } from 'mongoose'
 import type { DataResponse } from '@interfaces'
-import { RoleModel, PermissionModel } from '@api/v1'
+import { RoleModel, PermissionModel } from '@api'
 
 export const assignPermission = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }

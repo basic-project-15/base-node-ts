@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 import type { DataResponse } from '@interfaces'
-import { UserModel } from '@api/v1'
+import { UserModel } from '@api'
 
 export const deleteUser = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }

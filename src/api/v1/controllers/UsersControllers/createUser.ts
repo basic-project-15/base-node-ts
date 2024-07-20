@@ -3,7 +3,7 @@ import { hash } from 'bcrypt'
 import { Types } from 'mongoose'
 import type { DataResponse, IUser } from '@interfaces'
 import { bcrypt } from '@config'
-import { UserModel } from '@api/v1'
+import { UserModel } from '@api'
 
 export const createUser = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }

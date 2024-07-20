@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 import { compare } from 'bcrypt'
 import type { DataResponse } from '@interfaces'
 import { jwt } from '@config'
-import { UserModel } from '@api/v1'
+import { UserModel } from '@api'
 
 export const login = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }

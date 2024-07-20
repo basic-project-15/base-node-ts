@@ -1,17 +1,17 @@
 import type { Request, Response } from 'express'
 import { Types } from 'mongoose'
 import type { DataResponse } from '@interfaces'
-import { UserModel } from '@api/v1'
+import { UserModel, RoleModel } from '@api'
 
-export const updateUser = async (req: Request, res: Response) => {
+export const removeRole = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { body, params, t, userToken } = req
   const idUser: string = params.idUser
+  const { idRole } = body
+
   try {
     const userFoundById = await UserModel.findById(idUser).populate('roleIds')
-    const userFoundByEmail = await UserModel.findOne({
-      email: body.email,
-    })
+    const roleFoundById = await RoleModel.findById(idRole)
     const currentUser = await UserModel.findById(userToken._id).populate(
       'roleIds',
     )
@@ -20,12 +20,9 @@ export const updateUser = async (req: Request, res: Response) => {
       dataResponse.message = t('USER_NOT_FOUND')
       return res.status(404).send(dataResponse)
     }
-    if (
-      userFoundByEmail?.email != null &&
-      userFoundByEmail.email !== userFoundById.email
-    ) {
-      dataResponse.message = t('USER_ALREADY_EXISTS')
-      return res.status(409).send(dataResponse)
+    if (roleFoundById == null) {
+      dataResponse.message = t('ROLE_NOT_FOUND')
+      return res.status(404).send(dataResponse)
     }
     const isOwnerEditUser = userFoundById.roleIds.some(
       role => role.type === 'owner',
@@ -40,21 +37,25 @@ export const updateUser = async (req: Request, res: Response) => {
       dataResponse.message = t('USER_OWNER_EDIT')
       return res.status(400).send(dataResponse)
     }
-    if (userFoundById.id === userToken._id && body.state === false) {
-      dataResponse.message = t('USER_DISABLE_YOURSELF')
+    const hasRole = userFoundById.roleIds.some(role => role._id.equals(idRole))
+    if (!hasRole) {
+      dataResponse.message = t('USER_ALREADY_REMOVE_ROLE')
+      return res.status(409).send(dataResponse)
+    }
+    if (userFoundById.id === userToken._id) {
+      dataResponse.message = t('USER_CHANGE_YOURSELF')
       return res.status(400).send(dataResponse)
     }
 
-    userFoundById.name = body.description ?? userFoundById.name
-    userFoundById.surname = body.description ?? userFoundById.surname
-    userFoundById.email = body.description ?? userFoundById.email
+    userFoundById.roleIds = userFoundById.roleIds.filter(
+      role => !role._id.equals(idRole),
+    )
     userFoundById.updated_at = new Date()
     userFoundById.updated_by = new Types.ObjectId(userToken._id)
-    userFoundById.state = body.state ?? userFoundById.state
-
     await userFoundById.save()
-    dataResponse.message = t('USER_UPDATED')
-    dataResponse.data = userFoundById
+
+    dataResponse.message = t('USER_REMOVE_ROLE')
+    dataResponse.data = roleFoundById
     return res.status(200).send(dataResponse)
   } catch (error) {
     dataResponse.message = t('RES_SERVER_ERROR')
