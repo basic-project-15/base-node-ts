@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import type { Request, Response } from 'express'
 import type { DataResponse, Mail, Recipients } from '@interfaces'
-import { sendEmail, testEmailTemplate } from '@core'
+import { EmailTemplate, sendEmail } from '@core'
 
 const routes = Router()
 
@@ -15,7 +15,7 @@ routes.get('/test/send-email', async (req: Request, res: Response) => {
     const subject = 'Test 4'
     const title = 'Test email with HTML template'
     const description = 'This is an example of an email with an HTML template.'
-    const html = testEmailTemplate(title, description)
+    const html = EmailTemplate.testEmail(title, description)
     const mail: Mail = { subject, html }
     const result = await sendEmail(recipients, mail)
     if (result.success) {

@@ -28,7 +28,7 @@ export const sendEmail = async (
   return result
 }
 
-export const testEmailTemplate = (title: string, description: string) => {
+const testEmail = (title: string, description: string) => {
   const htmlTemplate = `
   <html>
     <body>
@@ -40,4 +40,28 @@ export const testEmailTemplate = (title: string, description: string) => {
   </html>
 `
   return htmlTemplate
+}
+
+const createUser = (name: string, newPassword: string) => {
+  const htmlTemplate = `
+  <html>
+    <body>
+      <h2>Welcome to Base Symphony JS</h2>
+      <br />
+      <p>Hello, ${name}</p>
+      <p>We inform you that your account has been created successfully. Next, your new password:<br /><b>${newPassword}</b></p>
+      <b>For security, you must change your password upon your first login.</b>
+      <br />
+      <p>We will wait for you!</p>
+      <br />
+      <i>Please do not respond to this email.</i>
+    </body>
+  </html>
+`
+  return htmlTemplate
+}
+
+export const EmailTemplate = {
+  testEmail,
+  createUser,
 }

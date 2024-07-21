@@ -1,9 +1,10 @@
 import type { Request, Response } from 'express'
 import { hash } from 'bcrypt'
 import { Types } from 'mongoose'
-import type { DataResponse, IUser } from '@interfaces'
+import type { DataResponse, IUser, Recipients, Result } from '@interfaces'
 import { bcrypt } from '@config'
 import { UserModel } from '@api'
+import { EmailTemplate, sendEmail } from '@core'
 
 export const createUser = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
@@ -15,7 +16,8 @@ export const createUser = async (req: Request, res: Response) => {
       return res.status(409).send(dataResponse)
     }
 
-    const newPassword = await hash('New_1234', bcrypt.SALT)
+    const temporaryPassword = Math.random().toString(36).slice(-10)
+    const newPassword = await hash(temporaryPassword, bcrypt.SALT)
     const newUser: IUser = {
       name: body.name,
       surname: body.surname,
@@ -29,12 +31,40 @@ export const createUser = async (req: Request, res: Response) => {
     }
     const userModel = new UserModel(newUser)
     await userModel.save()
-    dataResponse.message = t('USER_CREATED')
     dataResponse.data = { _id: userModel.id, ...newUser }
+
+    const result = await sendEmailCreate(
+      temporaryPassword,
+      body.name,
+      body.email,
+    )
+    if (result.success) {
+      dataResponse.message = 'Usuario creado, sin embargo, no se le notificó'
+      dataResponse.data = result
+      return res.status(207).send(dataResponse)
+    }
+    dataResponse.message = t('USER_CREATED')
     return res.status(200).send(dataResponse)
   } catch (error) {
     dataResponse.message = t('RES_SERVER_ERROR')
     dataResponse.data = error
     return res.status(500).send(dataResponse)
   }
+}
+
+const sendEmailCreate = async (
+  newPassword: string,
+  name: string,
+  email: string,
+): Promise<Result> => {
+  const recipients: Recipients = {
+    to: [`${name} <${email}>`],
+  }
+  const subject = 'Account creation'
+  const html = EmailTemplate.createUser(name, newPassword)
+  const result = await sendEmail(recipients, {
+    subject,
+    html,
+  })
+  return result
 }
