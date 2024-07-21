@@ -7,9 +7,9 @@ import fs from 'fs'
 
 const routes = Router()
 
-routes.get('/test/send-email', async (req: Request, res: Response) => {
+routes.get('/nodemailer/send-email', async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
-  const { userToken } = req
+  const { t, userToken } = req
   try {
     const recipients: Recipients = {
       to: [userToken.email],
@@ -27,47 +27,49 @@ routes.get('/test/send-email', async (req: Request, res: Response) => {
       return res.status(500).send(dataResponse)
     }
   } catch (error) {
-    dataResponse.message = 'Error al enviar el correo:'
+    dataResponse.message = t('RES_SERVER_ERROR')
     dataResponse.data = error
     return res.status(500).send(dataResponse)
   }
 })
 
 routes.post(
-  '/test/upload-file',
+  '/cloudinary/upload-file',
   multer.uploadImages.single('file'),
   async (req: Request, res: Response) => {
+    const dataResponse: DataResponse = { message: '', data: null }
+    const { t } = req
     try {
-      console.log(req.file)
       if (!req.file) {
         return res.status(400).json({ message: 'No file uploaded' })
       }
-      const result = await cloudinary.uploader.upload(req.file.path, {
+      const result = await cloudinary.config.uploader.upload(req.file.path, {
         folder: 'test',
         resource_type: 'auto',
       })
       fs.unlinkSync(req.file.path)
-      return res.status(200).json({
-        message: 'Image uploaded successfully',
-        url: result.secure_url,
-      })
+      dataResponse.data = result
+      return res.status(200).send(dataResponse)
     } catch (error) {
-      return res.status(500).json({ message: 'Error uploading image', error })
+      dataResponse.message = t('RES_SERVER_ERROR')
+      dataResponse.data = error
+      return res.status(500).send(dataResponse)
     }
   },
 )
 
 routes.post(
-  '/test/upload-files',
+  '/cloudinary/upload-files',
   multer.uploadDocs.array('files', 10),
   async (req: Request, res: Response) => {
+    const dataResponse: DataResponse = { message: '', data: null }
+    const { t } = req
     try {
-      console.log(req.file)
       if (!req.files || !Array.isArray(req.files)) {
         return res.status(400).json({ message: 'No file uploaded' })
       }
       const uploadPromises = req.files.map(async file => {
-        return await cloudinary.uploader
+        return await cloudinary.config.uploader
           .upload(file.path, {
             folder: 'test',
             resource_type: 'auto',
@@ -78,12 +80,41 @@ routes.post(
           })
       })
       const urls = await Promise.all(uploadPromises)
-      return res.status(200).json({
-        message: 'Files uploaded successfully',
-        urls,
-      })
+      dataResponse.data = urls
+      return res.status(200).send(dataResponse)
     } catch (error) {
-      return res.status(500).json({ message: 'Error uploading image', error })
+      dataResponse.message = t('RES_SERVER_ERROR')
+      dataResponse.data = error
+      return res.status(500).send(dataResponse)
+    }
+  },
+)
+
+routes.get(
+  '/cloudinary/:folder/signature',
+  async (req: Request, res: Response) => {
+    const dataResponse: DataResponse = { message: '', data: null }
+    const { params, t } = req
+    const folder: string = params.folder
+    try {
+      const timestamp = Math.round(new Date().getTime() / 1000)
+      const paramsToSign = { timestamp, folder }
+      const signature = cloudinary.config.utils.api_sign_request(
+        paramsToSign,
+        cloudinary.CLOUDINARY_API_SECRET,
+      )
+      dataResponse.data = {
+        signature,
+        timestamp,
+        api_key: cloudinary.CLOUDINARY_API_KEY,
+        cloud_name: cloudinary.CLOUDINARY_CLOUD_NAME,
+        folder,
+      }
+      return res.status(200).send(dataResponse)
+    } catch (error) {
+      dataResponse.message = t('RES_SERVER_ERROR')
+      dataResponse.data = error
+      return res.status(500).send(dataResponse)
     }
   },
 )
