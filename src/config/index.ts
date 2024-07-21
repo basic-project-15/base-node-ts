@@ -1,4 +1,6 @@
 export * as mongodb from './mongodb.config'
+export { default as cloudinary } from './cloudinary.config'
 export * as bcrypt from './bcrypt.config'
 export * as jwt from './jwt.config'
-export * as nodemialer from './nodemailer.config'
+export * as multer from './multer.config'
+export * as nodemailer from './nodemailer.config'

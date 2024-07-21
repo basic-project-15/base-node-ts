@@ -9,6 +9,12 @@ declare global {
   }
 }
 
+declare namespace Express {
+  interface Request {
+    file?: Express.Multer.File
+  }
+}
+
 export type * from './models'
 export type * from './methods'
 export type * from './response'

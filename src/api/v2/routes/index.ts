@@ -2,6 +2,8 @@ import { Router } from 'express'
 import type { Request, Response } from 'express'
 import type { DataResponse, Mail, Recipients } from '@interfaces'
 import { EmailTemplate, sendEmail } from '@core'
+import { cloudinary, multer } from '@config'
+import fs from 'fs'
 
 const routes = Router()
 
@@ -30,5 +32,60 @@ routes.get('/test/send-email', async (req: Request, res: Response) => {
     return res.status(500).send(dataResponse)
   }
 })
+
+routes.post(
+  '/test/upload-file',
+  multer.uploadImages.single('file'),
+  async (req: Request, res: Response) => {
+    try {
+      console.log(req.file)
+      if (!req.file) {
+        return res.status(400).json({ message: 'No file uploaded' })
+      }
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: 'test',
+        resource_type: 'auto',
+      })
+      fs.unlinkSync(req.file.path)
+      return res.status(200).json({
+        message: 'Image uploaded successfully',
+        url: result.secure_url,
+      })
+    } catch (error) {
+      return res.status(500).json({ message: 'Error uploading image', error })
+    }
+  },
+)
+
+routes.post(
+  '/test/upload-files',
+  multer.uploadDocs.array('files', 10),
+  async (req: Request, res: Response) => {
+    try {
+      console.log(req.file)
+      if (!req.files || !Array.isArray(req.files)) {
+        return res.status(400).json({ message: 'No file uploaded' })
+      }
+      const uploadPromises = req.files.map(async file => {
+        return await cloudinary.uploader
+          .upload(file.path, {
+            folder: 'test',
+            resource_type: 'auto',
+          })
+          .then(result => {
+            fs.unlinkSync(file.path)
+            return result.secure_url
+          })
+      })
+      const urls = await Promise.all(uploadPromises)
+      return res.status(200).json({
+        message: 'Files uploaded successfully',
+        urls,
+      })
+    } catch (error) {
+      return res.status(500).json({ message: 'Error uploading image', error })
+    }
+  },
+)
 
 export default routes

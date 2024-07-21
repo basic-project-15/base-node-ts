@@ -1,7 +1,7 @@
-import { nodemialer } from '@config'
+import { nodemailer } from '@config'
 import type { Attachment, Mail, Recipients, Result } from '@interfaces'
 
-const { NODEMAILER_MAIL, NODEMAILER_NAME, transporter } = nodemialer
+const { NODEMAILER_MAIL, NODEMAILER_NAME, transporter } = nodemailer
 
 export const sendEmail = async (
   recipients: Recipients,
