@@ -3,6 +3,7 @@ import { AuthControllers } from '@api/v1'
 
 const routes = Router()
 
-routes.post('/login', AuthControllers.login)
+routes.post('/email-and-pass', AuthControllers.emailAndPassAuth)
+routes.post('/google-token', AuthControllers.googleAuth)
 
 export default routes
