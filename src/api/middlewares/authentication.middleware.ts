@@ -23,7 +23,7 @@ export const AuthenticationMiddleware = async (
       return res.status(401).send(dataResponse)
     }
     // Validation with JWT
-    const userToken = jwt.verifyToken(token)
+    const userToken = jwt.verifyAccessToken(token)
 
     // Validation user
     const isUser = await UserModel.countDocuments({ _id: userToken._id })

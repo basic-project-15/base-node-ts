@@ -18,8 +18,8 @@ export const createUser = async () => {
       const role = await RoleModel.findOne({ type: 'owner' })
       if (role != null) {
         const newUser = new UserModel({
-          name: SEED_USER_NAME,
-          surname: SEED_USER_SURNAME,
+          firstName: SEED_USER_NAME,
+          lastName: SEED_USER_SURNAME,
           email: USER_EMAIL,
           password: newPassword,
           passwordVersion: 1,

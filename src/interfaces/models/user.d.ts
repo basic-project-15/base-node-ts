@@ -2,8 +2,8 @@ import type { Types } from 'mongoose'
 
 export interface IUser {
   _id?: Types.ObjectId
-  name: string
-  surname: string
+  firstName: string
+  lastName: string
   userName?: string
   email: string
   phoneNumber?: string
@@ -11,6 +11,7 @@ export interface IUser {
   passwordVersion: number
   photo?: string
   roleIds: any[]
+  refreshToken?: string
   created_at: Date
   created_by?: Types.ObjectId
   updated_at?: Date

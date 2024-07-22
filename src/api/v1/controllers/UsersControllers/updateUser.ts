@@ -45,8 +45,8 @@ export const updateUser = async (req: Request, res: Response) => {
       return res.status(400).send(dataResponse)
     }
 
-    userFoundById.name = body.description ?? userFoundById.name
-    userFoundById.surname = body.description ?? userFoundById.surname
+    userFoundById.firstName = body.description ?? userFoundById.firstName
+    userFoundById.lastName = body.description ?? userFoundById.lastName
     userFoundById.email = body.description ?? userFoundById.email
     userFoundById.updated_at = new Date()
     userFoundById.updated_by = new Types.ObjectId(userToken._id)

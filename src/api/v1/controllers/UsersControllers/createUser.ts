@@ -19,8 +19,8 @@ export const createUser = async (req: Request, res: Response) => {
     const temporaryPassword = Math.random().toString(36).slice(-10)
     const newPassword = await hash(temporaryPassword, bcrypt.SALT)
     const newUser: IUser = {
-      name: body.name,
-      surname: body.surname,
+      firstName: body.firstName,
+      lastName: body.lastName,
       email: body.email,
       password: newPassword,
       passwordVersion: 1,
@@ -35,7 +35,7 @@ export const createUser = async (req: Request, res: Response) => {
 
     const result = await sendEmailCreate(
       temporaryPassword,
-      body.name,
+      body.firstName,
       body.email,
     )
     if (result.success) {

@@ -10,8 +10,8 @@ export const getUsers = async (req: Request, res: Response) => {
       {
         $project: {
           id: 1,
-          name: 1,
-          surname: 1,
+          firstName: 1,
+          lastName: 1,
           userName: 1,
           email: 1,
           phoneNumber: 1,
