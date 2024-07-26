@@ -20,7 +20,7 @@ const verifyPermissions = (path: string, method: string, roles: IRole[]) => {
   return false
 }
 
-export const AuthorizationMiddleware = async (
+export const authorization = async (
   req: Request,
   res: Response,
   next: NextFunction,

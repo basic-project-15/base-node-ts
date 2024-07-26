@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express'
 import Languages from '@languages'
 
-export const LanguagesMiddleware = async (
+export const languages = async (
   req: Request,
   _res: Response,
   next: NextFunction,

@@ -3,7 +3,7 @@ import type { DataResponse } from '@interfaces'
 import { jwt } from '@config'
 import { UserModel } from '@common'
 
-export const AuthenticationMiddleware = async (
+export const authentication = async (
   req: Request,
   res: Response,
   next: NextFunction,

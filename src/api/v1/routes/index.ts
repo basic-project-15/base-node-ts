@@ -1,27 +1,15 @@
 import { Router } from 'express'
 import dotenv from 'dotenv'
-import {
-  AuthenticationMiddleware,
-  AuthorizationMiddleware,
-  LanguagesMiddleware,
-} from '@api/v1'
+import { Middlewares } from '@api/v1'
 import auth from './auth.routes'
 import security from './security'
 
 dotenv.config()
 
 const routes = Router()
+const { authentication, authorization } = Middlewares
 
-/* Middlewares */
-routes.use('/', LanguagesMiddleware)
-
-/* APIs */
 routes.use('/auth', auth)
-routes.use(
-  '/security',
-  AuthenticationMiddleware,
-  AuthorizationMiddleware,
-  security,
-)
+routes.use('/security', authentication, authorization, security)
 
 export default routes
