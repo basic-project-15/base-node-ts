@@ -16,20 +16,35 @@ export const emailAndPassAuth = async (req: Request, res: Response) => {
       dataResponse.message = t('USER_INVALID_CREDENTIALS')
       return res.status(401).send(dataResponse)
     }
+    let incorrectPassword: number = user.incorrectPassword
     const checkPassword = await compare(body.password, user.password)
     if (!checkPassword) {
+      incorrectPassword++
+      await UserModel.updateOne(
+        { _id: user._id },
+        { $set: { incorrectPassword } },
+      )
+      if (incorrectPassword >= 5) {
+        dataResponse.message =
+          'Se ha bloqueado su cuenta, favor revisar su correo electrónico o realice el proceso de recuperación de cuenta'
+        return res.status(401).send(dataResponse)
+      }
       dataResponse.message = t('USER_INVALID_CREDENTIALS')
       return res.status(401).send(dataResponse)
     }
 
     delete user.password
+    delete user.incorrectPassword
     const accessToken = jwt.generateAccessToken({
       _id: user._id,
       email: user.email,
       passwordVersion: user.passwordVersion,
     })
     const refreshToken = jwt.generateRefreshToken({ _id: user._id })
-    await UserModel.updateOne({ _id: user._id }, { $set: { refreshToken } })
+    await UserModel.updateOne(
+      { _id: user._id },
+      { $set: { refreshToken, incorrectPassword: 0 } },
+    )
     dataResponse.message = t('USER_AUTHENTICATED')
     dataResponse.data = { user, accessToken, refreshToken }
     return res.status(200).send(dataResponse)
@@ -84,13 +99,17 @@ export const googleAuth = async (req: Request, res: Response) => {
     }
 
     delete user.password
+    delete user.incorrectPassword
     accessToken = jwt.generateAccessToken({
       _id: user._id,
       email: user.email,
       passwordVersion: user.passwordVersion,
     })
     refreshToken = jwt.generateRefreshToken({ _id: user._id })
-    await UserModel.updateOne({ _id: user._id }, { $set: { refreshToken } })
+    await UserModel.updateOne(
+      { _id: user._id },
+      { $set: { refreshToken, incorrectPassword: 0 } },
+    )
     dataResponse.message = t('USER_AUTHENTICATED')
     dataResponse.data = { userLogin: user, accessToken, refreshToken }
     return res.status(200).send(dataResponse)
@@ -173,6 +192,7 @@ const getUserLogin = async (email: string): Promise<any> => {
         phoneNumber: 1,
         password: 1,
         passwordVersion: 1,
+        incorrectPassword: 1,
         photo: 1,
         roleIds: 1,
         roles: {

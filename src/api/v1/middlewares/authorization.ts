@@ -29,19 +29,10 @@ export const authorization = async (
   const userToken: UserToken = req.userToken
   const { t } = req
   try {
-    /** Gets a valid user with their active roles and permissions
-     * The user has to exist.
-     * The password version has to match the user's current version.
-     * The user must be active.
-     */
     const userId = userToken._id
     const users = await UserModel.aggregate([
       {
-        $match: {
-          $expr: { $eq: ['$_id', { $toObjectId: userId }] },
-          passwordVersion: userToken.passwordVersion,
-          state: true,
-        },
+        $match: { $expr: { $eq: ['$_id', { $toObjectId: userId }] } },
       },
       {
         $lookup: {

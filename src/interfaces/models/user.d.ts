@@ -9,6 +9,7 @@ export interface IUser {
   phoneNumber?: string
   password?: string
   passwordVersion: number
+  incorrectPassword?: number
   photo?: string
   roleIds: any[]
   refreshToken?: string

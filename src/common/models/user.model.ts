@@ -9,6 +9,7 @@ const schema = new Schema({
   phoneNumber: { type: String, required: false, maxLenght: 30 },
   password: { type: String, required: false, maxLenght: 100 },
   passwordVersion: { type: Number, required: true, default: 0 },
+  incorrectPassword: { type: Number, required: false, default: 0 },
   photo: { type: String, required: false, maxLenght: 255 },
   roleIds: [{ type: Types.ObjectId, required: true, ref: 'Role' }],
   refreshToken: { type: String, required: false, maxLenght: 4000 },

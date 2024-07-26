@@ -25,10 +25,27 @@ export const authentication = async (
     // Validation with JWT
     const userToken = jwt.verifyAccessToken(token)
 
-    // Validation user
-    const isUser = await UserModel.countDocuments({ _id: userToken._id })
-    if (isUser === 0) {
+    /** Gets a valid user with their active roles and permissions
+     * The user has to exist.
+     * The password version has to match the user's current version.
+     * The user must be active.
+     */
+    const userFoundById = await UserModel.findById(userToken._id)
+    if (
+      userFoundById == null ||
+      userFoundById.passwordVersion !== userToken.passwordVersion
+    ) {
       dataResponse.message = t('RES_INVALID_TOKEN')
+      return res.status(401).send(dataResponse)
+    }
+    if (!userFoundById.state) {
+      dataResponse.message = 'Su usuario ha sido desactivado'
+      return res.status(401).send(dataResponse)
+    }
+    const incorrectPassword: number = userFoundById.incorrectPassword ?? 0
+    if (incorrectPassword >= 5) {
+      dataResponse.message =
+        'Cuenta bloqueada, favor revise su correo electrónico o realice el proceso de recuperación de cuenta'
       return res.status(401).send(dataResponse)
     }
     req.userToken = userToken
