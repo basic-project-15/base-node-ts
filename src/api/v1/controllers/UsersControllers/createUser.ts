@@ -3,7 +3,7 @@ import { hash } from 'bcrypt'
 import { Types } from 'mongoose'
 import type { DataResponse, IUser, Recipients, Result } from '@interfaces'
 import { bcrypt } from '@config'
-import { UserModel } from '@api'
+import { UserModel } from '@common'
 import { EmailTemplate, sendEmail } from '@core'
 
 export const createUser = async (req: Request, res: Response) => {

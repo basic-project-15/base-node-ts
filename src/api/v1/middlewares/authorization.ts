@@ -1,7 +1,6 @@
 import type { Request, Response, NextFunction } from 'express'
 import type { DataResponse, IRole, UserToken } from '@interfaces'
-import { UserModel } from '@api'
-import { METHOD_ACTIONS } from '@common'
+import { METHOD_ACTIONS, UserModel } from '@common'
 
 const verifyPermissions = (path: string, method: string, roles: IRole[]) => {
   const methodActions = METHOD_ACTIONS.find(item => item.method === method)

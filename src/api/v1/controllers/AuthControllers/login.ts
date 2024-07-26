@@ -4,7 +4,7 @@ import { OAuth2Client } from 'google-auth-library'
 import dotenv from 'dotenv'
 import type { DataResponse } from '@interfaces'
 import { jwt } from '@config'
-import { UserModel } from '@api'
+import { UserModel } from '@common'
 
 dotenv.config()
 

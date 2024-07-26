@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 import type { DataResponse } from '@interfaces'
-import { RoleModel } from '@api'
+import { RoleModel } from '@common'
 
 export const getRoles = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }

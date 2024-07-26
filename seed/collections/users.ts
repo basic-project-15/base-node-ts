@@ -1,7 +1,7 @@
 import { hash } from 'bcrypt'
 import * as dotenv from 'dotenv'
 import { bcrypt } from '@config'
-import { RoleModel, UserModel } from '@api'
+import { RoleModel, UserModel } from '@common'
 
 dotenv.config()
 

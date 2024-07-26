@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 import type { DataResponse } from '@interfaces'
-import { UserModel } from '@api'
+import { UserModel } from '@common'
 
 export const getUsers = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }

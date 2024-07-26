@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 import { Types } from 'mongoose'
 import type { DataResponse } from '@interfaces'
-import { UserModel } from '@api'
+import { UserModel } from '@common'
 
 export const updateUser = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }

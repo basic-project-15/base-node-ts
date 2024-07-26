@@ -1,7 +1,7 @@
 import type { Response, NextFunction, Request } from 'express'
 import type { DataResponse } from '@interfaces'
 import { jwt } from '@config'
-import { UserModel } from '@api'
+import { UserModel } from '@common'
 
 export const AuthenticationMiddleware = async (
   req: Request,

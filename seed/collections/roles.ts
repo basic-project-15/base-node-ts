@@ -1,4 +1,4 @@
-import { RoleModel } from '@api'
+import { RoleModel } from '@common'
 import type { IRole } from '@interfaces'
 
 export const createRoles = async () => {

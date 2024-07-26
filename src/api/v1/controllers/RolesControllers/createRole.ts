@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 import { Types } from 'mongoose'
 import type { DataResponse, IRole } from '@interfaces'
-import { RoleModel } from '@api'
+import { RoleModel } from '@common'
 
 export const createRole = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }

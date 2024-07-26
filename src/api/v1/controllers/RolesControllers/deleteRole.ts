@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 import type { DataResponse } from '@interfaces'
-import { RoleModel, UserModel } from '@api'
+import { RoleModel, UserModel } from '@common'
 
 export const deleteRole = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
