@@ -7,7 +7,7 @@ const schema = new Schema({
   userName: { type: String, required: false, maxLenght: 100 },
   email: { type: String, required: true, maxLenght: 50 },
   phoneNumber: { type: String, required: false, maxLenght: 30 },
-  password: { type: String, required: true, maxLenght: 100 },
+  password: { type: String, required: false, maxLenght: 100 },
   passwordVersion: { type: Number, required: true, default: 0 },
   photo: { type: String, required: false, maxLenght: 255 },
   roleIds: [{ type: Types.ObjectId, required: true, ref: 'Role' }],
