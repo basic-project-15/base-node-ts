@@ -2,9 +2,11 @@ import * as fs from 'fs'
 import jwt from 'jsonwebtoken'
 import type { Secret } from 'jsonwebtoken'
 import type { UserToken } from '@interfaces'
-import dotenv from 'dotenv'
-
-dotenv.config()
+import {
+  JWT_EXPIRED_ACCESS_TOKEN,
+  JWT_EXPIRED_REFRESH_TOKEN,
+  JWT_PASSPHRASE,
+} from '@common'
 
 const privateKeyFile: Buffer = fs.readFileSync('./certs/private.key')
 const publicKeyFile: Buffer = fs.readFileSync('./certs/public.key')
@@ -13,11 +15,11 @@ const ALGORITHM = 'RS256'
 export const generateAccessToken = (payload: UserToken): string => {
   const key: Secret = {
     key: privateKeyFile,
-    passphrase: process.env.JWT_PASSPHRASE ?? '',
+    passphrase: JWT_PASSPHRASE,
   }
   return jwt.sign(payload, key, {
     algorithm: ALGORITHM,
-    expiresIn: '1h',
+    expiresIn: JWT_EXPIRED_ACCESS_TOKEN,
   })
 }
 
@@ -26,11 +28,11 @@ export const generateRefreshToken = (
 ): string => {
   const key: Secret = {
     key: privateKeyFile,
-    passphrase: process.env.JWT_PASSPHRASE ?? '',
+    passphrase: JWT_PASSPHRASE,
   }
   return jwt.sign(payload, key, {
     algorithm: ALGORITHM,
-    expiresIn: '1d',
+    expiresIn: JWT_EXPIRED_REFRESH_TOKEN,
   })
 }
 

@@ -1,15 +1,11 @@
 import express from 'express'
-import dotenv from 'dotenv'
 import morgan from 'morgan'
 import cors from 'cors'
 import { mongodb } from '@config'
 import { Middlewares, v1Routes } from '@api/v1'
 import { v2Routes } from '@api/v2'
+import { SERVER_PORT, SERVER_URL_NAME } from '@common'
 
-dotenv.config()
-
-const PORT = process.env.PORT ?? 3000
-const SERVER_URL_NAME = process.env.SERVER_URL_NAME ?? ''
 const app = express()
 const { languages } = Middlewares
 
@@ -46,7 +42,7 @@ app.use('/api/v2', languages, v2Routes)
 
 const bootstrap = async () => {
   await mongodb.connectDB()
-  app.listen(PORT, () => {
+  app.listen(SERVER_PORT, () => {
     console.log(`Server running on ${SERVER_URL_NAME}`)
   })
 }

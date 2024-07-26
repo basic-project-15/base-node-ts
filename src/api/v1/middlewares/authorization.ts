@@ -105,6 +105,10 @@ export const authorization = async (
     next()
   } catch (error) {
     dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.data = {
+      name: error.name,
+      message: error.message,
+    }
     return res.status(500).send(dataResponse)
   }
 }

@@ -1,14 +1,12 @@
+import type { Attachment, Mail, Recipients } from '@interfaces'
+import { NODEMAILER_MAIL, NODEMAILER_NAME } from '@common'
 import { nodemailer } from '@config'
-import type { Attachment, Mail, Recipients, Result } from '@interfaces'
-
-const { NODEMAILER_MAIL, NODEMAILER_NAME, transporter } = nodemailer
 
 export const sendEmail = async (
   recipients: Recipients,
   mail: Mail,
   files?: Attachment[],
-): Promise<Result> => {
-  const result: Result = { success: false, message: '', data: null }
+) => {
   try {
     const mailOptions = {
       from: `${NODEMAILER_NAME} <${NODEMAILER_MAIL}>`,
@@ -19,13 +17,10 @@ export const sendEmail = async (
       html: mail.html,
       attachments: files ?? [],
     }
-    await transporter.sendMail(mailOptions)
-    result.success = true
+    await nodemailer.transporter.sendMail(mailOptions)
   } catch (error) {
-    result.message = 'Error al enviar el correo:'
-    result.data = error
+    throw new Error(error)
   }
-  return result
 }
 
 const testEmail = (title: string, description: string) => {

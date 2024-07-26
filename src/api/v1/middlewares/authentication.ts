@@ -43,6 +43,10 @@ export const authentication = async (
       return res.status(401).send(dataResponse)
     }
     dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.data = {
+      name: error.name,
+      message: error.message,
+    }
     return res.status(500).send(dataResponse)
   }
 }

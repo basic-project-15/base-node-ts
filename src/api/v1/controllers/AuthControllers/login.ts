@@ -1,16 +1,9 @@
 import type { Request, Response } from 'express'
 import { compare } from 'bcrypt'
 import { OAuth2Client } from 'google-auth-library'
-import dotenv from 'dotenv'
 import type { DataResponse } from '@interfaces'
 import { jwt } from '@config'
-import { UserModel } from '@common'
-
-dotenv.config()
-
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
-
-const client = new OAuth2Client(GOOGLE_CLIENT_ID)
+import { GOOGLE_CLIENT_ID, UserModel } from '@common'
 
 export const emailAndPassAuth = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
@@ -79,7 +72,10 @@ export const emailAndPassAuth = async (req: Request, res: Response) => {
     return res.status(200).send(dataResponse)
   } catch (error) {
     dataResponse.message = t('RES_SERVER_ERROR')
-    dataResponse.data = error
+    dataResponse.data = {
+      name: error.name,
+      message: error.message,
+    }
     return res.status(500).send(dataResponse)
   }
 }
@@ -88,6 +84,7 @@ export const googleAuth = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { body, t } = req
   try {
+    const client = new OAuth2Client(GOOGLE_CLIENT_ID)
     const ticket = await client.verifyIdToken({
       idToken: body.idToken,
       audience: GOOGLE_CLIENT_ID,
@@ -156,7 +153,10 @@ export const googleAuth = async (req: Request, res: Response) => {
     return res.status(200).send(dataResponse)
   } catch (error) {
     dataResponse.message = t('RES_SERVER_ERROR')
-    dataResponse.data = error
+    dataResponse.data = {
+      name: error.name,
+      message: error.message,
+    }
     return res.status(500).send(dataResponse)
   }
 }
@@ -199,6 +199,10 @@ export const refreshToken = async (req: Request, res: Response) => {
       return res.status(401).send(dataResponse)
     }
     dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.data = {
+      name: error.name,
+      message: error.message,
+    }
     return res.status(500).send(dataResponse)
   }
 }

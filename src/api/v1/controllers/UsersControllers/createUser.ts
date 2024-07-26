@@ -47,7 +47,10 @@ export const createUser = async (req: Request, res: Response) => {
     return res.status(200).send(dataResponse)
   } catch (error) {
     dataResponse.message = t('RES_SERVER_ERROR')
-    dataResponse.data = error
+    dataResponse.data = {
+      name: error.name,
+      message: error.message,
+    }
     return res.status(500).send(dataResponse)
   }
 }
@@ -57,14 +60,25 @@ const sendEmailCreate = async (
   name: string,
   email: string,
 ): Promise<Result> => {
-  const recipients: Recipients = {
-    to: [`${name} <${email}>`],
+  const result: Result = { success: false, message: '', data: null }
+  try {
+    const recipients: Recipients = {
+      to: [`${name} <${email}>`],
+    }
+    const subject = 'Account creation'
+    const html = EmailTemplate.createUser(name, newPassword)
+    await sendEmail(recipients, {
+      subject,
+      html,
+    })
+    result.success = true
+    result.message = 'Correos enviados'
+  } catch (error) {
+    result.message = 'Error al enviar el correo:'
+    result.data = {
+      name: error.name,
+      message: error.message,
+    }
   }
-  const subject = 'Account creation'
-  const html = EmailTemplate.createUser(name, newPassword)
-  const result = await sendEmail(recipients, {
-    subject,
-    html,
-  })
   return result
 }

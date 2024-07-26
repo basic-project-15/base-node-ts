@@ -58,7 +58,10 @@ export const updateUser = async (req: Request, res: Response) => {
     return res.status(200).send(dataResponse)
   } catch (error) {
     dataResponse.message = t('RES_SERVER_ERROR')
-    dataResponse.data = error
+    dataResponse.data = {
+      name: error.name,
+      message: error.message,
+    }
     return res.status(500).send(dataResponse)
   }
 }

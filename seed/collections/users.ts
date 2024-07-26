@@ -1,17 +1,16 @@
 import { hash } from 'bcrypt'
-import * as dotenv from 'dotenv'
 import { bcrypt } from '@config'
-import { RoleModel, UserModel } from '@common'
-
-dotenv.config()
-
-const SEED_USER_NAME = process.env.SEED_USER_NAME ?? ''
-const SEED_USER_SURNAME = process.env.SEED_USER_SURNAME ?? ''
-const USER_EMAIL = process.env.SEED_USER_EMAIL ?? ''
-const USER_PASSWORD = process.env.SEED_USER_PASSWORD ?? ''
+import {
+  RoleModel,
+  SEED_USER_EMAIL,
+  SEED_USER_NAME,
+  SEED_USER_PASSWORD,
+  SEED_USER_SURNAME,
+  UserModel,
+} from '@common'
 
 export const createUser = async () => {
-  const newPassword = await hash(USER_PASSWORD, bcrypt.SALT)
+  const newPassword = await hash(SEED_USER_PASSWORD, bcrypt.SALT)
   try {
     const isUsers = await UserModel.countDocuments({})
     if (isUsers === 0) {
@@ -20,7 +19,7 @@ export const createUser = async () => {
         const newUser = new UserModel({
           firstName: SEED_USER_NAME,
           lastName: SEED_USER_SURNAME,
-          email: USER_EMAIL,
+          email: SEED_USER_EMAIL,
           password: newPassword,
           passwordVersion: 1,
           roleIds: [role?._id],

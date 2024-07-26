@@ -41,7 +41,10 @@ export const updateRole = async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error)
     dataResponse.message = t('RES_SERVER_ERROR')
-    dataResponse.data = error
+    dataResponse.data = {
+      name: error.name,
+      message: error.message,
+    }
     return res.status(500).send(dataResponse)
   }
 }
