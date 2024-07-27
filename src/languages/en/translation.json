@@ -3,11 +3,11 @@
   "RES_EXPIRED_TOKEN": "Expired login",
   "RES_FORBIDDEN": "You do not have permissions to perform this action",
   "RES_SERVER_ERROR": "Internal server error",
-
   "USERS_LISTED": "Listed users",
   "USER_AUTHENTICATED": "Authenticated users",
   "USER_FOUND": "User found",
   "USER_CREATED": "User created",
+  "USER_CREATED_WITHOUT_NOTIFICATION": "User created, however, was not notified",
   "USER_UPDATED": "User updated",
   "USER_DISABLED": "User disabled",
   "USER_DELETED": "User deleted",
@@ -23,7 +23,8 @@
   "USER_ALREADY_ASSIGN_ROLE": "Role already assigned",
   "USER_ALREADY_REMOVE_ROLE": "Role already removed",
   "USER_CHANGE_YOURSELF": "You can't change roles yourself",
-
+  "USER_BLOCKED": "Blocked account",
+  "USER_BLOCKED_DETAILS": "Your account has been blocked, please check your email or perform the account recovery process",
   "ROLES_LISTED": "Roles listed",
   "ROLE_FOUND": "Role found",
   "ROLE_CREATED": "Role created",
@@ -38,9 +39,7 @@
   "ROLE_ALREADY_ASSIGN_PERMISSION": "Permission already assigned",
   "ROLE_ALREADY_REMOVE_PERMISSION": "Permission already removed",
   "ROLE_OWNER": "No modifications can be made to this role",
-
   "PERMISSIONS_LISTED": "Listed permissions",
   "PERMISSION_NOT_FOUND": "Permission not found",
-
-  "_": ""
+  "LANGUAGES": "Inglés"
 }

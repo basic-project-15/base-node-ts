@@ -18,15 +18,15 @@ export const getUserById = async (req: Request, res: Response) => {
       },
     ])
     if (userFoundById == null) {
-      dataResponse.message = t('USER_NOT_FOUND')
+      dataResponse.message = t.USER_NOT_FOUND
       return res.status(404).send(dataResponse)
     }
 
-    dataResponse.message = t('USER_FOUND')
+    dataResponse.message = t.USER_FOUND
     dataResponse.data = userFoundById
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,

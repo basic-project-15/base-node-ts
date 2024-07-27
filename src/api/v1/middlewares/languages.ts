@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express'
-import type { DataResponse } from '@interfaces'
-import Languages from '@languages'
+import type { DataResponse, Languages } from '@interfaces'
+import { selectTranslation } from '@core'
 
 export const languages = async (
   req: Request,
@@ -9,17 +9,11 @@ export const languages = async (
 ): Promise<any> => {
   const dataResponse: DataResponse = { message: '', data: null }
   try {
-    const defaultLanguage: string = Object.keys(Languages)[0]
-    const defaultTranslation = Object.values(Languages)[0]
-    let language: string = req.headers['accept-language'] ?? defaultLanguage
-    if (!Object.keys(Languages).includes(language)) {
-      language = defaultLanguage
-    }
-    const translation = (property: string): string => {
-      const translation = Languages[language as keyof typeof Languages]
-      return translation[property as keyof typeof defaultTranslation]
-    }
+    const userLanguage: string = req.headers['accept-language'] ?? ''
+    const language: Languages = userLanguage as Languages
+    const { lng, translation } = selectTranslation(language)
     req.t = translation
+    req.lng = lng
     next()
   } catch (error) {
     dataResponse.message = 'Language error'

@@ -1,10 +1,12 @@
 import type { UserToken } from './token'
+import type { Languages, ITranslation } from './languages'
 
 declare global {
   namespace Express {
     interface Request {
       userToken: UserToken
-      t: (string) => string
+      lng: Languages
+      t: ITranslation
     }
   }
 }
@@ -16,6 +18,7 @@ declare namespace Express {
 }
 
 export type * from './models'
+export type * from './languages'
 export type * from './methods'
 export type * from './response'
 export type * from './sendEmails'

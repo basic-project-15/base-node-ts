@@ -1,7 +1,7 @@
 import fs from 'fs'
 import type { Request, Response } from 'express'
 import type { DataResponse, Mail, Recipients } from '@interfaces'
-import { EmailTemplate, sendEmail } from '@core'
+import { sendMail } from '@services'
 import { cloudinary } from '@config'
 import {
   CLOUDINARY_API_KEY,
@@ -21,12 +21,21 @@ export const sendEmailTest = async (req: Request, res: Response) => {
     const subject = 'Test 4'
     const title = 'Test email with HTML template'
     const description = 'This is an example of an email with an HTML template.'
-    const html = EmailTemplate.testEmail(title, description)
+    const html = `
+      <html>
+        <body>
+          <h1>${title}</h1>
+          <p>Hello,</p>
+          <p>${description}</p>
+          <p>Regards,</p>
+        </body>
+      </html>
+    `
     const mail: Mail = { subject, html }
-    await sendEmail(recipients, mail)
+    await sendMail(recipients, mail)
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,
@@ -50,7 +59,7 @@ export const updaloadFileTest = async (req: Request, res: Response) => {
     dataResponse.data = result
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,
@@ -81,7 +90,7 @@ export const updaloadFilesTest = async (req: Request, res: Response) => {
     dataResponse.data = urls
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,
@@ -113,7 +122,7 @@ export const getSignatureCloudinaryTest = async (
     }
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,

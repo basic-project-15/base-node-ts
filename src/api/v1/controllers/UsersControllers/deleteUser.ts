@@ -13,7 +13,7 @@ export const deleteUser = async (req: Request, res: Response) => {
     )
 
     if (userFoundById == null) {
-      dataResponse.message = t('USERS_NotFound')
+      dataResponse.message = t.USER_NOT_FOUND
       return res.status(404).send(dataResponse)
     }
     const isOwnerDeleteUser = userFoundById.roleIds.some(
@@ -26,20 +26,20 @@ export const deleteUser = async (req: Request, res: Response) => {
       )
     }
     if (!isOwnerCurrentUser && isOwnerDeleteUser) {
-      dataResponse.message = t('USER_OWNER_DELETE')
+      dataResponse.message = t.USER_OWNER_DELETE
       return res.status(400).send(dataResponse)
     }
     if (userFoundById.id === userToken._id) {
-      dataResponse.message = t('USER_DELETE_YOURSELF')
+      dataResponse.message = t.USER_DELETE_YOURSELF
       return res.status(400).send(dataResponse)
     }
 
     await userFoundById.deleteOne()
-    dataResponse.message = t('USER_DELETED')
+    dataResponse.message = t.USER_DELETED
     dataResponse.data = userFoundById
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,

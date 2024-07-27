@@ -17,14 +17,14 @@ export const updateUser = async (req: Request, res: Response) => {
     )
 
     if (userFoundById == null) {
-      dataResponse.message = t('USER_NOT_FOUND')
+      dataResponse.message = t.USER_NOT_FOUND
       return res.status(404).send(dataResponse)
     }
     if (
       userFoundByEmail?.email != null &&
       userFoundByEmail.email !== userFoundById.email
     ) {
-      dataResponse.message = t('USER_ALREADY_EXISTS')
+      dataResponse.message = t.USER_ALREADY_EXISTS
       return res.status(409).send(dataResponse)
     }
     const isOwnerEditUser = userFoundById.roleIds.some(
@@ -37,11 +37,11 @@ export const updateUser = async (req: Request, res: Response) => {
       )
     }
     if (!isOwnerCurrentUser && isOwnerEditUser) {
-      dataResponse.message = t('USER_OWNER_EDIT')
+      dataResponse.message = t.USER_OWNER_EDIT
       return res.status(400).send(dataResponse)
     }
     if (userFoundById.id === userToken._id && body.state === false) {
-      dataResponse.message = t('USER_DISABLE_YOURSELF')
+      dataResponse.message = t.USER_DISABLE_YOURSELF
       return res.status(400).send(dataResponse)
     }
 
@@ -53,11 +53,11 @@ export const updateUser = async (req: Request, res: Response) => {
     userFoundById.state = body.state ?? userFoundById.state
 
     await userFoundById.save()
-    dataResponse.message = t('USER_UPDATED')
+    dataResponse.message = t.USER_UPDATED
     dataResponse.data = userFoundById
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,

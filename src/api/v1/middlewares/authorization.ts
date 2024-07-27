@@ -70,7 +70,7 @@ export const authorization = async (
       },
     ])
     if (users.length === 0) {
-      dataResponse.message = t('RES_FORBIDDEN')
+      dataResponse.message = t.RES_FORBIDDEN
       return res.status(403).send(dataResponse)
     }
     const user = users[0]
@@ -89,13 +89,13 @@ export const authorization = async (
     // Check admin permissions
     const hasPermissions = verifyPermissions(path, method, roles)
     if (!hasPermissions) {
-      dataResponse.message = t('RES_FORBIDDEN')
+      dataResponse.message = t.RES_FORBIDDEN
       return res.status(403).send(dataResponse)
     }
 
     next()
   } catch (error) {
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,

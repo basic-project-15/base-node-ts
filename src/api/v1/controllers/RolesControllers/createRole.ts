@@ -11,7 +11,7 @@ export const createRole = async (req: Request, res: Response) => {
       description: body.description,
     })
     if (roleFoundByDescription != null) {
-      dataResponse.message = t('ROLE_ALREADY_EXISTS')
+      dataResponse.message = t.ROLE_ALREADY_EXISTS
       return res.status(409).send(dataResponse)
     }
 
@@ -25,11 +25,11 @@ export const createRole = async (req: Request, res: Response) => {
     }
     const rolModel = new RoleModel(newRol)
     await rolModel.save()
-    dataResponse.message = t('ROLE_CREATED')
+    dataResponse.message = t.ROLE_CREATED
     dataResponse.data = { _id: rolModel.id, ...newRol }
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,

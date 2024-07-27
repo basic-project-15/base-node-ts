@@ -1,0 +1,47 @@
+export type Languages = 'en' | 'es'
+
+export interface ITranslation {
+  RES_INVALID_TOKEN: string
+  RES_EXPIRED_TOKEN: string
+  RES_FORBIDDEN: string
+  RES_SERVER_ERROR: string
+  USERS_LISTED: string
+  USER_AUTHENTICATED: string
+  USER_FOUND: string
+  USER_CREATED: string
+  USER_CREATED_WITHOUT_NOTIFICATION: string
+  USER_UPDATED: string
+  USER_DISABLED: string
+  USER_DELETED: string
+  USER_INVALID_CREDENTIALS: string
+  USER_NOT_FOUND: string
+  USER_ALREADY_EXISTS: string
+  USER_DISABLE_YOURSELF: string
+  USER_DELETE_YOURSELF: string
+  USER_OWNER_EDIT: string
+  USER_OWNER_DELETE: string
+  USER_ASSIGN_ROLE: string
+  USER_REMOVE_ROLE: string
+  USER_ALREADY_ASSIGN_ROLE: string
+  USER_ALREADY_REMOVE_ROLE: string
+  USER_CHANGE_YOURSELF: string
+  USER_BLOCKED: string
+  USER_BLOCKED_DETAILS: string
+  ROLES_LISTED: string
+  ROLE_FOUND: string
+  ROLE_CREATED: string
+  ROLE_UPDATED: string
+  ROLE_DISABLED: string
+  ROLE_DELETED: string
+  ROLE_NOT_FOUND: string
+  ROLE_ALREADY_EXISTS: string
+  ROLE_ALREADY_USED: string
+  ROLE_ASSIGN_PERMISSION: string
+  ROLE_REMOVE_PERMISSION: string
+  ROLE_ALREADY_ASSIGN_PERMISSION: string
+  ROLE_ALREADY_REMOVE_PERMISSION: string
+  ROLE_OWNER: string
+  PERMISSIONS_LISTED: string
+  PERMISSION_NOT_FOUND: string
+  LANGUAGES: string
+}

@@ -17,11 +17,11 @@ export const assignRole = async (req: Request, res: Response) => {
     )
 
     if (userFoundById == null) {
-      dataResponse.message = t('USER_NOT_FOUND')
+      dataResponse.message = t.USER_NOT_FOUND
       return res.status(404).send(dataResponse)
     }
     if (roleFoundById == null) {
-      dataResponse.message = t('ROLE_NOT_FOUND')
+      dataResponse.message = t.ROLE_NOT_FOUND
       return res.status(404).send(dataResponse)
     }
     const isOwnerEditUser = userFoundById.roleIds.some(
@@ -34,16 +34,16 @@ export const assignRole = async (req: Request, res: Response) => {
       )
     }
     if (!isOwnerCurrentUser && isOwnerEditUser) {
-      dataResponse.message = t('USER_OWNER_EDIT')
+      dataResponse.message = t.USER_OWNER_EDIT
       return res.status(400).send(dataResponse)
     }
     const hasRole = userFoundById.roleIds.some(role => role._id.equals(idRole))
     if (hasRole) {
-      dataResponse.message = t('USER_ALREADY_ASSIGN_ROLE')
+      dataResponse.message = t.USER_ALREADY_ASSIGN_ROLE
       return res.status(409).send(dataResponse)
     }
     if (userFoundById.id === userToken._id) {
-      dataResponse.message = t('USER_CHANGE_YOURSELF')
+      dataResponse.message = t.USER_CHANGE_YOURSELF
       return res.status(400).send(dataResponse)
     }
 
@@ -52,11 +52,11 @@ export const assignRole = async (req: Request, res: Response) => {
     userFoundById.roleIds.push(new Types.ObjectId(idRole))
     await userFoundById.save()
 
-    dataResponse.message = t('USER_ASSIGN_ROLE')
+    dataResponse.message = t.USER_ASSIGN_ROLE
     dataResponse.data = roleFoundById
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,

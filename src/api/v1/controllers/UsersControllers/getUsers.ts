@@ -19,11 +19,11 @@ export const getUsers = async (req: Request, res: Response) => {
         },
       },
     ])
-    dataResponse.message = t('USERS_LISTED')
+    dataResponse.message = t.USERS_LISTED
     dataResponse.data = users
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,

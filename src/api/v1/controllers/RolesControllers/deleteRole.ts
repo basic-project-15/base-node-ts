@@ -10,25 +10,25 @@ export const deleteRole = async (req: Request, res: Response) => {
     const roleFoundById = await RoleModel.findById(idRole)
 
     if (roleFoundById == null) {
-      dataResponse.message = t('ROLE_NOT_FOUND')
+      dataResponse.message = t.ROLE_NOT_FOUND
       return res.status(404).send(dataResponse)
     }
     const usersWithIdRol = await UserModel.find({ roleIds: idRole })
     if (usersWithIdRol.length > 0) {
-      dataResponse.message = t('ROLE_ALREADY_USED')
+      dataResponse.message = t.ROLE_ALREADY_USED
       return res.status(404).send(dataResponse)
     }
     if (roleFoundById.type === 'owner') {
-      dataResponse.message = t('ROLE_OWNER')
+      dataResponse.message = t.ROLE_OWNER
       return res.status(400).send(dataResponse)
     }
 
     await roleFoundById.deleteOne()
-    dataResponse.message = t('ROLE_DELETED')
+    dataResponse.message = t.ROLE_DELETED
     dataResponse.data = roleFoundById
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,

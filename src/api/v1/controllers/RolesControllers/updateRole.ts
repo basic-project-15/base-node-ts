@@ -14,18 +14,18 @@ export const updateRole = async (req: Request, res: Response) => {
     })
 
     if (roleFoundById == null) {
-      dataResponse.message = t('ROLE_NOT_FOUND')
+      dataResponse.message = t.ROLE_NOT_FOUND
       return res.status(404).send(dataResponse)
     }
     if (roleFoundById.type === 'owner') {
-      dataResponse.message = t('ROLE_OWNER')
+      dataResponse.message = t.ROLE_OWNER
       return res.status(400).send(dataResponse)
     }
     if (
       roleFoundByDescription != null &&
       roleFoundByDescription.id !== idRole
     ) {
-      dataResponse.message = t('ROLE_ALREADY_EXISTS')
+      dataResponse.message = t.ROLE_ALREADY_EXISTS
       return res.status(409).send(dataResponse)
     }
 
@@ -35,12 +35,12 @@ export const updateRole = async (req: Request, res: Response) => {
     roleFoundById.state = body.state ?? roleFoundById.state
 
     await roleFoundById.save()
-    dataResponse.message = t('ROLE_UPDATED')
+    dataResponse.message = t.ROLE_UPDATED
     dataResponse.data = roleFoundById
     return res.status(200).send(dataResponse)
   } catch (error) {
     console.log(error)
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,

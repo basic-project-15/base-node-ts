@@ -11,11 +11,11 @@ export const disableRole = async (req: Request, res: Response) => {
     const roleFoundById = await RoleModel.findById(idRole)
 
     if (roleFoundById == null) {
-      dataResponse.message = t('ROLE_NOT_FOUND')
+      dataResponse.message = t.ROLE_NOT_FOUND
       return res.status(404).send(dataResponse)
     }
     if (roleFoundById.type === 'owner') {
-      dataResponse.message = t('ROLE_OWNER')
+      dataResponse.message = t.ROLE_OWNER
       return res.status(400).send(dataResponse)
     }
 
@@ -24,11 +24,11 @@ export const disableRole = async (req: Request, res: Response) => {
     roleFoundById.state = false
 
     await roleFoundById.save()
-    dataResponse.message = t('ROLE_DISABLED')
+    dataResponse.message = t.ROLE_DISABLED
     dataResponse.data = roleFoundById
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,

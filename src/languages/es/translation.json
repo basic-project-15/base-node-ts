@@ -3,11 +3,11 @@
   "RES_EXPIRED_TOKEN": "Inicio de sesión expirado",
   "RES_FORBIDDEN": "No tiene permisos para realizar esta acción",
   "RES_SERVER_ERROR": "Error de servidor interno",
-
   "USERS_LISTED": "Usuarios listados",
   "USER_AUTHENTICATED": "Usuarios autenticado",
   "USER_FOUND": "Usuario encontrado",
   "USER_CREATED": "Usuario creado",
+  "USER_CREATED_WITHOUT_NOTIFICATION": "Usuario creado, sin embargo, no se le notificó",
   "USER_UPDATED": "Usuario actualizado",
   "USER_DISABLED": "Usuario deshabilitado",
   "USER_DELETED": "Usuario eliminado",
@@ -23,7 +23,8 @@
   "USER_ALREADY_ASSIGN_ROLE": "Rol ya asignado",
   "USER_ALREADY_REMOVE_ROLE": "Rol ya removido",
   "USER_CHANGE_YOURSELF": "No puedes cambiarte de rol a ti mismo",
-
+  "USER_BLOCKED": "Cuenta bloqueada",
+  "USER_BLOCKED_DETAILS": "Se ha bloqueado su cuenta, favor revisar su correo electrónico o realice el proceso de recuperación de cuenta",
   "ROLES_LISTED": "Roles listados",
   "ROLE_FOUND": "Rol encontrado",
   "ROLE_CREATED": "Rol creado",
@@ -38,9 +39,7 @@
   "ROLE_ALREADY_ASSIGN_PERMISSION": "Permiso ya asignado",
   "ROLE_ALREADY_REMOVE_PERMISSION": "Permiso ya removido",
   "ROLE_OWNER": "No se pueden hacer modificaciones sobre este rol",
-
   "PERMISSIONS_LISTED": "Permisos listados",
   "PERMISSION_NOT_FOUND": "Permiso no encontrado",
-
-  "_": ""
+  "LANGUAGES": "Español"
 }

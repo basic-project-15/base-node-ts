@@ -14,7 +14,7 @@ export const disableUser = async (req: Request, res: Response) => {
     )
 
     if (userFoundById == null) {
-      dataResponse.message = t('USER_NOT_FOUND')
+      dataResponse.message = t.USER_NOT_FOUND
       return res.status(404).send(dataResponse)
     }
     const isOwnerEditUser = userFoundById.roleIds.some(
@@ -27,11 +27,11 @@ export const disableUser = async (req: Request, res: Response) => {
       )
     }
     if (!isOwnerCurrentUser && isOwnerEditUser) {
-      dataResponse.message = t('USER_OWNER_EDIT')
+      dataResponse.message = t.USER_OWNER_EDIT
       return res.status(400).send(dataResponse)
     }
     if (userFoundById.id === userToken._id) {
-      dataResponse.message = t('USER_DISABLE_YOURSELF')
+      dataResponse.message = t.USER_DISABLE_YOURSELF
       return res.status(400).send(dataResponse)
     }
 
@@ -40,11 +40,11 @@ export const disableUser = async (req: Request, res: Response) => {
     userFoundById.state = false
 
     await userFoundById.save()
-    dataResponse.message = t('USER_DISABLED')
+    dataResponse.message = t.USER_DISABLED
     dataResponse.data = userFoundById
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,

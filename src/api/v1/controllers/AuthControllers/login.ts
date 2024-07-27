@@ -3,33 +3,43 @@ import { compare } from 'bcrypt'
 import { OAuth2Client } from 'google-auth-library'
 import type { DataResponse, IUser } from '@interfaces'
 import { jwt } from '@config'
-import { GOOGLE_CLIENT_ID, UserModel } from '@common'
-import { capitalizeFirstLetter } from '@core'
+import { GOOGLE_CLIENT_ID, MAX_FAILED_PASSWORDS, UserModel } from '@common'
+import { capitalizeFirstLetter, SendEmails } from '@core'
 
 export const emailAndPassAuth = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
-  const { body, t } = req
+  const { body, t, lng } = req
   try {
     const user = await getUserLogin(body.email)
 
     if (user == null) {
-      dataResponse.message = t('USER_INVALID_CREDENTIALS')
+      dataResponse.message = t.USER_INVALID_CREDENTIALS
       return res.status(401).send(dataResponse)
     }
     let incorrectPassword: number = user.incorrectPassword
-    const checkPassword = await compare(body.password, user.password)
-    if (!checkPassword) {
-      incorrectPassword++
-      await UserModel.updateOne(
-        { _id: user._id },
-        { $set: { incorrectPassword } },
-      )
-      if (incorrectPassword >= 5) {
-        dataResponse.message =
-          'Se ha bloqueado su cuenta, favor revisar su correo electrónico o realice el proceso de recuperación de cuenta'
+    if (incorrectPassword < MAX_FAILED_PASSWORDS) {
+      const checkPassword = await compare(body.password, user.password)
+      if (!checkPassword) {
+        incorrectPassword++
+        if (incorrectPassword <= MAX_FAILED_PASSWORDS) {
+          await UserModel.updateOne(
+            { _id: user._id },
+            { $set: { incorrectPassword } },
+          )
+        }
+        if (incorrectPassword === MAX_FAILED_PASSWORDS) {
+          await SendEmails.blockedAccount(lng, {
+            name: user?.firstName,
+            email: body.email,
+          })
+          dataResponse.message = t.USER_BLOCKED_DETAILS
+          return res.status(401).send(dataResponse)
+        }
+        dataResponse.message = t.USER_INVALID_CREDENTIALS
         return res.status(401).send(dataResponse)
       }
-      dataResponse.message = t('USER_INVALID_CREDENTIALS')
+    } else {
+      dataResponse.message = t.USER_BLOCKED_DETAILS
       return res.status(401).send(dataResponse)
     }
 
@@ -45,11 +55,11 @@ export const emailAndPassAuth = async (req: Request, res: Response) => {
       { _id: user._id },
       { $set: { refreshToken, incorrectPassword: 0 } },
     )
-    dataResponse.message = t('USER_AUTHENTICATED')
+    dataResponse.message = t.USER_AUTHENTICATED
     dataResponse.data = { user, accessToken, refreshToken }
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,
@@ -70,7 +80,7 @@ export const googleAuth = async (req: Request, res: Response) => {
 
     const payload = ticket.getPayload()
     if (!payload) {
-      dataResponse.message = t('USER_INVALID_CREDENTIALS')
+      dataResponse.message = t.USER_INVALID_CREDENTIALS
       return res.status(401).send(dataResponse)
     }
 
@@ -110,11 +120,11 @@ export const googleAuth = async (req: Request, res: Response) => {
       { _id: user._id },
       { $set: { refreshToken, incorrectPassword: 0 } },
     )
-    dataResponse.message = t('USER_AUTHENTICATED')
+    dataResponse.message = t.USER_AUTHENTICATED
     dataResponse.data = { userLogin: user, accessToken, refreshToken }
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,
@@ -129,14 +139,14 @@ export const refreshToken = async (req: Request, res: Response) => {
   try {
     const { refreshToken } = body
     if (!refreshToken) {
-      dataResponse.message = t('RES_INVALID_TOKEN')
+      dataResponse.message = t.RES_INVALID_TOKEN
       return res.status(400).send(dataResponse)
     }
 
     const userToken = jwt.verifyRefreshToken(refreshToken)
     const user = await UserModel.findById(userToken._id)
     if (!user || user.refreshToken !== refreshToken) {
-      dataResponse.message = t('RES_INVALID_TOKEN')
+      dataResponse.message = t.RES_INVALID_TOKEN
       return res.status(401).send(dataResponse)
     }
 
@@ -148,19 +158,19 @@ export const refreshToken = async (req: Request, res: Response) => {
     const newRefreshToken = jwt.generateRefreshToken({ _id: user.id })
     user.refreshToken = newRefreshToken
     await user.save()
-    dataResponse.message = t('USER_AUTHENTICATED')
+    dataResponse.message = t.USER_AUTHENTICATED
     dataResponse.data = { accessToken, refreshToken: newRefreshToken }
     return res.status(200).send(dataResponse)
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
-      dataResponse.message = t('RES_EXPIRED_TOKEN')
+      dataResponse.message = t.RES_EXPIRED_TOKEN
       return res.status(401).send(dataResponse)
     }
     if (error.name === 'JsonWebTokenError') {
-      dataResponse.message = t('RES_INVALID_TOKEN')
+      dataResponse.message = t.RES_INVALID_TOKEN
       return res.status(401).send(dataResponse)
     }
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,

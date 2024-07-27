@@ -13,11 +13,11 @@ export const removePermission = async (req: Request, res: Response) => {
     const permissionFoundById = await PermissionModel.findById(idPermission)
 
     if (roleFoundById == null) {
-      dataResponse.message = t('ROLE_NOT_FOUND')
+      dataResponse.message = t.ROLE_NOT_FOUND
       return res.status(404).send(dataResponse)
     }
     if (permissionFoundById == null) {
-      dataResponse.message = t('PERMISSION_NOT_FOUND')
+      dataResponse.message = t.PERMISSION_NOT_FOUND
       return res.status(404).send(dataResponse)
     }
     const hasPermission = roleFoundById.permissions.some(
@@ -26,11 +26,11 @@ export const removePermission = async (req: Request, res: Response) => {
         item.module === permissionFoundById.module,
     )
     if (roleFoundById.type === 'owner') {
-      dataResponse.message = t('ROLE_OWNER')
+      dataResponse.message = t.ROLE_OWNER
       return res.status(400).send(dataResponse)
     }
     if (!hasPermission) {
-      dataResponse.message = t('ROLE_ALREADY_REMOVE_PERMISSION')
+      dataResponse.message = t.ROLE_ALREADY_REMOVE_PERMISSION
       return res.status(409).send(dataResponse)
     }
 
@@ -44,11 +44,11 @@ export const removePermission = async (req: Request, res: Response) => {
     roleFoundById.permissions.splice(permissionIndex, 1)
     await roleFoundById.save()
 
-    dataResponse.message = t('ROLE_REMOVE_PERMISSION')
+    dataResponse.message = t.ROLE_REMOVE_PERMISSION
     dataResponse.data = permissionFoundById
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,

@@ -16,11 +16,11 @@ export const getRoles = async (req: Request, res: Response) => {
         },
       },
     ])
-    dataResponse.message = t('ROLES_LISTED')
+    dataResponse.message = t.ROLES_LISTED
     dataResponse.data = roles
     return res.status(200).send(dataResponse)
   } catch (error) {
-    dataResponse.message = t('RES_SERVER_ERROR')
+    dataResponse.message = t.RES_SERVER_ERROR
     dataResponse.data = {
       name: error.name,
       message: error.message,
