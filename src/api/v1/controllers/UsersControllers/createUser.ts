@@ -33,13 +33,13 @@ export const createUser = async (req: Request, res: Response) => {
     await userModel.save()
     dataResponse.data = { _id: userModel.id, ...newUser }
 
-    const result = await SendEmails.createUser(
+    const result = await SendEmails.createAccount(
       lng,
       {
         name: body.firstName,
         email: body.email,
       },
-      temporaryPassword,
+      { newPassword: temporaryPassword },
     )
     if (result.success) {
       dataResponse.message = t.USER_CREATED_WITHOUT_NOTIFICATION

@@ -8,10 +8,18 @@ interface MailFor {
   email: string
 }
 
-export const createUser = async (
+interface BodyRecoveryAccount {
+  newOtp: string
+}
+
+interface BodyCreateUser {
+  newPassword: string
+}
+
+export const createAccount = async (
   lng: Languages,
   to: MailFor,
-  newPassword: string,
+  body: BodyCreateUser,
 ): Promise<Result> => {
   const result: Result = { success: false, message: '', data: null }
   try {
@@ -20,7 +28,7 @@ export const createUser = async (
     const subject = `${APPLICATION_NAME} - ${t.USER_CREATED}`
     const html = readTemplateHTML(lng, 'createAccount', {
       name: to.name,
-      newPassword,
+      ...body,
     })
     await sendMail(recipients, {
       subject,
@@ -46,6 +54,34 @@ export const blockedAccount = async (
     const { translation: t } = selectTranslation(lng)
     const subject = `${APPLICATION_NAME} - ${t.USER_BLOCKED}`
     const html = readTemplateHTML(lng, 'blockedAccount', { name: to.name })
+    await sendMail(recipients, {
+      subject,
+      html,
+    })
+    result.success = true
+  } catch (error) {
+    result.data = {
+      name: error.name,
+      message: error.message,
+    }
+  }
+  return result
+}
+
+export const recoveryAccount = async (
+  lng: Languages,
+  to: MailFor,
+  body: BodyRecoveryAccount,
+): Promise<Result> => {
+  const result: Result = { success: false, message: '', data: null }
+  try {
+    const recipients: Recipients = { to: [`${to.name} <${to.email}>`] }
+    const { translation: t } = selectTranslation(lng)
+    const subject = `${APPLICATION_NAME} - ${t.USER_ACCOUNT_RECOVERY}`
+    const html = readTemplateHTML(lng, 'recoveryAccount', {
+      name: to.name,
+      ...body,
+    })
     await sendMail(recipients, {
       subject,
       html,

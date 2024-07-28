@@ -27,6 +27,11 @@ export interface ITranslation {
   USER_CHANGE_YOURSELF: string
   USER_BLOCKED: string
   USER_BLOCKED_DETAILS: string
+  USER_OTP_SENT: string
+  USER_OTP_INVALID_OR_EXPIRED: string
+  USER_OTP_VALID: string
+  USER_ACCOUNT_RECOVERY: string
+  USER_ACCOUNT_RECOVERED: string
   ROLES_LISTED: string
   ROLE_FOUND: string
   ROLE_CREATED: string
