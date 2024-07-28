@@ -3,7 +3,7 @@ import type { DataResponse } from '@interfaces'
 import { OtpModel, UserModel } from '@common'
 import { generateOTPCrypto, SendEmails } from '@core'
 import { bcrypt } from '@config'
-import { hash } from 'bcrypt'
+import { compare, hash } from 'bcrypt'
 
 export const sendOtp = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
@@ -80,6 +80,12 @@ export const recoveryAccount = async (req: Request, res: Response) => {
     if (!user) {
       dataResponse.message = t.USER_NOT_FOUND
       return res.status(404).send(dataResponse)
+    }
+    const oldPassword: string = user.password ?? ''
+    const checkOldPassword = await compare(body.newPassword, oldPassword)
+    if (checkOldPassword) {
+      dataResponse.message = t.USER_OLD_PASSWORD
+      return res.status(400).send(dataResponse)
     }
     const newPassword = await hash(body.newPassword, bcrypt.SALT)
     user.password = newPassword

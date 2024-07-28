@@ -30,6 +30,7 @@
   "USER_OTP_VALID": "OTP válido",
   "USER_ACCOUNT_RECOVERY": "Recuperación de cuenta",
   "USER_ACCOUNT_RECOVERED": "Cuenta recuperada",
+  "USER_OLD_PASSWORD": "Esta contraseña ya ha sido usada anteriormente",
   "ROLES_LISTED": "Roles listados",
   "ROLE_FOUND": "Rol encontrado",
   "ROLE_CREATED": "Rol creado",
