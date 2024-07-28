@@ -197,7 +197,6 @@ const getUserLogin = async (email: string): Promise<any> => {
         id: 1,
         firstName: 1,
         lastName: 1,
-        userName: 1,
         email: 1,
         phoneNumber: 1,
         password: 1,
@@ -219,8 +218,8 @@ const getUserLogin = async (email: string): Promise<any> => {
       },
     },
   ])
-  const user = users[0]
   if (users.length !== 0) {
+    const user = users[0]
     return user
   }
   return null

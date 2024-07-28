@@ -33,6 +33,9 @@ export interface ITranslation {
   USER_ACCOUNT_RECOVERY: string
   USER_ACCOUNT_RECOVERED: string
   USER_OLD_PASSWORD: string
+  USER_INSECURE_PASSWORD: string
+  USER_EMAIL_VERIFICATION: string
+  USER_EMAIL_VERIFICATION_SENT: string
   ROLES_LISTED: string
   ROLE_FOUND: string
   ROLE_CREATED: string

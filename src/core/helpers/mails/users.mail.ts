@@ -8,12 +8,12 @@ interface MailFor {
   email: string
 }
 
-interface BodyRecoveryAccount {
-  newOtp: string
-}
-
 interface BodyCreateUser {
   newPassword: string
+}
+
+interface BodyOTP {
+  newOtp: string
 }
 
 export const createAccount = async (
@@ -71,7 +71,7 @@ export const blockedAccount = async (
 export const recoveryAccount = async (
   lng: Languages,
   to: MailFor,
-  body: BodyRecoveryAccount,
+  body: BodyOTP,
 ): Promise<Result> => {
   const result: Result = { success: false, message: '', data: null }
   try {
@@ -79,6 +79,34 @@ export const recoveryAccount = async (
     const { translation: t } = selectTranslation(lng)
     const subject = `${APPLICATION_NAME} - ${t.USER_ACCOUNT_RECOVERY}`
     const html = readTemplateHTML(lng, 'recoveryAccount', {
+      name: to.name,
+      ...body,
+    })
+    await sendMail(recipients, {
+      subject,
+      html,
+    })
+    result.success = true
+  } catch (error) {
+    result.data = {
+      name: error.name,
+      message: error.message,
+    }
+  }
+  return result
+}
+
+export const verifyEmail = async (
+  lng: Languages,
+  to: MailFor,
+  body: BodyOTP,
+): Promise<Result> => {
+  const result: Result = { success: false, message: '', data: null }
+  try {
+    const recipients: Recipients = { to: [`${to.name} <${to.email}>`] }
+    const { translation: t } = selectTranslation(lng)
+    const subject = `${APPLICATION_NAME} - ${t.USER_EMAIL_VERIFICATION}`
+    const html = readTemplateHTML(lng, 'verifyEmail', {
       name: to.name,
       ...body,
     })

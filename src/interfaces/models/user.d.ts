@@ -4,7 +4,6 @@ export interface IUser {
   _id?: Types.ObjectId
   firstName: string
   lastName: string
-  userName?: string
   email: string
   phoneNumber?: string
   password?: string
