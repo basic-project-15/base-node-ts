@@ -5,8 +5,21 @@ import { RoleModel } from '@common'
 export const getRoles = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { t } = req
+
+  const searchQuery = (req.query.search as string) || ''
+  const sortField = (req.query.sortField as string) || 'description'
+  const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1
+
   try {
     const roles = await RoleModel.aggregate([
+      {
+        $match: {
+          $or: [
+            { type: { $regex: searchQuery, $options: 'i' } },
+            { description: { $regex: searchQuery, $options: 'i' } },
+          ],
+        },
+      },
       {
         $project: {
           id: 1,
@@ -15,6 +28,7 @@ export const getRoles = async (req: Request, res: Response) => {
           state: 1,
         },
       },
+      { $sort: { [sortField]: sortOrder } },
     ])
     dataResponse.message = t.ROLES_LISTED
     dataResponse.data = roles

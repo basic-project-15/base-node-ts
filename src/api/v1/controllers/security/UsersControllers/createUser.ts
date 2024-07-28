@@ -41,7 +41,7 @@ export const createUser = async (req: Request, res: Response) => {
       },
       { newPassword: temporaryPassword },
     )
-    if (result.success) {
+    if (!result.success) {
       dataResponse.message = t.USER_CREATED_WITHOUT_NOTIFICATION
       dataResponse.data = result
       return res.status(207).send(dataResponse)

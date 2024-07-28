@@ -3,7 +3,7 @@ import type { IUser } from '@interfaces'
 
 const schema = new Schema({
   firstName: { type: String, required: true, maxLenght: 100 },
-  lastName: { type: String, required: true, maxLenght: 100 },
+  lastName: { type: String, required: false, maxLenght: 100 },
   email: { type: String, required: true, maxLenght: 50 },
   phoneNumber: { type: String, required: false, maxLenght: 30 },
   password: { type: String, required: false, maxLenght: 100 },
