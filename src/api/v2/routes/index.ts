@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { multer } from '@config'
-import { TestControllers } from '../controllers'
+import { TestControllers } from '@api/v2'
 
 const routes = Router()
 
@@ -20,4 +20,4 @@ routes.get(
   TestControllers.getSignatureCloudinaryTest,
 )
 
-export default routes
+export { routes as v2Routes }

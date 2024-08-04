@@ -2,12 +2,11 @@ import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
 import { mongodb } from '@config'
-import { Middlewares, v1Routes } from '@api/v1'
+import { acceptLanguages, v1Routes } from '@api/v1'
 import { v2Routes } from '@api/v2'
 import { SERVER_PORT, SERVER_URL_NAME } from '@common'
 
 const app = express()
-const { languages } = Middlewares
 
 // Middlewares
 app.use(express.json())
@@ -37,8 +36,8 @@ app.get('/', (_req, res) => {
   `
   return res.status(200).send(html)
 })
-app.use('/api/v1', languages, v1Routes)
-app.use('/api/v2', languages, v2Routes)
+app.use('/api/v1', acceptLanguages, v1Routes)
+app.use('/api/v2', acceptLanguages, v2Routes)
 
 const bootstrap = async () => {
   await mongodb.connectDB()

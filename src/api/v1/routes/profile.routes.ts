@@ -2,11 +2,18 @@ import { Router } from 'express'
 import { ProfileControllers } from '@api/v1'
 
 const routes = Router()
+const {
+  getProfile,
+  updateProfile,
+  updateEmailSendOTP,
+  updateEmail,
+  updatePassword,
+} = ProfileControllers
 
-routes.get('/', ProfileControllers.getProfile)
-routes.put('/', ProfileControllers.updateProfile)
-routes.put('/email/send-otp', ProfileControllers.updateEmailSendOTP)
-routes.put('/email', ProfileControllers.updateEmail)
-routes.put('/password', ProfileControllers.updatePassword)
+routes.get('/', getProfile)
+routes.put('/', updateProfile)
+routes.put('/email/send-otp', updateEmailSendOTP)
+routes.put('/email', updateEmail)
+routes.put('/password', updatePassword)
 
-export default routes
+export { routes as ProfileRoutes }

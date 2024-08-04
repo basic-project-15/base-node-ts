@@ -1,17 +1,16 @@
 import { Router } from 'express'
-import { Middlewares } from '@api/v1'
-import security from './security'
-import auth from './auth.routes'
-import profile from './profile.routes'
+import { authentication, authorization } from '@api/v1'
+import { AuthRoutes } from './auth.routes'
+import { ProfileRoutes } from './profile.routes'
+import { SecurityRoutes } from './security'
 
 const routes = Router()
-const { authentication, authorization } = Middlewares
 
 // Public
-routes.use('/auth', auth)
+routes.use('/auth', AuthRoutes)
 // Authentication
-routes.use('/profile', authentication, profile)
+routes.use('/profile', authentication, ProfileRoutes)
 // Authentication and Authorization
-routes.use('/security', authentication, authorization, security)
+routes.use('/security', authentication, authorization, SecurityRoutes)
 
-export default routes
+export { routes as v1Routes }

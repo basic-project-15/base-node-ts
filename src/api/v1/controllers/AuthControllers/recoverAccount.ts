@@ -5,7 +5,7 @@ import { generateOTPCrypto, SendEmails } from '@core'
 import { bcrypt } from '@config'
 import { compare, hash } from 'bcrypt'
 
-export const sendOtp = async (req: Request, res: Response) => {
+export const recoveryAccountSendOtp = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { body, t, lng } = req
   try {
@@ -40,7 +40,7 @@ export const sendOtp = async (req: Request, res: Response) => {
   }
 }
 
-export const verifyOtp = async (req: Request, res: Response) => {
+export const recoveryAccountVerifyOtp = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { body, t } = req
   try {

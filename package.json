@@ -7,7 +7,7 @@
     "start": "node build/index.js",
     "dev": "ts-node-dev -r tsconfig-paths/register --ignore-watch node_modules src/index.ts",
     "build": "tsc && tsc-alias",
-    "seed": "node build/seed/run.js",
+    "seed": "node build/seed/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
     "check:ts": "npx tsc --noEmit",

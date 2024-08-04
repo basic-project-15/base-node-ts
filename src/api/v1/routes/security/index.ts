@@ -1,12 +1,12 @@
 import { Router } from 'express'
-import permissions from './permissions.routes'
-import roles from './roles.routes'
-import users from './users.routes'
+import { PermissionRoutes } from './permission.routes'
+import { RoleRoutes } from './role.routes'
+import { UserRoutes } from './user.routes'
 
 const routes = Router()
 
-routes.use('/permissions', permissions)
-routes.use('/roles', roles)
-routes.use('/users', users)
+routes.use('/permissions', PermissionRoutes)
+routes.use('/roles', RoleRoutes)
+routes.use('/users', UserRoutes)
 
-export default routes
+export { routes as SecurityRoutes }

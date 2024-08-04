@@ -6,7 +6,7 @@ import { jwt } from '@config'
 import { GOOGLE_CLIENT_ID, MAX_FAILED_PASSWORDS, UserModel } from '@common'
 import { capitalizeFirstLetter, SendEmails } from '@core'
 
-export const emailAndPassAuth = async (req: Request, res: Response) => {
+export const loginWithEmailAndPass = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { body, t, lng } = req
   try {
@@ -68,7 +68,7 @@ export const emailAndPassAuth = async (req: Request, res: Response) => {
   }
 }
 
-export const googleAuth = async (req: Request, res: Response) => {
+export const loginWithGoogle = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { body, t } = req
   try {
@@ -133,7 +133,7 @@ export const googleAuth = async (req: Request, res: Response) => {
   }
 }
 
-export const refreshToken = async (req: Request, res: Response) => {
+export const loginRefreshTokens = async (req: Request, res: Response) => {
   const dataResponse: DataResponse = { message: '', data: null }
   const { body, t } = req
   try {

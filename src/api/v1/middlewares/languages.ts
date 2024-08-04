@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express'
 import type { DataResponse, Languages } from '@interfaces'
 import { selectTranslation } from '@core'
 
-export const languages = async (
+export const acceptLanguages = async (
   req: Request,
   res: Response,
   next: NextFunction,
