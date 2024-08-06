@@ -5,7 +5,7 @@ export const createRoles = async () => {
   try {
     const isRoles = await RoleModel.countDocuments({})
     if (isRoles === 0) {
-      const roles: IRole[] = [
+      const roles: Array<Omit<IRole, '_id'>> = [
         {
           type: 'owner',
           description: 'Super Administrador',

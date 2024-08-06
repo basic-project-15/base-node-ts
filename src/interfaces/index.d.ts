@@ -1,4 +1,4 @@
-import type { UserToken } from './token'
+import type { UserToken } from './endpoint'
 import type { Languages, ITranslation } from './languages'
 
 declare global {
@@ -19,7 +19,5 @@ declare namespace Express {
 
 export type * from './models'
 export type * from './languages'
-export type * from './methods'
-export type * from './response'
+export type * from './endpoint'
 export type * from './sendEmails'
-export type * from './token'

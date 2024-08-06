@@ -2,7 +2,7 @@
   "RES_INVALID_TOKEN": "Inicio de sesión no válido",
   "RES_EXPIRED_TOKEN": "Inicio de sesión expirado",
   "RES_FORBIDDEN": "No tiene permisos para realizar esta acción",
-  "RES_SERVER_ERROR": "Error de servidor interno",
+  "RES_SERVER_ERROR": "Error interno de servidor",
   "USERS_LISTED": "Usuarios listados",
   "USER_AUTHENTICATED": "Usuarios autenticado",
   "USER_FOUND": "Usuario encontrado",

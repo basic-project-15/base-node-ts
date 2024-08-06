@@ -1,3 +1,3 @@
-export * as AuthControllers from './AuthControllers'
-export * as ProfileControllers from './ProfileControllers'
+export * as AuthControllers from './auth.controllers'
+export * as ProfileControllers from './profile.controllers'
 export * from './security'

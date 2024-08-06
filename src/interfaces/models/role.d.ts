@@ -4,10 +4,10 @@ import type { IPermission } from './permission'
 export type Roles = 'admin' | 'owner'
 
 export interface IRole {
-  _id?: Types.ObjectId
+  _id: Types.ObjectId
   type: Roles
   description: string
-  permissions: IPermission[]
+  permissions: Array<Omit<IPermission, '_id'>>
   created_at: Date
   created_by?: Types.ObjectId
   updated_at?: Date
