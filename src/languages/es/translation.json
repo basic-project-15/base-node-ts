@@ -24,6 +24,7 @@
   "USER_ALREADY_REMOVE_ROLE": "Rol ya removido",
   "USER_CHANGE_YOURSELF": "No puedes cambiarte de rol a ti mismo",
   "USER_BLOCKED": "Cuenta bloqueada",
+  "USER_UNLOCKED": "Cuenta desbloqueada",
   "USER_BLOCKED_DETAILS": "Se ha bloqueado su cuenta, favor revisar su correo electrónico o realice el proceso de recuperación de cuenta",
   "USER_OTP_SENT": "Código OTP enviado",
   "USER_OTP_INVALID_OR_EXPIRED": "OTP no válido o expirado",

@@ -123,6 +123,27 @@ export const disableUser = async (req: Request, res: Response) => {
   return res.status(statusCode).send(dataResponse)
 }
 
+export const unlockedUser = async (req: Request, res: Response) => {
+  let dataResponse: DataResponse = { message: '', data: null }
+  let statusCode = 500
+  const { params, t, userToken } = req
+  try {
+    // Disable user
+    const currentIdUser: string = userToken._id
+    const idUser: string = params.idUser
+    const user = await UserHandlers.unlockedUser(currentIdUser, idUser)
+
+    // Response
+    statusCode = 200
+    dataResponse.message = t.USER_UNLOCKED
+    dataResponse.data = { user }
+  } catch (error) {
+    statusCode = typeof error.code === 'number' ? error.code : 500
+    dataResponse = getErrorResponse(t, error)
+  }
+  return res.status(statusCode).send(dataResponse)
+}
+
 export const deleteUser = async (req: Request, res: Response) => {
   let dataResponse: DataResponse = { message: '', data: null }
   let statusCode = 500

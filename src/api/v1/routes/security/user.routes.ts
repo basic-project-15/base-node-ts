@@ -8,6 +8,7 @@ const {
   createUser,
   updateUser,
   disableUser,
+  unlockedUser,
   deleteUser,
   assignRole,
   removeRole,
@@ -18,6 +19,7 @@ routes.get('/:idUser', getUserById)
 routes.post('/', createUser)
 routes.put('/:idUser', updateUser)
 routes.patch('/:idUser/disable', disableUser)
+routes.patch('/:idUser/unblock', unlockedUser)
 routes.delete('/:idUser', deleteUser)
 routes.patch('/:idUser/assignRole', assignRole)
 routes.patch('/:idUser/removeRole', removeRole)

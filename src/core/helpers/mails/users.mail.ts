@@ -1,4 +1,4 @@
-import type { Languages, Recipients, Result } from '@interfaces'
+import type { Languages, Recipients } from '@interfaces'
 import { sendMail } from '@services'
 import { readTemplateHTML, selectTranslation } from '@core'
 import { APPLICATION_NAME } from '@common'
@@ -20,28 +20,15 @@ export const createAccount = async (
   lng: Languages,
   to: MailFor,
   body: BodyCreateUser,
-): Promise<Result> => {
-  const result: Result = { success: false, message: '', data: null }
-  try {
-    const recipients: Recipients = { to: [`${to.name} <${to.email}>`] }
-    const { translation: t } = selectTranslation(lng)
-    const subject = `${APPLICATION_NAME} - ${t.USER_CREATED}`
-    const html = readTemplateHTML(lng, 'createAccount', {
-      name: to.name,
-      ...body,
-    })
-    await sendMail(recipients, {
-      subject,
-      html,
-    })
-    result.success = true
-  } catch (error) {
-    result.data = {
-      name: error.name,
-      message: error.message,
-    }
-  }
-  return result
+) => {
+  const recipients: Recipients = { to: [`${to.name} <${to.email}>`] }
+  const { translation: t } = selectTranslation(lng)
+  const subject = `${APPLICATION_NAME} - ${t.USER_CREATED}`
+  const html = readTemplateHTML(lng, 'createAccount', {
+    name: to.name,
+    ...body,
+  })
+  await sendMail(recipients, { subject, html })
 }
 
 export const blockedAccount = async (lng: Languages, to: MailFor) => {
@@ -49,10 +36,7 @@ export const blockedAccount = async (lng: Languages, to: MailFor) => {
   const { translation: t } = selectTranslation(lng)
   const subject = `${APPLICATION_NAME} - ${t.USER_BLOCKED}`
   const html = readTemplateHTML(lng, 'blockedAccount', { name: to.name })
-  await sendMail(recipients, {
-    subject,
-    html,
-  })
+  await sendMail(recipients, { subject, html })
 }
 
 export const recoveryAccount = async (
@@ -67,10 +51,7 @@ export const recoveryAccount = async (
     name: to.name,
     ...body,
   })
-  await sendMail(recipients, {
-    subject,
-    html,
-  })
+  await sendMail(recipients, { subject, html })
 }
 
 export const verifyEmail = async (
@@ -85,8 +66,15 @@ export const verifyEmail = async (
     name: to.name,
     ...body,
   })
-  await sendMail(recipients, {
-    subject,
-    html,
+  await sendMail(recipients, { subject, html })
+}
+
+export const registerUser = async (lng: Languages, to: MailFor) => {
+  const recipients: Recipients = { to: [`${to.name} <${to.email}>`] }
+  const { translation: t } = selectTranslation(lng)
+  const subject = `${APPLICATION_NAME} - ${t.USER_CREATED}`
+  const html = readTemplateHTML(lng, 'registerUser', {
+    name: to.name,
   })
+  await sendMail(recipients, { subject, html })
 }

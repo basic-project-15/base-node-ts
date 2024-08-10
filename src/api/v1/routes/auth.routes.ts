@@ -7,6 +7,7 @@ const {
   loginWithGoogle,
   loginRefreshTokens,
   registerWithEmailAndPass,
+  registerWithGoogle,
   recoveryAccountSendOtp,
   recoveryAccountVerifyOtp,
   recoveryAccount,
@@ -16,6 +17,7 @@ routes.post('/login/email-and-pass', loginWithEmailAndPass)
 routes.post('/login/google', loginWithGoogle)
 routes.post('/refresh-tokens', loginRefreshTokens)
 routes.post('/register/email-and-pass', registerWithEmailAndPass)
+routes.post('/register/google', registerWithGoogle)
 routes.post('/recovery-account/send-otp', recoveryAccountSendOtp)
 routes.post('/recovery-account/verify-otp', recoveryAccountVerifyOtp)
 routes.post('/recovery-account', recoveryAccount)

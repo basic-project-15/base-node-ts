@@ -150,7 +150,7 @@ export const assignPermission = async (
   // Assign permission and update role
   role.updated_at = new Date()
   role.updated_by = new Types.ObjectId(currentIdUser)
-  role.permissions.push(permission.$clone())
+  role.permissions.push(permission.toObject())
   await role.save()
 
   return permission

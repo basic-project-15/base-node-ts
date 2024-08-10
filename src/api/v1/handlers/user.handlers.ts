@@ -1,4 +1,4 @@
-import { RoleModel, UserModel } from '@common'
+import { MAX_FAILED_PASSWORDS, RoleModel, UserModel } from '@common'
 import { bcrypt } from '@config'
 import { CustomError } from '@core'
 import type { FilterQuery, PaginationQuery } from '@interfaces'
@@ -160,6 +160,34 @@ export const disableUser = async (currentIdUser: string, idUser: string) => {
   user.updated_at = new Date()
   user.updated_by = new Types.ObjectId(currentIdUser)
   user.state = false
+  await user.save()
+
+  return user
+}
+
+export const unlockedUser = async (currentIdUser: string, idUser: string) => {
+  // Verify user
+  const user = await UserModel.findById(idUser).populate('roleIds')
+  if (user == null) throw CustomError('USER_NOT_FOUND', 404)
+  if (user.incorrectPassword! < MAX_FAILED_PASSWORDS)
+    throw CustomError('USER_UNLOCKED', 200)
+
+  // Verify edition owner
+  const currentUser = await UserModel.findById(currentIdUser).populate(
+    'roleIds',
+  )
+  const isOwnerEditUser = user.roleIds.some(role => role.type === 'owner')
+  let isOwnerCurrentUser = false
+  if (currentUser != null) {
+    isOwnerCurrentUser = currentUser.roleIds.some(role => role.type === 'owner')
+  }
+  if (!isOwnerCurrentUser && isOwnerEditUser)
+    throw CustomError('USER_OWNER_EDIT', 403)
+
+  // Update user
+  user.incorrectPassword = 0
+  user.updated_at = new Date()
+  user.updated_by = new Types.ObjectId(currentIdUser)
   await user.save()
 
   return user

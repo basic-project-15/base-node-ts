@@ -47,7 +47,7 @@ export const updateProfile = async (idUser: string, profile: Profile) => {
   user.updated_by = new Types.ObjectId(idUser)
   await user.save()
 
-  return user.$clone()
+  return user.toObject()
 }
 
 export const updateEmail = async (idUser: string, newEmail: string) => {
@@ -62,7 +62,7 @@ export const updateEmail = async (idUser: string, newEmail: string) => {
   user.passwordVersion = user.passwordVersion + 1
   await user.save()
 
-  return user.$clone()
+  return user.toObject()
 }
 
 export const updatePassword = async (
@@ -75,8 +75,7 @@ export const updatePassword = async (
   if (user == null) throw CustomError('USER_NOT_FOUND', 404)
 
   // Cehck passwords
-  const oldPasswordHash: string = oldPassword
-  const checkPassword = await compare(oldPassword, oldPasswordHash)
+  const checkPassword = await compare(oldPassword, user.password ?? '')
   if (!checkPassword) throw CustomError('USER_INVALID_CREDENTIALS', 401)
   if (newPassword.length < 8) throw CustomError('USER_INSECURE_PASSWORD', 400)
   if (oldPassword === newPassword) throw CustomError('USER_OLD_PASSWORD', 400)
@@ -89,5 +88,5 @@ export const updatePassword = async (
   user.passwordVersion = user.passwordVersion + 1
   await user.save()
 
-  return user.$clone()
+  return user.toObject()
 }
