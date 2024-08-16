@@ -9,7 +9,7 @@ export const getPermissions = async (req: Request, res: Response) => {
   const { t } = req
   try {
     // Get permissions
-    const permissions = await PermissionHandlers.getPermissions()
+    const permissions = PermissionHandlers.getPermissions()
 
     // Response
     statusCode = 200

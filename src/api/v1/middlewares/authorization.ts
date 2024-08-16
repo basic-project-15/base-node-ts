@@ -1,17 +1,32 @@
 import type { Request, Response, NextFunction } from 'express'
 import type { DataResponse, IRole, UserToken } from '@interfaces'
 import { METHOD_ACTIONS, UserModel } from '@common'
+import { CustomError, getErrorResponse } from '@core'
 
-const verifyPermissions = (path: string, method: string, roles: IRole[]) => {
-  const methodActions = METHOD_ACTIONS.find(item => item.method === method)
-  const typeAction = methodActions?.action ?? ''
+interface Access {
+  module: string
+  section: string
+  method: string
+}
 
+const verifyPermissions = (roles: IRole[], access: Access) => {
+  const methodActions = METHOD_ACTIONS.find(
+    item => item.method === access.method,
+  )
+  const action = methodActions?.action ?? ''
   for (const role of roles) {
-    // Obtains the permissions for each role and that they match the current module or base path of the endpoint
-    const permissions = role.permissions?.filter(item => item.module === path)
-    if (permissions != null) {
-      for (const permission of permissions) {
-        if (permission.action === typeAction) {
+    // Get modules
+    const modules = role.permissions?.filter(
+      item => item.module === access.module,
+    )
+    for (const module of modules) {
+      // Get sections
+      const sections = module.sections?.filter(
+        item => item.section === access.section,
+      )
+      for (const section of sections) {
+        // Verify action
+        if (section.actions.includes(action)) {
           return true
         }
       }
@@ -25,59 +40,24 @@ export const authorization = async (
   res: Response,
   next: NextFunction,
 ): Promise<any> => {
-  const dataResponse: DataResponse = { message: '', data: null }
+  let dataResponse: DataResponse = { message: '', data: null }
+  let statusCode = 500
   const userToken: UserToken = req.userToken
   const { t } = req
   try {
-    const userId = userToken._id
-    const users = await UserModel.aggregate([
+    const idUser = userToken._id
+    const user = await UserModel.findById(idUser).populate([
       {
-        $match: { $expr: { $eq: ['$_id', { $toObjectId: userId }] } },
-      },
-      {
-        $lookup: {
-          from: 'roles',
-          localField: 'roleIds',
-          foreignField: '_id',
-          as: 'rolesDetails',
-        },
-      },
-      {
-        $addFields: {
-          rolesDetails: {
-            $filter: {
-              input: '$rolesDetails',
-              as: 'role',
-              cond: { $eq: ['$$role.state', true] },
-            },
-          },
-        },
-      },
-      {
-        $project: {
-          roles: {
-            $map: {
-              input: '$rolesDetails',
-              as: 'role',
-              in: {
-                type: '$$role.type',
-                description: '$$role.description',
-                permissions: '$$role.permissions',
-              },
-            },
-          },
-        },
+        path: 'roleIds',
+        select: '_id type permissions',
       },
     ])
-    if (users.length === 0) {
-      dataResponse.message = t.RES_FORBIDDEN
-      return res.status(403).send(dataResponse)
-    }
-    const user = users[0]
+    if (user == null) throw CustomError('RES_FORBIDDEN', 403)
     const urlArray: string[] = req.baseUrl.split('/')
-    const path: string = urlArray[urlArray.length - 1]
+    const module: string = urlArray[urlArray.length - 2]
+    const section: string = urlArray[urlArray.length - 1]
     const method: string = req.method
-    const roles: IRole[] = user.roles
+    const roles: IRole[] = user.roleIds
 
     // Check owner permissions
     const isOwnerRole = roles.some(item => item.type === 'owner')
@@ -87,19 +67,13 @@ export const authorization = async (
     }
 
     // Check admin permissions
-    const hasPermissions = verifyPermissions(path, method, roles)
-    if (!hasPermissions) {
-      dataResponse.message = t.RES_FORBIDDEN
-      return res.status(403).send(dataResponse)
-    }
+    const hasPermissions = verifyPermissions(roles, { module, section, method })
+    if (!hasPermissions) throw CustomError('RES_FORBIDDEN', 403)
 
     next()
   } catch (error) {
-    dataResponse.message = t.RES_SERVER_ERROR
-    dataResponse.data = {
-      name: error.name,
-      message: error.message,
-    }
-    return res.status(500).send(dataResponse)
+    statusCode = typeof error.code === 'number' ? error.code : 500
+    dataResponse = getErrorResponse(t, error)
+    return res.status(statusCode).send(dataResponse)
   }
 }

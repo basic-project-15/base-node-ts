@@ -18,6 +18,7 @@
   "USER_DELETE_YOURSELF": "No puedes eliminarte a ti mismo",
   "USER_OWNER_EDIT": "Permisos insuficientes para modificar este usuario",
   "USER_OWNER_DELETE": "No se puede eliminar este usuario",
+  "USER_OWNER_DELETE_PROFILE": "No puedes eliminar tu cuenta por este método, ponte en contacto con soporte técnico",
   "USER_ASSIGN_ROLE": "Rol asignado",
   "USER_REMOVE_ROLE": "Rol removido",
   "USER_ALREADY_ASSIGN_ROLE": "Rol ya asignado",
@@ -51,5 +52,6 @@
   "ROLE_OWNER": "No se pueden hacer modificaciones sobre este rol",
   "PERMISSIONS_LISTED": "Permisos listados",
   "PERMISSION_NOT_FOUND": "Permiso no encontrado",
+  "PERMISSION_NOT_VALID": "Permiso no válido",
   "LANGUAGES": "Español"
 }

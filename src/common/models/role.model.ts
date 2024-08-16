@@ -3,12 +3,21 @@ import type { IRole } from '@interfaces'
 
 const schema = new Schema({
   type: { type: String, required: true, maxLenght: 25 },
-  description: { type: String, required: true, maxLenght: 50 },
+  name: { type: String, required: true, maxLenght: 50 },
+  description: { type: String, required: true, maxLenght: 500 },
   permissions: [
     new Schema(
       {
         module: { type: String, required: true },
-        action: { type: String, required: true },
+        sections: [
+          new Schema(
+            {
+              section: { type: String, required: true },
+              actions: [{ type: String, required: true }],
+            },
+            { _id: false },
+          ),
+        ],
       },
       { _id: false },
     ),

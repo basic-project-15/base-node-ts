@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 import type { DataResponse } from '@interfaces'
-import { getErrorResponse } from '@core'
+import { getErrorResponse, SendEmails } from '@core'
 import { UserHandlers } from '@api/v1'
 
 export const getUsers = async (req: Request, res: Response) => {
@@ -55,15 +55,28 @@ export const getUserById = async (req: Request, res: Response) => {
 export const createUser = async (req: Request, res: Response) => {
   let dataResponse: DataResponse = { message: '', data: null }
   let statusCode = 500
-  const { body, t, userToken } = req
+  const { body, t, userToken, lng } = req
   try {
     // Create user
     const currentIdUser: string = userToken._id
-    const user = await UserHandlers.createUser(currentIdUser, {
-      firstName: body.firstName ?? '',
-      lastName: body.lastName ?? '',
-      email: body.email ?? '',
-    })
+    const { user, temporaryPassword } = await UserHandlers.createUser(
+      currentIdUser,
+      {
+        firstName: body.firstName,
+        lastName: body.lastName,
+        email: body.email,
+      },
+    )
+
+    // Send Email
+    await SendEmails.createAccount(
+      lng,
+      {
+        name: user?.firstName,
+        email: user.email,
+      },
+      temporaryPassword,
+    )
 
     // Response
     statusCode = 200
@@ -83,12 +96,13 @@ export const updateUser = async (req: Request, res: Response) => {
   try {
     // Update user
     const currentIdUser: string = userToken._id
+    const idUser: string = params.idUser
     const user = await UserHandlers.updateUser(currentIdUser, {
-      idUser: params.idUser ?? '',
-      firstName: body.firstName ?? '',
-      lastName: body.lastName ?? '',
-      email: body.email ?? '',
-      state: body.state ?? null,
+      idUser,
+      firstName: body.firstName,
+      lastName: body.lastName,
+      email: body.email,
+      state: body.state,
     })
 
     // Response

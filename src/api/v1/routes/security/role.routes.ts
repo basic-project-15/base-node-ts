@@ -9,8 +9,6 @@ const {
   updateRole,
   deleteRole,
   disableRole,
-  assignPermission,
-  removePermission,
 } = RoleControllers
 
 routes.get('/', getRoles)
@@ -19,7 +17,5 @@ routes.post('/', createRole)
 routes.put('/:idRole', updateRole)
 routes.delete('/:idRole', deleteRole)
 routes.patch('/:idRole/disable', disableRole)
-routes.patch('/:idRole/assignPermission', assignPermission)
-routes.patch('/:idRole/removePermission', removePermission)
 
 export { routes as RoleRoutes }

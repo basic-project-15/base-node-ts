@@ -28,7 +28,8 @@ export const updateProfile = async (req: Request, res: Response) => {
   const { body, t, userToken } = req
   try {
     // Update profile
-    const user = await ProfileHandlers.updateProfile(userToken._id, {
+    const currentIdUser: string = userToken._id
+    const user = await ProfileHandlers.updateProfile(currentIdUser, {
       firstName: body.firstName,
       lastName: body.lastName,
       phoneNumber: body.phoneNumber,
@@ -82,7 +83,7 @@ export const updateEmail = async (req: Request, res: Response) => {
   let statusCode = 500
   const { body, t, userToken } = req
   try {
-    const idUser: string = userToken._id
+    const currentIdUser: string = userToken._id
     const newEmail: string = body.email
     const otp: string = body.otp
 
@@ -94,7 +95,7 @@ export const updateEmail = async (req: Request, res: Response) => {
     await AccountHandlers.verifyOtp(newEmail, otp)
 
     // Update email
-    const user = await ProfileHandlers.updateEmail(idUser, newEmail)
+    const user = await ProfileHandlers.updateEmail(currentIdUser, newEmail)
     delete user.password
     delete user.incorrectPassword
     delete user.refreshToken
@@ -125,13 +126,13 @@ export const updatePassword = async (req: Request, res: Response) => {
   let statusCode = 500
   const { body, t, userToken } = req
   try {
-    const idUser = userToken._id
+    const currentIdUser = userToken._id
     const oldPassword: string = body.password ?? ''
     const newPassword: string = body.newPassword ?? ''
 
     // Update password
     const user = await ProfileHandlers.updatePassword(
-      idUser,
+      currentIdUser,
       oldPassword,
       newPassword,
     )
@@ -150,6 +151,30 @@ export const updatePassword = async (req: Request, res: Response) => {
     statusCode = 200
     dataResponse.message = t.USER_UPDATED
     dataResponse.data = { user, tokens }
+  } catch (error) {
+    statusCode = typeof error.code === 'number' ? error.code : 500
+    dataResponse = getErrorResponse(t, error)
+  }
+  return res.status(statusCode).send(dataResponse)
+}
+
+export const deleteAccount = async (req: Request, res: Response) => {
+  let dataResponse: DataResponse = { message: '', data: null }
+  let statusCode = 500
+  const { t, userToken } = req
+  try {
+    const currentIdUser = userToken._id
+
+    // Update password
+    const user = await ProfileHandlers.deleteAccount(currentIdUser)
+    delete user.password
+    delete user.incorrectPassword
+    delete user.refreshToken
+
+    // Resposne
+    statusCode = 200
+    dataResponse.message = t.USER_DELETED
+    dataResponse.data = { user }
   } catch (error) {
     statusCode = typeof error.code === 'number' ? error.code : 500
     dataResponse = getErrorResponse(t, error)

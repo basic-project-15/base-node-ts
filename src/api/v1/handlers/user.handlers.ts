@@ -60,6 +60,10 @@ export const getUsers = async (
 export const getUserById = async (idUser: string) => {
   const user = await UserModel.findById(idUser).populate([
     {
+      path: 'roleIds',
+      select: '_id name',
+    },
+    {
       path: 'created_by',
       select: '_id email',
     },
@@ -79,13 +83,13 @@ export const createUser = async (
 ) => {
   // Verify user
   const { firstName, lastName, email } = infoUser
-  const user = await UserModel.findOne({ email })
-  if (user != null) throw CustomError('USER_ALREADY_EXISTS', 409)
+  const anotherUser = await UserModel.findOne({ email })
+  if (anotherUser != null) throw CustomError('USER_ALREADY_EXISTS', 409)
 
   // Create user
   const temporaryPassword = Math.random().toString(36).slice(-10)
   const newPassword = await hash(temporaryPassword, bcrypt.SALT)
-  const userModel = new UserModel({
+  const user = new UserModel({
     firstName,
     lastName,
     email,
@@ -96,9 +100,9 @@ export const createUser = async (
     created_by: new Types.ObjectId(currentIdUser),
     state: true,
   })
-  await userModel.save()
+  await user.save()
 
-  return null
+  return { user, temporaryPassword }
 }
 
 export const updateUser = async (currentIdUser: string, infoUser: InfoUser) => {

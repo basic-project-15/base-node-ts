@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { authentication, authorization } from '@api/v1'
+import { authentication } from '@api/v1'
 import { AuthRoutes } from './auth.routes'
 import { ProfileRoutes } from './profile.routes'
 import { SecurityRoutes } from './security'
@@ -11,6 +11,6 @@ routes.use('/auth', AuthRoutes)
 // Authentication
 routes.use('/profile', authentication, ProfileRoutes)
 // Authentication and Authorization
-routes.use('/security', authentication, authorization, SecurityRoutes)
+routes.use('/security', authentication, SecurityRoutes)
 
 export { routes as v1Routes }

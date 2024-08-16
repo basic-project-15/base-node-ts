@@ -8,6 +8,7 @@ const {
   updateEmailSendOTP,
   updateEmail,
   updatePassword,
+  deleteAccount,
 } = ProfileControllers
 
 routes.get('/', getProfile)
@@ -15,5 +16,6 @@ routes.put('/', updateProfile)
 routes.put('/email/send-otp', updateEmailSendOTP)
 routes.put('/email', updateEmail)
 routes.put('/password', updatePassword)
+routes.delete('/', deleteAccount)
 
 export { routes as ProfileRoutes }

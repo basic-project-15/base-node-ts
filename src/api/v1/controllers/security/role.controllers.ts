@@ -53,8 +53,11 @@ export const createRole = async (req: Request, res: Response) => {
   try {
     // Create role
     const currentIdUser: string = userToken._id
-    const description: string = body.description
-    const role = await RoleHandlers.createRole(currentIdUser, description)
+    const role = await RoleHandlers.createRole(currentIdUser, {
+      name: body.name,
+      description: body.description,
+      permissions: body.permissions,
+    })
 
     // Response
     statusCode = 200
@@ -76,8 +79,10 @@ export const updateRole = async (req: Request, res: Response) => {
     const currentIdUser: string = userToken._id
     const role = await RoleHandlers.updateRole(currentIdUser, {
       idRole: params.idRole ?? '',
-      description: body.description ?? '',
-      state: body.state ?? null,
+      name: body.name,
+      description: body.description,
+      permissions: body.permissions,
+      state: body.state,
     })
 
     // Response
@@ -125,58 +130,6 @@ export const deleteRole = async (req: Request, res: Response) => {
     statusCode = 200
     dataResponse.message = t.ROLE_DELETED
     dataResponse.data = { role }
-  } catch (error) {
-    statusCode = typeof error.code === 'number' ? error.code : 500
-    dataResponse = getErrorResponse(t, error)
-  }
-  return res.status(statusCode).send(dataResponse)
-}
-
-export const assignPermission = async (req: Request, res: Response) => {
-  let dataResponse: DataResponse = { message: '', data: null }
-  let statusCode = 500
-  const { body, params, t, userToken } = req
-  try {
-    // Assign permission
-    const currentIdUser: string = userToken._id
-    const idRole: string = params.idRole
-    const idPermission: string = body.idPermission
-    const permission = await RoleHandlers.assignPermission(
-      currentIdUser,
-      idRole,
-      idPermission,
-    )
-
-    // Response
-    statusCode = 200
-    dataResponse.message = t.ROLE_ASSIGN_PERMISSION
-    dataResponse.data = { permission }
-  } catch (error) {
-    statusCode = typeof error.code === 'number' ? error.code : 500
-    dataResponse = getErrorResponse(t, error)
-  }
-  return res.status(statusCode).send(dataResponse)
-}
-
-export const removePermission = async (req: Request, res: Response) => {
-  let dataResponse: DataResponse = { message: '', data: null }
-  let statusCode = 500
-  const { body, params, t, userToken } = req
-  try {
-    // Remove permission
-    const currentIdUser: string = userToken._id
-    const idRole: string = params.idRole
-    const idPermission: string = body.idPermission
-    const permission = await RoleHandlers.removePermission(
-      currentIdUser,
-      idRole,
-      idPermission,
-    )
-
-    // Response
-    statusCode = 200
-    dataResponse.message = t.ROLE_REMOVE_PERMISSION
-    dataResponse.data = { permission }
   } catch (error) {
     statusCode = typeof error.code === 'number' ? error.code : 500
     dataResponse = getErrorResponse(t, error)

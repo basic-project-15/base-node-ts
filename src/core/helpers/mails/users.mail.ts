@@ -8,10 +8,6 @@ interface MailFor {
   email: string
 }
 
-interface BodyCreateUser {
-  newPassword: string
-}
-
 interface BodyOTP {
   newOtp: string
 }
@@ -19,14 +15,14 @@ interface BodyOTP {
 export const createAccount = async (
   lng: Languages,
   to: MailFor,
-  body: BodyCreateUser,
+  newPassword: string,
 ) => {
   const recipients: Recipients = { to: [`${to.name} <${to.email}>`] }
   const { translation: t } = selectTranslation(lng)
   const subject = `${APPLICATION_NAME} - ${t.USER_CREATED}`
   const html = readTemplateHTML(lng, 'createAccount', {
     name: to.name,
-    ...body,
+    newPassword,
   })
   await sendMail(recipients, { subject, html })
 }

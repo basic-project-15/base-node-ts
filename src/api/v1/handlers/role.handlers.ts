@@ -1,11 +1,13 @@
-import { PermissionModel, RoleModel, UserModel } from '@common'
+import { isValidPermissionSchema, RoleModel, UserModel } from '@common'
 import { CustomError } from '@core'
-import type { FilterQuery } from '@interfaces'
+import type { FilterQuery, IModule } from '@interfaces'
 import { Types } from 'mongoose'
 
 interface InfoRole {
   idRole: string
+  name: string
   description: string
+  permissions: IModule[]
   state: boolean
 }
 
@@ -26,6 +28,7 @@ export const getRoles = async (filters: FilterQuery) => {
       $project: {
         id: 1,
         type: 1,
+        name: 1,
         description: 1,
         state: 1,
       },
@@ -55,17 +58,24 @@ export const getRoleById = async (idRole: string) => {
 
 export const createRole = async (
   currentIdUser: string,
-  description: string,
+  infoRole: Omit<InfoRole, 'idRole' | 'state'>,
 ) => {
+  const { name, description, permissions } = infoRole
+
   // Verify another role
-  const anotherRole = await RoleModel.findOne({ description })
+  const anotherRole = await RoleModel.findOne({ name })
   if (anotherRole != null) throw CustomError('ROLE_ALREADY_EXISTS', 409)
+
+  // Verify permissions
+  if (!isValidPermissionSchema(permissions))
+    throw CustomError('PERMISSION_NOT_VALID', 400)
 
   // Create role
   const role = new RoleModel({
     type: 'admin',
+    name,
     description,
-    permissions: [],
+    permissions,
     created_at: new Date(),
     created_by: new Types.ObjectId(currentIdUser),
     state: true,
@@ -77,9 +87,14 @@ export const createRole = async (
 
 export const updateRole = async (currentIdUser: string, infoRole: InfoRole) => {
   // Get roles
-  const { idRole, description, state } = infoRole
+  const { idRole, name, description, permissions, state } = infoRole
   const role = await RoleModel.findById(idRole)
-  const anotherRole = await RoleModel.findOne({ description })
+  const anotherRole = await RoleModel.findOne({ name })
+  console.log(infoRole)
+
+  // Verify permissions
+  if (!isValidPermissionSchema(permissions))
+    throw CustomError('PERMISSION_NOT_VALID', 400)
 
   // Verify roles
   if (role == null) throw CustomError('ROLE_NOT_FOUND', 404)
@@ -88,7 +103,9 @@ export const updateRole = async (currentIdUser: string, infoRole: InfoRole) => {
     throw CustomError('ROLE_ALREADY_EXISTS', 409)
 
   // Update role
+  role.name = name ?? role.name
   role.description = description ?? role.description
+  role.permissions = permissions ?? role.permissions
   role.updated_at = new Date()
   role.updated_by = new Types.ObjectId(currentIdUser)
   role.state = state ?? role.state
@@ -126,64 +143,4 @@ export const deleteRole = async (idRole: string) => {
   await role.deleteOne()
 
   return role
-}
-
-export const assignPermission = async (
-  currentIdUser: string,
-  idRole: string,
-  idPermission: string,
-) => {
-  // Verify role
-  const role = await RoleModel.findById(idRole)
-  if (role == null) throw CustomError('ROLE_NOT_FOUND', 404)
-  if (role.type === 'owner') throw CustomError('ROLE_OWNER', 403)
-
-  // Veriy permission
-  const permission = await PermissionModel.findById(idPermission)
-  if (permission == null) throw CustomError('PERMISSION_NOT_FOUND', 404)
-  const hasPermission = role.permissions.some(
-    item =>
-      item.action === permission.action && item.module === permission.module,
-  )
-  if (hasPermission) throw CustomError('ROLE_ALREADY_ASSIGN_PERMISSION', 409)
-
-  // Assign permission and update role
-  role.updated_at = new Date()
-  role.updated_by = new Types.ObjectId(currentIdUser)
-  role.permissions.push(permission.toObject())
-  await role.save()
-
-  return permission
-}
-
-export const removePermission = async (
-  currentIdUser: string,
-  idRole: string,
-  idPermission: string,
-) => {
-  // Verify role
-  const role = await RoleModel.findById(idRole)
-  if (role == null) throw CustomError('ROLE_NOT_FOUND', 404)
-  if (role.type === 'owner') throw CustomError('ROLE_OWNER', 403)
-
-  // Veriy permission
-  const permission = await PermissionModel.findById(idPermission)
-  if (permission == null) throw CustomError('PERMISSION_NOT_FOUND', 404)
-  const hasPermission = role.permissions.some(
-    item =>
-      item.action === permission.action && item.module === permission.module,
-  )
-  if (!hasPermission) throw CustomError('ROLE_ALREADY_REMOVE_PERMISSION', 409)
-
-  // Remove permission and update role
-  const permissionIndex = role.permissions.findIndex(
-    item =>
-      item.action === permission.action && item.module === permission.module,
-  )
-  role.updated_at = new Date()
-  role.updated_by = new Types.ObjectId(currentIdUser)
-  role.permissions.splice(permissionIndex, 1)
-  await role.save()
-
-  return permission
 }

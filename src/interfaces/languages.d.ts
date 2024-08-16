@@ -20,6 +20,7 @@ export interface ITranslation {
   USER_DELETE_YOURSELF: string
   USER_OWNER_EDIT: string
   USER_OWNER_DELETE: string
+  USER_OWNER_DELETE_PROFILE: string
   USER_ASSIGN_ROLE: string
   USER_REMOVE_ROLE: string
   USER_ALREADY_ASSIGN_ROLE: string
@@ -53,5 +54,6 @@ export interface ITranslation {
   ROLE_OWNER: string
   PERMISSIONS_LISTED: string
   PERMISSION_NOT_FOUND: string
+  PERMISSION_NOT_VALID: string
   LANGUAGES: string
 }
