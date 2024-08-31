@@ -1,6 +1,5 @@
 import { compare, hash } from 'bcrypt'
-import { bcrypt } from '@config'
-import { UserModel } from '@common'
+import { BCRYPT_SALT, UserModel } from '@common'
 import { CustomError } from '@core'
 
 export const verifyExistEmail = async (email: string) => {
@@ -21,7 +20,7 @@ export const recoveryAccount = async (email: string, newPassword: string) => {
   if (checkOldPassword) throw CustomError('USER_OLD_PASSWORD', 400)
 
   // Update password
-  const newPasswordHash = await hash(newPassword, bcrypt.SALT)
+  const newPasswordHash = await hash(newPassword, BCRYPT_SALT)
   user.password = newPasswordHash
   user.passwordVersion = user.passwordVersion + 1
   user.incorrectPassword = 0

@@ -1,1 +1,1 @@
-export * as TestControllers from './test'
+export * as TestControllers from './experimental'

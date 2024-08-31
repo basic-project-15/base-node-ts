@@ -1,4 +1,5 @@
 {
+  "extends": "./tsconfig.paths.json",
   "compilerOptions": {
     "target": "es2015",
     "skipLibCheck": true,
@@ -6,26 +7,9 @@
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "baseUrl": ".",
-    "paths": {
-      "@api": ["./src/api"],
-      "@api/*": ["./src/api/*"],
-      "@common": ["./src/common"],
-      "@common/*": ["./src/common/*"],
-      "@config": ["./src/config"],
-      "@config/*": ["./src/config/*"],
-      "@core": ["./src/core"],
-      "@core/*": ["./src/core/*"],
-      "@interfaces": ["./src/interfaces"],
-      "@interfaces/*": ["./src/interfaces/*"],
-      "@languages": ["./src/languages"],
-      "@languages/*": ["./src/languages/*"],
-      "@services": ["./src/services"],
-      "@services/*": ["./src/services/*"]
-    },
     "typeRoots": ["./src/interfaces", "./node_modules/@types"],
     "resolveJsonModule": true,
-    "outDir": "./build",
+    "outDir": "./dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -34,6 +18,6 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true
   },
-  "include": ["./src/**/*", "./seed", "./tsconfig.json"],
+  "include": ["./src/**/*", "__tests__"],
   "exclude": ["node_modules"]
 }

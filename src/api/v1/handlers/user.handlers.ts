@@ -1,5 +1,9 @@
-import { MAX_FAILED_PASSWORDS, RoleModel, UserModel } from '@common'
-import { bcrypt } from '@config'
+import {
+  BCRYPT_SALT,
+  MAX_FAILED_PASSWORDS,
+  RoleModel,
+  UserModel,
+} from '@common'
 import { CustomError } from '@core'
 import type { FilterQuery, PaginationQuery } from '@interfaces'
 import { hash } from 'bcrypt'
@@ -88,7 +92,7 @@ export const createUser = async (
 
   // Create user
   const temporaryPassword = Math.random().toString(36).slice(-10)
-  const newPassword = await hash(temporaryPassword, bcrypt.SALT)
+  const newPassword = await hash(temporaryPassword, BCRYPT_SALT)
   const user = new UserModel({
     firstName,
     lastName,

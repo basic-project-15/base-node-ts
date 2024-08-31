@@ -1,5 +1,4 @@
-import { UserModel } from '@common'
-import { bcrypt } from '@config'
+import { BCRYPT_SALT, UserModel } from '@common'
 import { CustomError } from '@core'
 import { compare, hash } from 'bcrypt'
 import { Types } from 'mongoose'
@@ -81,7 +80,7 @@ export const updatePassword = async (
   if (oldPassword === newPassword) throw CustomError('USER_OLD_PASSWORD', 400)
 
   // Update password
-  const newPasswordHash: string = await hash(newPassword, bcrypt.SALT)
+  const newPasswordHash: string = await hash(newPassword, BCRYPT_SALT)
   user.password = newPasswordHash
   user.updated_at = new Date()
   user.updated_by = new Types.ObjectId(idUser)

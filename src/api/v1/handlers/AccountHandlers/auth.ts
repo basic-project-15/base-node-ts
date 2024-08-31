@@ -1,7 +1,11 @@
 import { OAuth2Client } from 'google-auth-library'
 import { compare, hash } from 'bcrypt'
-import { bcrypt } from '@config'
-import { GOOGLE_CLIENT_ID, MAX_FAILED_PASSWORDS, UserModel } from '@common'
+import {
+  BCRYPT_SALT,
+  GOOGLE_CLIENT_ID,
+  MAX_FAILED_PASSWORDS,
+  UserModel,
+} from '@common'
 import { capitalizeFirstLetter, CustomError } from '@core'
 
 interface CreateUser {
@@ -68,7 +72,7 @@ export const validateIdTokenGoogle = async (idToken: string) => {
 export const registerWithEmailAndPass = async (newUser: CreateUser) => {
   // Register user
   const { firstName, lastName, email, password, phoneNumber, photo } = newUser
-  const newPasswordHash = await hash(password, bcrypt.SALT)
+  const newPasswordHash = await hash(password, BCRYPT_SALT)
   const user = new UserModel({
     firstName,
     lastName,
