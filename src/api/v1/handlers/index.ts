@@ -1,5 +1,0 @@
-export * as AccountHandlers from './AccountHandlers'
-export * as PermissionHandlers from './permission.handlers'
-export * as ProfileHandlers from './profile.handlers'
-export * as RoleHandlers from './role.handlers'
-export * as UserHandlers from './user.handlers'

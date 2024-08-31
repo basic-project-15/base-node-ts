@@ -2,20 +2,17 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@api": ["./src/api"],
-      "@api/*": ["./src/api/*"],
       "@common": ["./src/common"],
-      "@common/*": ["./src/common/*"],
       "@config": ["./src/config"],
-      "@config/*": ["./src/config/*"],
       "@core": ["./src/core"],
-      "@core/*": ["./src/core/*"],
       "@interfaces": ["./src/interfaces"],
-      "@interfaces/*": ["./src/interfaces/*"],
       "@languages": ["./src/languages"],
-      "@languages/*": ["./src/languages/*"],
       "@services": ["./src/services"],
-      "@services/*": ["./src/services/*"]
+      "@middlewares": ["./src/api/middlewares"],
+      "@routes": ["./src/api/routes"],
+      "@authModule/*": ["./src/api/modules/auth/*"],
+      "@profileModule/*": ["./src/api/modules/profile/*"],
+      "@securityModule/*": ["./src/api/modules/security/*"]
     }
   }
 }

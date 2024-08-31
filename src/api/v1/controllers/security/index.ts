@@ -1,6 +1,0 @@
-export * as PermissionControllers from './permission.controllers'
-export * as RoleControllers from './role.controllers'
-export * as UserControllers from './user.controllers'
-// export * as PermissionControllers from './PermissionControllers'
-// export * as RoleControllers from './RoleControllers'
-// export * as UserControllers from './UserControllers'
