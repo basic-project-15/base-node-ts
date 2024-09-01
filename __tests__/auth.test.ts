@@ -1,5 +1,5 @@
 import request from 'supertest'
-import { app } from '../src/app'
+import { app } from '@app.ts'
 import { SERVER_PORT, SERVER_URL_NAME } from '@common'
 import { mongodb } from '@config'
 let server: any
@@ -23,7 +23,7 @@ describe('Auth API', () => {
       password: 'Test_1234',
     }
     const response = await request(server)
-      .post('/api/v1/auth/login/email-and-pass')
+      .post('/api/auth/login/email-and-pass')
       .send(loginData)
     expect(response.status).toBe(401)
   })
