@@ -1,5 +1,5 @@
-import { RoleModel } from '@common'
-import { CustomError } from '@core'
+import { RoleModel } from '@models'
+import { CustomError } from '@common'
 import { Types } from 'mongoose'
 
 export const disableRole = async (currentIdUser: string, idRole: string) => {

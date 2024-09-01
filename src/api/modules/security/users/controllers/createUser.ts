@@ -1,10 +1,10 @@
 import type { Request, Response } from 'express'
-import type { DataResponse } from '@interfaces'
-import { getErrorResponse, SendEmails } from '@core'
+import type { IDataResponse } from '@interfaces'
+import { getErrorResponse, sendEmail } from '@common'
 import * as UserServices from '@securityModule/users/services'
 
 export const createUser = async (req: Request, res: Response) => {
-  let dataResponse: DataResponse = { message: '', data: null }
+  let dataResponse: IDataResponse = { message: '', data: null }
   let statusCode = 500
   const { body, t, userToken, lng } = req
   try {
@@ -20,14 +20,15 @@ export const createUser = async (req: Request, res: Response) => {
     )
 
     // Send Email
-    await SendEmails.createAccount(
-      lng,
-      {
-        name: user?.firstName,
-        email: user.email,
+    await sendEmail(lng, {
+      recipients: { to: [`${user.firstName} <${user.email}>`] },
+      subject: t.USER_CREATED,
+      templateBody: 'createAccount',
+      body: {
+        name: user.firstName,
+        temporaryPassword,
       },
-      temporaryPassword,
-    )
+    })
 
     // Response
     statusCode = 200

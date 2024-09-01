@@ -1,5 +1,20 @@
 import { Schema, Types, model } from 'mongoose'
-import type { IRole } from '@interfaces'
+import type { IModule } from '@models'
+
+export type Roles = 'admin' | 'owner'
+
+export interface IRole {
+  _id: Types.ObjectId
+  type: Roles
+  name: string
+  description: string
+  permissions: IModule[]
+  created_at: Date
+  created_by?: Types.ObjectId
+  updated_at?: Date
+  updated_by?: Types.ObjectId
+  state: boolean
+}
 
 const schema = new Schema({
   type: { type: String, required: true, maxLenght: 25 },

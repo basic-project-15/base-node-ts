@@ -1,10 +1,10 @@
 import type { Request, Response } from 'express'
-import type { DataResponse } from '@interfaces'
+import type { IDataResponse } from '@interfaces'
 import * as AuthServices from '@authModule/services'
-import { CustomError, getErrorResponse, SendEmails } from '@core'
+import { CustomError, getErrorResponse, sendEmail } from '@common'
 
 export const loginWithEmailAndPass = async (req: Request, res: Response) => {
-  let dataResponse: DataResponse = { message: '', data: null }
+  let dataResponse: IDataResponse = { message: '', data: null }
   let statusCode = 500
   const { body, t, lng } = req
   try {
@@ -12,22 +12,23 @@ export const loginWithEmailAndPass = async (req: Request, res: Response) => {
     const password: string = body.password
 
     // Validate email and password
-    const result = await AuthServices.validateEmailAndPass(email, password)
-    const { user, isSendEmail } = result
+    const { user, isSendEmail } = await AuthServices.validateEmailAndPass(
+      email,
+      password,
+    )
+
+    // Notify if account is blocked
     if (isSendEmail) {
-      await SendEmails.blockedAccount(lng, {
-        name: user?.firstName,
-        email,
+      await sendEmail(lng, {
+        recipients: { to: [`${user.firstName} <${user.email}>`] },
+        subject: t.USER_BLOCKED,
+        templateBody: 'blockedAccount',
       })
       throw CustomError('USER_BLOCKED_DETAILS', 401)
     }
 
     // Generate tokens
-    const tokens = await AuthServices.generateTokens(
-      user._id.toString(),
-      user.email,
-      user.passwordVersion,
-    )
+    const tokens = await AuthServices.generateTokens(user._id.toString())
     delete user.password
     delete user.incorrectPassword
     delete user.refreshToken

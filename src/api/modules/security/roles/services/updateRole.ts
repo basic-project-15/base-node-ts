@@ -1,6 +1,6 @@
-import { isValidPermissionSchema, RoleModel } from '@common'
-import { CustomError } from '@core'
-import type { IModule } from '@interfaces'
+import type { IModule } from '@models'
+import { isValidPermissionSchema, RoleModel } from '@models'
+import { CustomError } from '@common'
 import { Types } from 'mongoose'
 
 interface InfoRole {
@@ -16,7 +16,6 @@ export const updateRole = async (currentIdUser: string, infoRole: InfoRole) => {
   const { idRole, name, description, permissions, state } = infoRole
   const role = await RoleModel.findById(idRole)
   const anotherRole = await RoleModel.findOne({ name })
-  console.log(infoRole)
 
   // Verify permissions
   if (!isValidPermissionSchema(permissions))

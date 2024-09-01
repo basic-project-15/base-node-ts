@@ -1,5 +1,5 @@
-import { UserModel } from '@common'
-import { CustomError } from '@core'
+import { UserModel } from '@models'
+import { CustomError } from '@common'
 import { Types } from 'mongoose'
 
 export const disableUser = async (currentIdUser: string, idUser: string) => {

@@ -1,10 +1,10 @@
-import { UserModel } from '@common'
-import { CustomError } from '@core'
+import { UserModel } from '@models'
+import { CustomError } from '@common'
 import { Types } from 'mongoose'
 
 export const updateEmail = async (idUser: string, newEmail: string) => {
   // Verify user
-  const user = await UserModel.findById(idUser)
+  const user = await UserModel.findOne({ _id: idUser, state: true })
   if (user == null) throw CustomError('USER_NOT_FOUND', 404)
 
   // Update email

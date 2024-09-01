@@ -1,15 +1,8 @@
 import { compare, hash } from 'bcrypt'
-import { BCRYPT_SALT, UserModel } from '@common'
-import { CustomError } from '@core'
+import { UserModel } from '@models'
+import { CustomError, BCRYPT_SALT } from '@common'
 
-export const verifyExistEmail = async (email: string) => {
-  // Verify another email
-  const user = await UserModel.findOne({ email })
-
-  return user?.toObject()
-}
-
-export const recoveryAccount = async (email: string, newPassword: string) => {
+export const updatePassword = async (email: string, newPassword: string) => {
   // Verify user
   const user = await UserModel.findOne({ email, state: true })
   if (!user) throw CustomError('USER_NOT_FOUND', 404)

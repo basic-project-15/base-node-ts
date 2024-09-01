@@ -1,5 +1,5 @@
-import { UserModel } from '@common'
-import { CustomError } from '@core'
+import { UserModel } from '@models'
+import { CustomError } from '@common'
 import { Types } from 'mongoose'
 
 interface IProfile {
@@ -11,7 +11,7 @@ interface IProfile {
 
 export const updateProfile = async (idUser: string, profile: IProfile) => {
   // Verify user
-  const user = await UserModel.findById(idUser)
+  const user = await UserModel.findOne({ _id: idUser, state: true })
   if (user == null) throw CustomError('USER_NOT_FOUND', 404)
 
   // Update profile

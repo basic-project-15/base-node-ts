@@ -1,10 +1,10 @@
 import type { Request, Response } from 'express'
-import type { DataResponse } from '@interfaces'
+import type { IDataResponse } from '@interfaces'
 import * as AuthServices from '@authModule/services'
-import { CustomError, getErrorResponse, SendEmails } from '@core'
+import { CustomError, getErrorResponse, sendEmail } from '@common'
 
 export const recoveryAccountSendOtp = async (req: Request, res: Response) => {
-  let dataResponse: DataResponse = { message: '', data: null }
+  let dataResponse: IDataResponse = { message: '', data: null }
   let statusCode = 500
   const { body, t, lng } = req
   try {
@@ -18,11 +18,15 @@ export const recoveryAccountSendOtp = async (req: Request, res: Response) => {
     const newOtp = await AuthServices.generateOtp(email)
 
     // Send OTP
-    await SendEmails.recoveryAccount(
-      lng,
-      { name: user.firstName, email: user.email },
-      { newOtp: newOtp.otp },
-    )
+    await sendEmail(lng, {
+      recipients: { to: [`${user.firstName} <${user.email}>`] },
+      subject: t.USER_ACCOUNT_RECOVERY,
+      templateBody: 'recoveryAccount',
+      body: {
+        name: user.firstName,
+        newOtp: newOtp.otp,
+      },
+    })
 
     // Response
     statusCode = 200

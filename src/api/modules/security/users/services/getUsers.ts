@@ -1,9 +1,9 @@
-import { UserModel } from '@common'
-import type { FilterQuery, PaginationQuery } from '@interfaces'
+import { UserModel } from '@models'
+import type { IFilterQuery, IPaginationQuery } from '@interfaces'
 
 export const getUsers = async (
-  filters: FilterQuery,
-  pagination: PaginationQuery,
+  filters: IFilterQuery,
+  pagination: IPaginationQuery,
 ) => {
   // Get filters
   const { searchQuery, sortField, sortOrder } = filters

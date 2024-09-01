@@ -1,7 +1,8 @@
 import type { Request, Response, NextFunction } from 'express'
-import type { DataResponse, IRole, UserToken } from '@interfaces'
-import { METHOD_ACTIONS, UserModel } from '@common'
-import { CustomError, getErrorResponse } from '@core'
+import type { IDataResponse, IUserToken } from '@interfaces'
+import { METHOD_ACTIONS, CustomError, getErrorResponse } from '@common'
+import { UserModel } from '@models'
+import type { IRole } from '@models'
 
 interface Access {
   module: string
@@ -14,6 +15,9 @@ const verifyPermissions = (roles: IRole[], access: Access) => {
     item => item.method === access.method,
   )
   const action = methodActions?.action ?? ''
+  if (action === '') {
+    return false
+  }
   for (const role of roles) {
     // Get modules
     const modules = role.permissions?.filter(
@@ -40,9 +44,9 @@ export const authorization = async (
   res: Response,
   next: NextFunction,
 ): Promise<any> => {
-  let dataResponse: DataResponse = { message: '', data: null }
+  let dataResponse: IDataResponse = { message: '', data: null }
   let statusCode = 500
-  const userToken: UserToken = req.userToken
+  const userToken: IUserToken = req.userToken
   const { t } = req
   try {
     const idUser = userToken._id

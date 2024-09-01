@@ -1,7 +1,7 @@
-import { RoleModel } from '@common'
-import type { FilterQuery } from '@interfaces'
+import { RoleModel } from '@models'
+import type { IFilterQuery } from '@interfaces'
 
-export const getRoles = async (filters: FilterQuery) => {
+export const getRoles = async (filters: IFilterQuery) => {
   // Get roles
   const { searchQuery, sortField, sortOrder } = filters
   const order = sortOrder === 'desc' ? -1 : 1

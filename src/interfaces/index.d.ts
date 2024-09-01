@@ -1,11 +1,11 @@
-import type { UserToken } from './endpoint'
-import type { Languages, ITranslation } from './languages'
+import type { IUserToken } from './endpoint'
+import type { ILanguages, ITranslation } from './languages'
 
 declare global {
   namespace Express {
     interface Request {
-      userToken: UserToken
-      lng: Languages
+      userToken: IUserToken
+      lng: ILanguages
       t: ITranslation
     }
   }
@@ -17,7 +17,5 @@ declare namespace Express {
   }
 }
 
-export type * from './models'
-export type * from './languages'
 export type * from './endpoint'
-export type * from './sendEmails'
+export type * from './languages'

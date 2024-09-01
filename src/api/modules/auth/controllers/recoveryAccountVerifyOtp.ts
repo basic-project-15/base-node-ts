@@ -1,10 +1,10 @@
 import type { Request, Response } from 'express'
-import type { DataResponse } from '@interfaces'
+import type { IDataResponse } from '@interfaces'
 import * as AuthServices from '@authModule/services'
-import { getErrorResponse } from '@core'
+import { getErrorResponse } from '@common'
 
 export const recoveryAccountVerifyOtp = async (req: Request, res: Response) => {
-  let dataResponse: DataResponse = { message: '', data: null }
+  let dataResponse: IDataResponse = { message: '', data: null }
   let statusCode = 500
   const { body, t } = req
   try {

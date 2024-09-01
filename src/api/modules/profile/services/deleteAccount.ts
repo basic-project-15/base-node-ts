@@ -1,5 +1,5 @@
-import { UserModel } from '@common'
-import { CustomError } from '@core'
+import { UserModel } from '@models'
+import { CustomError } from '@common'
 
 export const deleteAccount = async (idUser: string) => {
   // Verify user
@@ -11,7 +11,7 @@ export const deleteAccount = async (idUser: string) => {
 
   if (isOwner) throw CustomError('USER_OWNER_DELETE_PROFILE', 400)
 
-  // Update password
+  // Delete user
   await user.deleteOne()
 
   return user.toObject()

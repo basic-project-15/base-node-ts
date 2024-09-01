@@ -1,5 +1,5 @@
-import { BCRYPT_SALT, UserModel } from '@common'
-import { CustomError } from '@core'
+import { UserModel } from '@models'
+import { BCRYPT_SALT, CustomError } from '@common'
 import { compare, hash } from 'bcrypt'
 import { Types } from 'mongoose'
 
@@ -9,7 +9,7 @@ export const updatePassword = async (
   newPassword: string,
 ) => {
   // Verify user
-  const user = await UserModel.findById(idUser)
+  const user = await UserModel.findOne({ _id: idUser, state: true })
   if (user == null) throw CustomError('USER_NOT_FOUND', 404)
 
   // Cehck passwords

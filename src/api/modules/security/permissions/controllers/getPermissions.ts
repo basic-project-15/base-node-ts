@@ -1,10 +1,10 @@
 import type { Request, Response } from 'express'
-import type { DataResponse } from '@interfaces'
-import { getErrorResponse } from '@core'
+import type { IDataResponse } from '@interfaces'
+import { getErrorResponse } from '@common'
 import * as PermissionServices from '@securityModule/permissions/services'
 
 export const getPermissions = async (req: Request, res: Response) => {
-  let dataResponse: DataResponse = { message: '', data: null }
+  let dataResponse: IDataResponse = { message: '', data: null }
   let statusCode = 500
   const { t } = req
   try {

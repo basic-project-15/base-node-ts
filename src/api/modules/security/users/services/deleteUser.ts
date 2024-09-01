@@ -1,5 +1,5 @@
-import { UserModel } from '@common'
-import { CustomError } from '@core'
+import { UserModel } from '@models'
+import { CustomError } from '@common'
 
 export const deleteUser = async (currentIdUser: string, idUser: string) => {
   // Verify user

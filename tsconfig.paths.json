@@ -4,12 +4,11 @@
     "paths": {
       "@common": ["./src/common"],
       "@config": ["./src/config"],
-      "@core": ["./src/core"],
       "@interfaces": ["./src/interfaces"],
       "@languages": ["./src/languages"],
-      "@services": ["./src/services"],
       "@middlewares": ["./src/api/middlewares"],
       "@routes": ["./src/api/routes"],
+      "@models": ["./src/api/models"],
       "@authModule/*": ["./src/api/modules/auth/*"],
       "@profileModule/*": ["./src/api/modules/profile/*"],
       "@securityModule/*": ["./src/api/modules/security/*"]

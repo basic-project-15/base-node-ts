@@ -1,5 +1,12 @@
 import { Schema, model } from 'mongoose'
-import type { IOtp } from '@interfaces'
+import type { Types } from 'mongoose'
+
+export interface IOtp {
+  _id?: Types.ObjectId
+  email: string
+  otp: string
+  createdAt: Date
+}
 
 const schema = new Schema({
   email: { type: String, required: true },

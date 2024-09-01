@@ -1,10 +1,10 @@
 import type { Request, Response } from 'express'
-import type { DataResponse } from '@interfaces'
-import { CustomError, getErrorResponse, SendEmails } from '@core'
+import type { IDataResponse } from '@interfaces'
+import { CustomError, getErrorResponse, sendEmail } from '@common'
 import * as AuthServices from '@authModule/services'
 
 export const updateEmailSendOTP = async (req: Request, res: Response) => {
-  let dataResponse: DataResponse = { message: '', data: null }
+  let dataResponse: IDataResponse = { message: '', data: null }
   let statusCode = 500
   const { body, t, lng } = req
   try {
@@ -18,11 +18,15 @@ export const updateEmailSendOTP = async (req: Request, res: Response) => {
     const newOtp = await AuthServices.generateOtp(newEmail)
 
     // Send OTP
-    await SendEmails.verifyEmail(
-      lng,
-      { name: '', email: newEmail },
-      { newOtp: newOtp.otp },
-    )
+    await sendEmail(lng, {
+      recipients: { to: [`<${newEmail}>`] },
+      subject: t.USER_EMAIL_VERIFICATION,
+      templateBody: 'verifyEmail',
+      body: {
+        name: '',
+        newOtp: newOtp.otp,
+      },
+    })
 
     // Response
     statusCode = 200

@@ -1,4 +1,4 @@
-export type Languages = 'en' | 'es'
+export type ILanguages = 'en' | 'es'
 
 export interface ITranslation {
   RES_INVALID_TOKEN: string

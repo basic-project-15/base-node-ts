@@ -1,5 +1,5 @@
-import { MAX_FAILED_PASSWORDS, UserModel } from '@common'
-import { CustomError } from '@core'
+import { UserModel } from '@models'
+import { MAX_FAILED_PASSWORDS, CustomError } from '@common'
 
 import { Types } from 'mongoose'
 

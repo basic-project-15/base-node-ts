@@ -1,6 +1,6 @@
-import { isValidPermissionSchema, RoleModel } from '@common'
-import { CustomError } from '@core'
-import type { IModule } from '@interfaces'
+import type { IModule } from '@models'
+import { isValidPermissionSchema, RoleModel } from '@models'
+import { CustomError } from '@common'
 import { Types } from 'mongoose'
 
 interface InfoRole {

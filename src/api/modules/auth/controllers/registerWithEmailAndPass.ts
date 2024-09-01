@@ -1,10 +1,10 @@
 import type { Request, Response } from 'express'
-import type { DataResponse } from '@interfaces'
+import type { IDataResponse } from '@interfaces'
 import * as AuthServices from '@authModule/services'
-import { CustomError, getErrorResponse, SendEmails } from '@core'
+import { CustomError, getErrorResponse, sendEmail } from '@common'
 
 export const registerWithEmailAndPass = async (req: Request, res: Response) => {
-  let dataResponse: DataResponse = { message: '', data: null }
+  let dataResponse: IDataResponse = { message: '', data: null }
   let statusCode = 500
   const { body, t, lng } = req
   try {
@@ -13,8 +13,8 @@ export const registerWithEmailAndPass = async (req: Request, res: Response) => {
     const anotherUser = await AuthServices.verifyExistEmail(newEmail)
     if (anotherUser != null) throw CustomError('USER_ALREADY_EXISTS', 409)
 
-    // Register user
-    const user = await AuthServices.registerWithEmailAndPass({
+    // Create user
+    const user = await AuthServices.createUser({
       firstName: body.firstName,
       lastName: body.lastName,
       email: body.email,
@@ -27,17 +27,14 @@ export const registerWithEmailAndPass = async (req: Request, res: Response) => {
     delete user.refreshToken
 
     // Send Email
-    await SendEmails.registerUser(lng, {
-      name: user?.firstName,
-      email: user.email,
+    await sendEmail(lng, {
+      recipients: { to: [`${user.firstName} <${user.email}>`] },
+      subject: t.USER_CREATED,
+      templateBody: 'registerUser',
     })
 
     // Generate tokens
-    const tokens = await AuthServices.generateTokens(
-      user._id.toString(),
-      user.email,
-      user.passwordVersion,
-    )
+    const tokens = await AuthServices.generateTokens(user._id.toString())
 
     // Response
     statusCode = 200

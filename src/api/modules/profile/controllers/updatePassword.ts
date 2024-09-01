@@ -1,11 +1,11 @@
 import type { Request, Response } from 'express'
-import type { DataResponse } from '@interfaces'
-import { getErrorResponse } from '@core'
+import type { IDataResponse } from '@interfaces'
+import { getErrorResponse } from '@common'
 import * as AuthServices from '@authModule/services'
 import * as ProfileServices from '@profileModule/services'
 
 export const updatePassword = async (req: Request, res: Response) => {
-  let dataResponse: DataResponse = { message: '', data: null }
+  let dataResponse: IDataResponse = { message: '', data: null }
   let statusCode = 500
   const { body, t, userToken } = req
   try {
@@ -24,11 +24,7 @@ export const updatePassword = async (req: Request, res: Response) => {
     delete user.refreshToken
 
     // Generate tokens
-    const tokens = await AuthServices.generateTokens(
-      user._id.toString(),
-      user.email,
-      user.passwordVersion,
-    )
+    const tokens = await AuthServices.generateTokens(user._id.toString())
 
     // Resposne
     statusCode = 200

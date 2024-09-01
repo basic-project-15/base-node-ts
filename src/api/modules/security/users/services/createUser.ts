@@ -1,5 +1,5 @@
-import { BCRYPT_SALT, UserModel } from '@common'
-import { CustomError } from '@core'
+import { UserModel } from '@models'
+import { BCRYPT_SALT, CustomError } from '@common'
 import { hash } from 'bcrypt'
 import { Types } from 'mongoose'
 

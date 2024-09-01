@@ -1,16 +1,16 @@
 import type { Request, Response } from 'express'
-import type { DataResponse } from '@interfaces'
-import { getErrorResponse } from '@core'
+import type { IDataResponse } from '@interfaces'
+import { getErrorResponse } from '@common'
 import * as ProfileServices from '@profileModule/services'
 
 export const deleteAccount = async (req: Request, res: Response) => {
-  let dataResponse: DataResponse = { message: '', data: null }
+  let dataResponse: IDataResponse = { message: '', data: null }
   let statusCode = 500
   const { t, userToken } = req
   try {
     const currentIdUser = userToken._id
 
-    // Update password
+    // Delete account
     const user = await ProfileServices.deleteAccount(currentIdUser)
     delete user.password
     delete user.incorrectPassword

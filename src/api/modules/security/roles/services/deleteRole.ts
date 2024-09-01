@@ -1,5 +1,5 @@
-import { RoleModel, UserModel } from '@common'
-import { CustomError } from '@core'
+import { RoleModel, UserModel } from '@models'
+import { CustomError } from '@common'
 
 export const deleteRole = async (idRole: string) => {
   // Verify role

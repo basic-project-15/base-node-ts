@@ -1,10 +1,10 @@
 import type { Request, Response } from 'express'
-import type { DataResponse } from '@interfaces'
+import type { IDataResponse } from '@interfaces'
 import * as AuthServices from '@authModule/services'
-import { getErrorResponse } from '@core'
+import { getErrorResponse } from '@common'
 
 export const recoveryAccount = async (req: Request, res: Response) => {
-  let dataResponse: DataResponse = { message: '', data: null }
+  let dataResponse: IDataResponse = { message: '', data: null }
   let statusCode = 500
   const { body, t } = req
   try {
@@ -15,8 +15,8 @@ export const recoveryAccount = async (req: Request, res: Response) => {
     // Validate OTP
     await AuthServices.verifyOtp(email, otp)
 
-    // Recovery account
-    const user = await AuthServices.recoveryAccount(email, newPassword)
+    // Update password
+    const user = await AuthServices.updatePassword(email, newPassword)
     delete user.password
     delete user.incorrectPassword
     delete user.refreshToken
@@ -25,11 +25,7 @@ export const recoveryAccount = async (req: Request, res: Response) => {
     await AuthServices.destroyOtp(email, otp)
 
     // Generate tokens
-    const tokens = await AuthServices.generateTokens(
-      user._id.toString(),
-      user.email,
-      user.passwordVersion,
-    )
+    const tokens = await AuthServices.generateTokens(user._id.toString())
 
     // Response
     statusCode = 200

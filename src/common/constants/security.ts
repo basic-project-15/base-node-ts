@@ -1,4 +1,11 @@
-import type { MethodAction } from '@interfaces'
+import type { Actions } from '@models'
+
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
+
+interface MethodAction {
+  method: HttpMethod
+  action: Actions
+}
 
 export const METHOD_ACTIONS: MethodAction[] = [
   {
@@ -7,15 +14,15 @@ export const METHOD_ACTIONS: MethodAction[] = [
   },
   {
     method: 'POST',
-    action: 'create',
+    action: 'add',
   },
   {
     method: 'PUT',
-    action: 'update',
+    action: 'edit',
   },
   {
     method: 'PATCH',
-    action: 'update',
+    action: 'edit',
   },
   {
     method: 'DELETE',

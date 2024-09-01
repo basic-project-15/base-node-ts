@@ -1,5 +1,5 @@
-import { UserModel } from '@common'
-import { CustomError } from '@core'
+import { UserModel } from '@models'
+import { CustomError } from '@common'
 
 export const getUserById = async (idUser: string) => {
   const user = await UserModel.findById(idUser).populate([

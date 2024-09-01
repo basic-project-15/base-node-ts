@@ -1,5 +1,5 @@
-import { RoleModel } from '@common'
-import { CustomError } from '@core'
+import { RoleModel } from '@models'
+import { CustomError } from '@common'
 
 export const getRoleById = async (idRole: string) => {
   // Get role

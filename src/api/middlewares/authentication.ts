@@ -1,14 +1,15 @@
 import type { Response, NextFunction, Request } from 'express'
-import type { DataResponse } from '@interfaces'
+import type { IDataResponse } from '@interfaces'
 import { jwt } from '@config'
-import { MAX_FAILED_PASSWORDS, UserModel } from '@common'
+import { MAX_FAILED_PASSWORDS } from '@common'
+import { UserModel } from '@models'
 
 export const authentication = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<any> => {
-  const dataResponse: DataResponse = { message: '', data: null }
+  const dataResponse: IDataResponse = { message: '', data: null }
   const { t } = req
   try {
     // Validation token
