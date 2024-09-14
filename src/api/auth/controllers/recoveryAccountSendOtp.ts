@@ -1,8 +1,7 @@
 import type { Request, Response } from 'express'
 import type { IDataResponse } from '@interfaces'
 import * as AuthServices from '@api/auth/services'
-import { getErrorResponse, sendEmail } from '@common'
-import path from 'path'
+import { getErrorResponse, getHTMLFile, sendEmail } from '@common'
 
 export const recoveryAccountSendOtp = async (req: Request, res: Response) => {
   let dataResponse: IDataResponse = { message: '', data: null }
@@ -15,9 +14,8 @@ export const recoveryAccountSendOtp = async (req: Request, res: Response) => {
     const { newOtp, user } = await AuthServices.generateOtpInternalUser(email)
 
     // Send OTP
-    const languagesDir = path.resolve(__dirname, '..', 'languages')
-    const filePath = path.join(languagesDir, `${lng}/recoveryAccount.html`)
-    await sendEmail(filePath, {
+    const html = getHTMLFile(__dirname, lng, 'recoveryAccount')
+    await sendEmail(html, {
       recipients: { to: [`${user.firstName} <${user.email}>`] },
       subject: t.AUTH_ACCOUNT_RECOVERY,
       body: {

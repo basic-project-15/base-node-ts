@@ -1,8 +1,7 @@
 import type { Request, Response } from 'express'
 import type { IDataResponse } from '@interfaces'
-import { getErrorResponse, sendEmail } from '@common'
+import { getErrorResponse, getHTMLFile, sendEmail } from '@common'
 import * as AuthServices from '@api/auth/services'
-import path from 'path'
 
 export const updateEmailSendOTP = async (req: Request, res: Response) => {
   let dataResponse: IDataResponse = { message: '', data: null }
@@ -15,9 +14,8 @@ export const updateEmailSendOTP = async (req: Request, res: Response) => {
     const newOtp = await AuthServices.generateOtpExternalUser(newEmail)
 
     // Send OTP
-    const languagesDir = path.resolve(__dirname, '..', 'languages')
-    const filePath = path.join(languagesDir, `${lng}/verifyEmail.html`)
-    await sendEmail(filePath, {
+    const html = getHTMLFile(__dirname, lng, 'verifyEmail')
+    await sendEmail(html, {
       recipients: { to: [`<${newEmail}>`] },
       subject: t.PROFILE_EMAIL_VERIFICATION,
       body: {
