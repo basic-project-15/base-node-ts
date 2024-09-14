@@ -2,17 +2,16 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@app.ts": ["./src/app.ts"],
+      "@api/*": ["./src/api/*"],
+      "@api": ["./src/api"],
       "@common": ["./src/common"],
       "@config": ["./src/config"],
       "@interfaces": ["./src/interfaces"],
       "@languages": ["./src/languages"],
-      "@middlewares": ["./src/api/middlewares"],
-      "@routes": ["./src/api/routes"],
-      "@models": ["./src/api/models"],
-      "@authModule/*": ["./src/api/modules/auth/*"],
-      "@profileModule/*": ["./src/api/modules/profile/*"],
-      "@securityModule/*": ["./src/api/modules/security/*"]
+      "@middlewares": ["./src/middlewares"],
+      "@models": ["./src/models"],
+      "@routes": ["./src/routes"],
+      "@app.ts": ["./src/app.ts"]
     }
   }
 }

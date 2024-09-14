@@ -1,5 +1,5 @@
 import type { IUserToken } from './endpoint'
-import type { ILanguages, ITranslation } from './languages'
+import type { ILanguages, ITranslation } from '@languages'
 
 declare global {
   namespace Express {
@@ -18,4 +18,4 @@ declare namespace Express {
 }
 
 export type * from './endpoint'
-export type * from './languages'
+export type { ILanguages, ITranslation }

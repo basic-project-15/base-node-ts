@@ -1,0 +1,23 @@
+import type { Request, Response } from 'express'
+import type { IDataResponse } from '@interfaces'
+import { getErrorResponse } from '@common'
+import * as ProfileServices from '@api/profile/services'
+
+export const getProfile = async (req: Request, res: Response) => {
+  let dataResponse: IDataResponse = { message: '', data: null }
+  let statusCode = 500
+  const { t, userToken } = req
+  try {
+    // Get profile
+    const user = await ProfileServices.getProfile(userToken.email)
+
+    // Response
+    statusCode = 200
+    dataResponse.message = t.PROFILE_FOUND
+    dataResponse.data = { user }
+  } catch (error) {
+    statusCode = typeof error.code === 'number' ? error.code : 500
+    dataResponse = getErrorResponse(t, error)
+  }
+  return res.status(statusCode).send(dataResponse)
+}

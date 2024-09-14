@@ -1,5 +1,4 @@
 import fs from 'fs'
-import type { ILanguages } from '@interfaces'
 import { NODEMAILER_MAIL, NODEMAILER_NAME } from '@common'
 import { nodemailer } from '@config'
 
@@ -17,22 +16,18 @@ export interface Recipients {
 export interface Mail {
   recipients: Recipients
   subject: string
-  templateBody: string
   body?: any
 }
 
 export const sendEmail = async (
-  lng: ILanguages,
+  pathTemplateBody: string,
   mail: Mail,
   files?: Attachment[],
 ) => {
-  const { recipients, subject, templateBody, body } = mail
+  const { recipients, subject, body } = mail
 
   // Get html template
-  let html = fs.readFileSync(
-    `./src/languages/${lng}/${templateBody}.html`,
-    'utf8',
-  )
+  let html = fs.readFileSync(pathTemplateBody, 'utf8')
 
   // Setting variables
   for (const key in body) {

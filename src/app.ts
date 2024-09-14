@@ -2,7 +2,7 @@ import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
 import { acceptLanguages } from '@middlewares'
-import { routes } from '@routes'
+import { routes } from '@api'
 
 export const app = express()
 
