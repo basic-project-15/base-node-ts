@@ -26,5 +26,5 @@ export const disableUser = async (currentIdUser: string, idUser: string) => {
   user.state = false
   await user.save()
 
-  return user
+  return user.toObject()
 }

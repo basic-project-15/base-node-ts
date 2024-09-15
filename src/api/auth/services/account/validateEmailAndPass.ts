@@ -4,8 +4,9 @@ import { UserModel } from '@models'
 
 export const validateEmailAndPass = async (email: string, password: string) => {
   // Verify user
-  const user = await UserModel.findOne({ email, state: true })
+  const user = await UserModel.findOne({ email })
   if (user == null) throw CustomError('AUTH_INVALID_CREDENTIALS', 401)
+  if (!user.state) throw CustomError('AUTH_ACCOUNT_DISABLED', 400)
 
   // Verify user is blocked
   let incorrectPassword: number = user.incorrectPassword!

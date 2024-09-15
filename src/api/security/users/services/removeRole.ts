@@ -36,5 +36,5 @@ export const removeRole = async (
   user.updated_by = new Types.ObjectId(currentIdUser)
   await user.save()
 
-  return role
+  return role.toObject()
 }

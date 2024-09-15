@@ -9,7 +9,7 @@ export const updatePassword = async (
   newPassword: string,
 ) => {
   // Verify user
-  const user = await UserModel.findOne({ _id: idUser, state: true })
+  const user = await UserModel.findById(idUser)
   if (user == null) throw CustomError('PROFILE_NOT_FOUND', 404)
 
   // Check passwords

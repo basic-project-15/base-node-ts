@@ -13,11 +13,11 @@ interface CreateUser {
 
 export const createUser = async (newUser: CreateUser) => {
   // Verify used email
-  const anotherUser = await UserModel.findOne({ email: newUser.email })
+  const { firstName, lastName, email, password, phoneNumber, photo } = newUser
+  const anotherUser = await UserModel.findOne({ email })
   if (anotherUser != null) throw CustomError('AUTH_ACCOUNT_ALREADY_EXISTS', 409)
 
   // Register user
-  const { firstName, lastName, email, password, phoneNumber, photo } = newUser
   let newPasswordHash
   if (password) {
     newPasswordHash = await hash(password, BCRYPT_SALT)

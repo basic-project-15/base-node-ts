@@ -4,9 +4,7 @@ import { CustomError } from '@common'
 export const getProfile = async (email: string) => {
   // Get user
   const users = await UserModel.aggregate([
-    {
-      $match: { email, state: true },
-    },
+    { $match: { email } },
     {
       $project: {
         id: 1,
@@ -15,6 +13,7 @@ export const getProfile = async (email: string) => {
         email: 1,
         phoneNumber: 1,
         photo: 1,
+        state: 1,
       },
     },
   ])

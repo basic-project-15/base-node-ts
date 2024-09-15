@@ -18,5 +18,5 @@ export const getUserById = async (idUser: string) => {
   ])
   if (user == null) throw CustomError('USER_NOT_FOUND', 404)
 
-  return user
+  return user.toObject()
 }

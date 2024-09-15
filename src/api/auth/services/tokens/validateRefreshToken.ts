@@ -8,9 +8,10 @@ export const validateRefreshToken = async (refreshToken: string) => {
   const userToken = jwt.verifyRefreshToken(refreshToken)
 
   // Verify user
-  const user = await UserModel.findOne({ _id: userToken._id, state: true })
+  const user = await UserModel.findById(userToken._id)
   if (!user || user.refreshToken !== refreshToken)
     throw CustomError('AUTH_INVALID_TOKEN', 401)
+  if (!user.state) throw CustomError('AUTH_ACCOUNT_DISABLED', 400)
 
   return user.toObject()
 }

@@ -12,6 +12,9 @@ export const disableUser = async (req: Request, res: Response) => {
     const currentIdUser: string = userToken._id
     const idUser: string = params.idUser
     const user = await UserServices.disableUser(currentIdUser, idUser)
+    delete user.password
+    delete user.incorrectPassword
+    delete user.refreshToken
 
     // Response
     statusCode = 200

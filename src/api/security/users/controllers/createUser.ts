@@ -18,6 +18,9 @@ export const createUser = async (req: Request, res: Response) => {
         email: body.email,
       },
     )
+    delete user.password
+    delete user.incorrectPassword
+    delete user.refreshToken
 
     // Send Email
     const html = getHTMLFile(__dirname, lng, 'createAccount')
@@ -26,7 +29,7 @@ export const createUser = async (req: Request, res: Response) => {
       subject: t.USER_CREATED,
       body: {
         name: user.firstName,
-        temporaryPassword,
+        newPassword: temporaryPassword,
       },
     })
 

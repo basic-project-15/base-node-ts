@@ -26,6 +26,7 @@ export const registerWithEmailAndPass = async (req: Request, res: Response) => {
     await sendEmail(html, {
       recipients: { to: [`${user.firstName} <${user.email}>`] },
       subject: t.AUTH_ACCOUNT_REGISTRED,
+      body: { name: user.firstName },
     })
 
     // Generate tokens

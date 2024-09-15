@@ -16,6 +16,9 @@ export const updateProfile = async (req: Request, res: Response) => {
       phoneNumber: body.phoneNumber,
       photo: body.photo,
     })
+    delete user.password
+    delete user.incorrectPassword
+    delete user.refreshToken
 
     // Response
     statusCode = 200

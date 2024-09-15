@@ -36,5 +36,5 @@ export const createUser = async (
   })
   await user.save()
 
-  return { user, temporaryPassword }
+  return { user: user.toObject(), temporaryPassword }
 }

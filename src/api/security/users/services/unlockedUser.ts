@@ -1,7 +1,7 @@
 import { UserModel } from '@models'
-import { MAX_FAILED_PASSWORDS, CustomError } from '@common'
-
+import { MAX_FAILED_PASSWORDS, CustomError, BCRYPT_SALT } from '@common'
 import { Types } from 'mongoose'
+import { hash } from 'bcrypt'
 
 export const unlockedUser = async (currentIdUser: string, idUser: string) => {
   // Verify user
@@ -23,10 +23,14 @@ export const unlockedUser = async (currentIdUser: string, idUser: string) => {
     throw CustomError('USER_OWNER_EDIT', 403)
 
   // Update user
+  const temporaryPassword = Math.random().toString(36).slice(-10)
+  const newPasswordHash = await hash(temporaryPassword, BCRYPT_SALT)
+  user.password = newPasswordHash
+  user.passwordVersion = user.passwordVersion + 1
   user.incorrectPassword = 0
   user.updated_at = new Date()
   user.updated_by = new Types.ObjectId(currentIdUser)
   await user.save()
 
-  return user
+  return { user: user.toObject(), temporaryPassword }
 }

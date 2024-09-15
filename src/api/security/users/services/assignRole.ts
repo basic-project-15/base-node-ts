@@ -36,5 +36,5 @@ export const assignRole = async (
   user.roleIds.push(new Types.ObjectId(idRole))
   await user.save()
 
-  return role
+  return role.toObject()
 }

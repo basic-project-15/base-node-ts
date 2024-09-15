@@ -44,5 +44,5 @@ export const updateUser = async (currentIdUser: string, infoUser: InfoUser) => {
   user.state = state ?? user.state
   await user.save()
 
-  return user
+  return user.toObject()
 }

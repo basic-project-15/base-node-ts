@@ -22,5 +22,5 @@ export const deleteUser = async (currentIdUser: string, idUser: string) => {
   // Delete user
   await user.deleteOne()
 
-  return null
+  return user.toObject()
 }

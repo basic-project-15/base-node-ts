@@ -7,6 +7,7 @@
   "AUTH_ACCOUNT_ALREADY_EXISTS": "La cuenta ya existe",
   "AUTH_ACCOUNT_NOT_FOUND": "Cuenta no encontrada",
   "AUTH_ACCOUNT_REGISTRED": "Cuenta registrada",
+  "AUTH_ACCOUNT_DISABLED": "Cuenta deshabilitada",
   "AUTH_ACCOUNT_BLOCKED": "Cuenta bloqueada",
   "AUTH_ACCOUNT_BLOCKED_DETAILS": "Se ha bloqueado su cuenta, favor revisar su correo electrónico o realice el proceso de recuperación de cuenta",
   "AUTH_ACCOUNT_RECOVERY": "Recuperación de cuenta",

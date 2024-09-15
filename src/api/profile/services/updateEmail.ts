@@ -4,7 +4,7 @@ import { Types } from 'mongoose'
 
 export const updateEmail = async (idUser: string, newEmail: string) => {
   // Verify user
-  const user = await UserModel.findOne({ _id: idUser, state: true })
+  const user = await UserModel.findById(idUser)
   if (user == null) throw CustomError('PROFILE_NOT_FOUND', 404)
 
   // Verify used email

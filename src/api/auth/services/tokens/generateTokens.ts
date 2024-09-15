@@ -4,9 +4,11 @@ import { MAX_FAILED_PASSWORDS, CustomError } from '@common'
 
 export const generateTokens = async (_id: string) => {
   // Verify user
-  const user = await UserModel.findOne({ _id, state: true })
-  if (user == null || user.incorrectPassword === MAX_FAILED_PASSWORDS)
-    throw CustomError('AUTH_ACCOUNT_NOT_FOUND', 401)
+  const user = await UserModel.findById(_id)
+  if (user == null) throw CustomError('AUTH_ACCOUNT_NOT_FOUND', 401)
+  if (!user.state) throw CustomError('AUTH_ACCOUNT_DISABLED', 400)
+  if (user.incorrectPassword === MAX_FAILED_PASSWORDS)
+    throw CustomError('AUTH_ACCOUNT_BLOCKED', 400)
 
   // Generate tokens
   const accessToken = jwt.generateAccessToken({

@@ -18,6 +18,9 @@ export const updateUser = async (req: Request, res: Response) => {
       email: body.email,
       state: body.state,
     })
+    delete user.password
+    delete user.incorrectPassword
+    delete user.refreshToken
 
     // Response
     statusCode = 200

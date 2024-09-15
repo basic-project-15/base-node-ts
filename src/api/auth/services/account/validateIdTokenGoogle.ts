@@ -12,8 +12,9 @@ export const validateIdTokenGoogle = async (idToken: string) => {
 
   // Verify user, if it is not found, it will register it
   const email = payload.email ?? ''
-  const user = await UserModel.findOne({ email, state: true })
+  const user = await UserModel.findOne({ email })
   if (user == null) throw CustomError('AUTH_ACCOUNT_NOT_FOUND', 404)
+  if (!user.state) throw CustomError('AUTH_ACCOUNT_DISABLED', 400)
 
   return user?.toObject()
 }

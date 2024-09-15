@@ -11,6 +11,9 @@ export const getUserById = async (req: Request, res: Response) => {
     // Get user
     const idUser: string = params.idUser
     const user = await UserServices.getUserById(idUser)
+    delete user.password
+    delete user.incorrectPassword
+    delete user.refreshToken
 
     // Response
     statusCode = 200

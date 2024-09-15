@@ -11,8 +11,9 @@ export const generateOtp = async (email: string) => {
 }
 
 export const generateOtpInternalUser = async (email: string) => {
-  const user = await UserModel.findOne({ email, state: true })
+  const user = await UserModel.findOne({ email })
   if (user == null) throw CustomError('AUTH_ACCOUNT_NOT_FOUND', 404)
+  if (!user.state) throw CustomError('AUTH_ACCOUNT_DISABLED', 400)
 
   // Generate otp
   const newOtp = generateOTPCrypto()
@@ -24,7 +25,7 @@ export const generateOtpInternalUser = async (email: string) => {
 
 export const generateOtpExternalUser = async (email: string) => {
   const user = await UserModel.findOne({ email })
-  if (user != null) throw CustomError('AUTH_ACCOUNT_ALREADY_EXISTS', 200)
+  if (user != null) throw CustomError('AUTH_ACCOUNT_ALREADY_EXISTS', 409)
 
   // Generate otp
   const newOtp = generateOTPCrypto()

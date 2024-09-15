@@ -5,8 +5,9 @@ import { Types } from 'mongoose'
 
 export const resetPassword = async (email: string, newPassword: string) => {
   // Verify user
-  const user = await UserModel.findOne({ email, state: true })
+  const user = await UserModel.findOne({ email })
   if (!user) throw CustomError('AUTH_ACCOUNT_NOT_FOUND', 404)
+  if (!user.state) throw CustomError('AUTH_ACCOUNT_DISABLED', 400)
 
   // Verify old password
   const oldPasswordHash: string = user.password ?? ''

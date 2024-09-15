@@ -7,6 +7,7 @@
   "PROFILE_EMAIL_VERIFICATION": "Verificación de Correo Electrónico",
   "PROFILE_EMAIL_VERIFICATION_SENT": "Correo de verificación enviado",
   "PROFILE_NOT_FOUND": "Perfil no encontrado",
+  "PROFILE_DISABLED": "Perfil deshabilitado",
   "PROFILE_OWNER_DELETE": "No puedes eliminar tu cuenta por este método, ponte en contacto con soporte técnico",
   "PROFILE_EMAIL_ALREADY_EXISTS": "Correo ya existe",
   "PROFILE_INVALID_CREDENTIALS": "Contraseña no válida",
