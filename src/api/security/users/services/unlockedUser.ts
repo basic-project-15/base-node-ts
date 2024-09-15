@@ -7,8 +7,6 @@ export const unlockedUser = async (currentIdUser: string, idUser: string) => {
   // Verify user
   const user = await UserModel.findById(idUser).populate('roleIds')
   if (user == null) throw CustomError('USER_NOT_FOUND', 404)
-  if (user.incorrectPassword! < MAX_FAILED_PASSWORDS)
-    throw CustomError('USER_UNLOCKED', 200)
 
   // Verify edition owner
   const currentUser = await UserModel.findById(currentIdUser).populate(
@@ -21,6 +19,8 @@ export const unlockedUser = async (currentIdUser: string, idUser: string) => {
   }
   if (!isOwnerCurrentUser && isOwnerEditUser)
     throw CustomError('USER_OWNER_EDIT', 403)
+  if (user.incorrectPassword! < MAX_FAILED_PASSWORDS)
+    throw CustomError('USER_UNLOCKED', 200)
 
   // Update user
   const temporaryPassword = Math.random().toString(36).slice(-10)

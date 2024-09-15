@@ -10,8 +10,8 @@ export const assignRole = async (req: Request, res: Response) => {
   try {
     // Assign role
     const currentIdUser: string = userToken._id
-    const idUser: string = body.idUser
-    const idRole: string = params.idRole
+    const idUser: string = params.idUser
+    const idRole: string = body.idRole
     const role = await UserServices.assignRole(currentIdUser, idUser, idRole)
 
     // Response

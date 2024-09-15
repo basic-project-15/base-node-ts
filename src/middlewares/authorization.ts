@@ -19,19 +19,22 @@ const verifyPermissions = (roles: IRole[], access: Access) => {
     return false
   }
   for (const role of roles) {
-    // Get modules
-    const modules = role.permissions?.filter(
-      item => item.module === access.module,
-    )
-    for (const module of modules) {
-      // Get sections
-      const sections = module.sections?.filter(
-        item => item.section === access.section,
+    // Is role is active
+    if (role.state) {
+      // Get modules
+      const modules = role.permissions?.filter(
+        item => item.module === access.module,
       )
-      for (const section of sections) {
-        // Verify action
-        if (section.actions.includes(action)) {
-          return true
+      for (const module of modules) {
+        // Get sections
+        const sections = module.sections?.filter(
+          item => item.section === access.section,
+        )
+        for (const section of sections) {
+          // Verify action
+          if (section.actions.includes(action)) {
+            return true
+          }
         }
       }
     }
@@ -53,7 +56,7 @@ export const authorization = async (
     const user = await UserModel.findById(idUser).populate([
       {
         path: 'roleIds',
-        select: '_id type permissions',
+        select: '_id type permissions state',
       },
     ])
     if (user == null) throw CustomError('RES_FORBIDDEN', 403)

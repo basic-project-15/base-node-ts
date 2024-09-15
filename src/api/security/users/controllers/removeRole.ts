@@ -10,8 +10,8 @@ export const removeRole = async (req: Request, res: Response) => {
   try {
     // Remove role
     const currentIdUser: string = userToken._id
-    const idUser: string = body.idUser
-    const idRole: string = params.idRole
+    const idUser: string = params.idUser
+    const idRole: string = body.idRole
     const role = await UserServices.removeRole(currentIdUser, idUser, idRole)
 
     // Response

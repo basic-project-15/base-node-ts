@@ -38,6 +38,9 @@ export const updateUser = async (currentIdUser: string, infoUser: InfoUser) => {
   // Update user
   user.firstName = firstName ?? user.firstName
   user.lastName = lastName ?? user.lastName
+  if (user.email !== email) {
+    user.passwordVersion = user.passwordVersion + 1
+  }
   user.email = email ?? user.email
   user.updated_at = new Date()
   user.updated_by = new Types.ObjectId(currentIdUser)

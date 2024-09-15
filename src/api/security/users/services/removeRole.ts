@@ -28,7 +28,7 @@ export const removeRole = async (
   const role = await RoleModel.findById(idRole)
   if (role == null) throw CustomError('ROLE_NOT_FOUND', 404)
   const hasRole = user.roleIds.some(role => role._id.equals(idRole))
-  if (hasRole) throw CustomError('USER_ALREADY_REMOVE_ROLE', 409)
+  if (!hasRole) throw CustomError('USER_ALREADY_REMOVE_ROLE', 409)
 
   // Remove role and update user
   user.roleIds = user.roleIds.filter(role => !role._id.equals(idRole))
